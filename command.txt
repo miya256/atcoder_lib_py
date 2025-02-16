@@ -1,4 +1,1 @@
-cd C:\Users\miya2\OneDrive\デスクトップ\python\atcoder
 
-コンテスト前に1回実行して、↑キーで出てくるようにしよう
-Get-Content input.txt | python atcoder.py
