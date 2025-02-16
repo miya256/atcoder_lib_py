@@ -1,40 +1,46 @@
-class FenwickTree:
-    def __init__(self,data,mod=None):
-        if isinstance(data,int):
-            data = [0 for _ in range(data)]
-        self.n = len(data)
-        self.data = data
+from bisect import bisect_left, bisect
+class CompressedFenwickTree: #座標圧縮を用いたFenwickTree
+    class Shrink:
+        def __init__(self,num):
+            """num:出てくる数字。i番目の数字がxみたいな。l,rの数字は含めなくてよい"""
+            self.num = sorted([i for i in set(num)])
+            self.shr = {v:i for i,v in enumerate(self.num)}
+        
+        def __len__(self):
+            return len(self.num)
+
+        def original(self,shr):
+            """圧縮後の値から元の値を返す"""
+            return self.num[shr]
+
+        def shrink(self,orig):
+            """元の値から圧縮後の値を返す"""
+            if orig not in self.shr:
+                self.shr[orig] = bisect_left(self.num,orig)
+            return self.shr[orig]
+        
+        def __call__(self,orig):
+            return self.shrink(orig)
+        
+    def __init__(self,num,mod=None):
+        self.shr = self.Shrink(num)
+        self.n = len(self.shr)
         self.mod = mod
-        self.tree = []
-        self.all_sum = sum(data) % mod if mod else sum(data)
-        self._build(data)
-    
-    def _build(self,data):
-        acc = [0]
-        for i in range(1,self.n+1):
-            acc.append(acc[-1] + data[i-1])
-            self.tree.append(acc[-1] - acc[-1-(-i&i)])
-            if self.mod:
-                acc[-1] %= self.mod
-                self.tree[-1] %= self.mod
-    
-    def __iter__(self):
-        for data in self.data:
-            yield data
+        self.tree = [0 for _ in range(self.n)]
+        self.all_sum = 0
     
     def __getitem__(self,i):
-        return self.data[i]
+        return self.prod(i,i+1)
     
     def __setitem__(self,i,value):
         self.set(i,value)
     
     def add(self, i, x):
         """i番目にxを足す"""
-        self.data[i] += x
         self.all_sum += x
         if self.mod:
-            self.data[i] %= self.mod
             self.all_sum %= self.mod
+        i = self.shr(i)
         i += 1
         while i <= self.n:
             self.tree[i-1] += x
@@ -60,6 +66,7 @@ class FenwickTree:
 
     def prod(self,l,r):
         """[l,r)"""
+        l,r = self.shr(l),self.shr(r)
         s = self._prod(r) - self._prod(l)
         return s % self.mod if self.mod else s
     
@@ -76,7 +83,7 @@ class FenwickTree:
                 i += (-i & i) >> 1
             else:
                 i -= (-i & i) >> 1
-        return i-1 + (val + self.tree[i-1] < x)
+        return self.shr.original(i-1 + (val + self.tree[i-1] < x))
     
     def bisect_right(self,x):
         """[0,i)の累積和を二分探索"""
@@ -88,7 +95,7 @@ class FenwickTree:
                 i += (-i & i) >> 1
             else:
                 i -= (-i & i) >> 1
-        return i-1 + (val + self.tree[i-1] <= x)
+        return self.shr.original(i-1 + (val + self.tree[i-1] <= x))
     
     def __str__(self):
-        return f'FenwickTree {list(self)}'
+        return f'FenwickTree {self.tree}' #とりあえずこう

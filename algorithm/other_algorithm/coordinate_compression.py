@@ -1,18 +1,24 @@
-import bisect
+from bisect import bisect_left, bisect
 class Shrink:
     def __init__(self,num):
         self.num = sorted([i for i in set(num)])
+        self.shr = {v:i for i,v in enumerate(self.num)}
+    
+    def __len__(self):
+        return len(self.num)
 
-    def val(self,shr):
+    def original(self,shr):
         """圧縮後の値から元の値を返す"""
         return self.num[shr]
 
-    def shr(self,val):
+    def shrink(self,orig):
         """元の値から圧縮後の値を返す"""
-        return bisect.bisect_left(self.num,val)
+        if orig not in self.shr:
+            self.shr[orig] = bisect_left(self.num,orig)
+        return self.shr[orig]
     
-    def __getitem__(self,val):
-        return self.shr(val)
+    def __call__(self,orig):
+        return self.shrink(orig)
 
 
 """添え字

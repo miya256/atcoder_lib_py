@@ -4,7 +4,7 @@ class Mo:
         self.n = n
         self.q = len(query)
         self.query = [[i,l,r] for i,(l,r) in enumerate(query)]
-        self.b = n // (self.q ** 0.5)
+        self.b = max(1,n / (self.q ** 0.5))
 
         self.maxn = 1 << (n-1).bit_length()
 
@@ -32,22 +32,22 @@ class Mo:
     
     def execute(self):
         ans = [None]*self.q
-        ptr_l, ptr_r = 0,-1
+        pl, pr = 0,-1
         for i,l,r in self.query:
             #l,rのindexを調整
             l -= 1
             r -= 1
 
-            while ptr_r < r:
-                ptr_r += 1
+            while pr < r:
+                pr += 1
                 #処理
-            while ptr_l > l:
-                ptr_l -= 1
+            while pl > l:
+                pl -= 1
                 #処理
-            while ptr_r > r:
+            while pr > r:
                 #処理
-                ptr_r -= 1
-            while ptr_l < l:
+                pr -= 1
+            while pl < l:
                 #処理
-                ptr_l += 1
+                pl += 1
             ans[i] = hoge

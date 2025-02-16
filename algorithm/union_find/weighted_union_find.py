@@ -1,90 +1,114 @@
 class WeightedUnionFind:
-    def __init__(self,n):
+    class Element:
+        def __init__(self,value,weight=None):
+            self.value = value
+            self.parent = None
+            self.size = 1
+            self.weight = weight
+            self.diff = 0 #親との差(weight - parent.weight)
+        
+        def merge(self,other,w):
+            other.parent = self
+            self.size += other.size
+            other.diff = w
+            if other.weight is not None:
+                self.weight = other.weight - w
+
+    def __init__(self,n=0):
         self.n = n
-        self.parent = [i for i in range(n)]
-        self.size = [1]*n
-        self.weight = [None]*n #頂点vの重み
-        self.diff = [0]*n #親との差(weight[v] - weight[par[v]])
+        self.cc = n #連結成分の個数
+        self.elements = {i:self.Element(i) for i in range(n)}
     
+    def add(self,value,weight=None):
+        """頂点を追加する"""
+        assert value not in self.elements, f'{value}はすでに存在します'
+        self.elements[value] = self.Element(value,weight)
+        self.n += 1
+        self.cc += 1
+
     def leader(self,v):
-        if v != self.parent[v]:
+        """頂点vの属する連結成分の根"""
+        v = self.elements[v]
+        if v.parent:
             stack = []
-            while v != self.parent[v]:
+            while v.parent:
                 stack.append(v)
-                v = self.parent[v]
+                v = v.parent
             while stack:
                 u = stack.pop()
-                self.diff[u] += self.diff[self.parent[u]]
-                self.parent[u] = v
+                u.diff += u.parent.diff
+                u.parent = v
         return v
     
     def set_weight(self,v,w):
         """頂点vの重みをwと決める"""
         rv = self.leader(v)
-        #weight[rv] is not None and weight[rv] != w-diff[v]
+        v = self.elements[v]
+        #if rv.weight is not None and rv.weight != w-v.diff:
         #ならば矛盾する
         #連結成分ごと移動するとかならそのまま処理すればよい
-        self.weight[rv] = w - self.diff[v]
+        rv.weight = w - v.diff
     
     def merge(self,u,v,w):
-        """w = weight[v] - weight[u]"""
-        ru = self.leader(u)
-        rv = self.leader(v)
-        w += self.diff[u] - self.diff[v]
+        """w = v.weight - u.weight"""
+        ru,rv = self.leader(u),self.leader(v)
+        u,v = self.elements[u],self.elements[v]
+        w += u.diff - v.diff
         if ru == rv:
             return False
-        if self.size[ru] < self.size[rv]:
+        self.cc -= 1
+        if ru.size < rv.size:
             ru,rv = rv,ru
             w = -w
-        #ruにrvをmerge
-        self.parent[rv] = ru
-        self.size[ru] += self.size[rv]
-        self.diff[rv] = w
-        if self.weight[rv] is not None:
-            self.weight[ru] = self.weight[rv] - w
+        ru.merge(rv,w) #ruにrvをmerge
         return True
     
     def same(self,u,v):
         return self.leader(u) == self.leader(v)
     
-    def get_diff(self,u,v):
+    def diff(self,u,v):
         """
         重みの差(weight[v]-weight[u])を返す
         連結でなくとも、双方の重みが分かれば返す
         """
-        ru = self.leader(u)
-        rv = self.leader(v)
-        assert ru == rv or self.weight[ru] and self.weight[rv],"not connected and not decided weight"
+        ru,rv = self.leader(u),self.leader(v)
+        u,v = self.elements[u],self.elements[v]
+        assert ru == rv or ru.weight and rv.weight,"not connected and not decided weight"
 
         if ru == rv:
-            return self.diff[v] - self.diff[u]
-        return (self.weight[rv] + self.diff[v]) - (self.weight[ru] + self.diff[u])
+            return v.diff - u.diff
+        return (rv.weight + v.diff) - (ru.weight + u.diff)
     
-    def get_size(self,v):
-        return self.size[self.leader(v)]
+    def size(self,v):
+        return self.leader(v).size
     
     def get_weight(self,v):
         """重みが決まってなければ、根との差を返す"""
         rv = self.leader(v)
-        if self.weight[rv] is None:
-            return self.diff[v]
-        return self.weight[rv] + self.diff[v]
+        v = self.elements[v]
+        if rv.weight is None:
+            return v.diff
+        return rv.weight + v.diff
     
     def roots(self):
-        return [i for i,v in enumerate(self.parent) if i == v]
+        """根を列挙"""#必要に応じて、Element型のほうを返すようにする
+        return [i for i,v in self.elements.items() if v.parent is None]
     
     def members(self,v):
+        """vの属する連結成分の要素"""
         rv = self.leader(v)
-        return [i for i in range(self.n) if self.leader(i) == rv]
+        return [i for i,v in self.elements.items() if self.leader(i) == rv]
     
     def groups(self):
-        res = {i:list() for i in self.roots()}
-        for i in range(self.n):
-            res[self.leader(i)].append(i)
-        return res
+        """根と連結成分の要素を全列挙"""
+        group = {i:list() for i in self.roots()}
+        for i in self.elements.keys():
+            group[self.leader(i)].append(i)
+        return group
     
-    def count_connected_components(self):
-        return len(self.roots())
+    def get_cc(self):
+        """連結成分の個数"""
+        return self.cc
     
     def __str__(self):
         return f'{self.groups()}'

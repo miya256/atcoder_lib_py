@@ -1,26 +1,40 @@
-class LazySegmentTree:
-    def __init__(self,op,e,mapping,composition,id,data):
+from bisect import bisect_left, bisect
+class CompressedLazySegmentTree:
+    class Shrink:
+        def __init__(self,num):
+            self.num = sorted([i for i in set(num)])
+            self.shr = {v:i for i,v in enumerate(self.num)}
+        
+        def __len__(self):
+            return len(self.num)
+
+        def original(self,shr):
+            """圧縮後の値から元の値を返す"""
+            return self.num[shr]
+
+        def shrink(self,orig):
+            """元の値から圧縮後の値を返す"""
+            if orig not in self.shr:
+                self.shr[orig] = bisect_left(self.num,orig)
+            return self.shr[orig]
+        
+        def __call__(self,orig):
+            return self.shrink(orig)
+        
+    def __init__(self,op,e,mapping,composition,id,num):
         """演算,単位元,作用,合成,恒等写像,list or len"""
-        if isinstance(data,int):
-            data = [e for _ in range(data)]
-        self.n = len(data)
+        self.shr = self.Shrink(num)
+        self.n = len(self.shr)
         self.op = op
         self.e = e
         self.mapping = mapping
         self.composition = composition
         self.id = id
-        self.log = (len(data)-1).bit_length()
+        self.log = (self.n-1).bit_length()
         self.size = 1 << self.log
         self.tree = [e for _ in range(self.size*2)]
         self.lazy = [id for _ in range(self.size*2)]
-        self._build(data)
-    
-    def _build(self,data):
-        for i,val in enumerate(data):
-            self.tree[i+self.size] = val
-        for i in range(self.size-1,0,-1):
-            self.tree[i] = self.op(self.tree[2*i], self.tree[2*i+1])
-    
+
     def _update(self,k):
         """tree[k]を更新"""
         self.tree[k] = self.op(self.tree[2*k],self.tree[2*k+1])
@@ -38,12 +52,10 @@ class LazySegmentTree:
         self.lazy[k] = self.id
     
     def __getitem__(self,p):
-        p += self.size
-        for i in range(self.log,0,-1): #lazyを上から伝播させて
-            self._push(p >> i)
-        return self.tree[p]
+        return self.prod(p,p+1)
     
     def set(self,p,x):
+        p = self.shr(p)
         p += self.size
         for i in range(self.log,0,-1): #lazyを上から伝播させて
             self._push(p >> i)
@@ -55,6 +67,7 @@ class LazySegmentTree:
     def prod(self,l,r):
         if l == r:
             return self.e
+        l,r = self.shr(l),self.shr(r)
         l += self.size
         r += self.size
         for i in range(self.log,0,-1): #必要な部分のlazyを伝播
@@ -81,6 +94,7 @@ class LazySegmentTree:
     def apply(self,l,r,f):
         if l == r:
             return
+        l,r = self.shr(l),self.shr(r)
         l += self.size
         r += self.size
         for i in range(self.log,0,-1):
@@ -110,8 +124,9 @@ class LazySegmentTree:
                 self._update(r-1 >> i)
     
     def max_right(self,l,f):
+        l = self.shr(l)
         if l == self.n:
-            return self.n
+            return self.shr.original(self.n-1)
         
         l += self.size
         #上に移動するときに見るところのlazyを伝播
@@ -129,15 +144,16 @@ class LazySegmentTree:
                     if f(self.op(val,self.tree[l])):
                         val = self.op(val,self.tree[l])
                         l += 1
-                return l - self.size
+                return self.shr.original(l - self.size)
             val = self.op(val,self.tree[l])
             l += 1
             if l & -l == l:
-                return self.n
+                return self.shr.original(self.n-1)
     
     def min_left(self,r,f):
+        r = self.shr(r)
         if r == 0:
-            return 0
+            return self.shr.original(0)
         
         r += self.size
         for i in range(self.log,0,-1):
@@ -154,27 +170,11 @@ class LazySegmentTree:
                     if f(self.op(val,self.tree[r-1])):
                         r -= 1
                         val = self.op(val,self.tree[r])
-                return r - self.size
+                return self.shr.original(r - self.size)
             r -= 1
             val = self.op(val,self.tree[r])
             if r & -r == r:
-                return 0
+                return self.shr.original(0)
     
     def __str__(self):
-        return f'LazySegmentTree {[self[i] for i in range(self.n)]}'
-
-
-class RARS:
-    """ACLのやつ"""
-    mod = 998244353
-    e = (0,0)
-    id_ = (1,0)
-
-    def op(x,y):
-        return (x[0]+y[0]) % RARS.mod
-    
-    def mapping(f,x):
-        return (f[0]*x[0] + f[1]*x[1]) % RARS.mod, x[1]
-    
-    def composition(g,f):
-        return (f[0]*g[0]) % RARS.mod, (f[1]*g[0]+g[1]) % RARS.mod
+        return f'LazySegmentTree {[self[self.shr.original(i)] for i in range(self.n)]}'

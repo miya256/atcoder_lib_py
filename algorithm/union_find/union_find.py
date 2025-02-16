@@ -1,59 +1,80 @@
 class UnionFind:
-    def __init__(self,n):
-        """
-        n: 頂点数
-        _parent: 親
-        _size: 頂点iが属する連結成分の頂点数
-        """
-        self.n = n
-        self._parent = [i for i in range(n)]
-        self._size = [1]*n #頂点の個数だけでなく、いろいろなパラメータを持たせられる
+    class Element:
+        def __init__(self,value):
+            self.value = value
+            self.parent = None
+            self.size = 1
+        
+        def merge(self,other):
+            other.parent = self
+            self.size += other.size
+            
+    def __init__(self,n=0):
+        self.n = n #頂点数
+        self.cc = n #連結成分の個数
+        self.elements = {i:self.Element(i) for i in range(n)}
     
-    def leader(self,v):
+    def add(self,value):
+        """頂点を追加する"""
+        assert value not in self.elements, f'{value}はすでに存在します'
+        self.elements[value] = self.Element(value)
+        self.n += 1
+        self.cc += 1
+    
+    def exist(self,value):
+        return value in self.elements
+    
+    def leader(self,v): #vはelementsのkey
         """頂点vの属する連結成分の根"""
-        if v != self._parent[v]:
+        v = self.elements[v]
+        if v.parent:
             stack = []
-            while v != self._parent[v]:
+            while v.parent:
                 stack.append(v)
-                v = self._parent[v]
+                v = v.parent
             while stack:
-                self._parent[stack.pop()] = v
+                stack.pop().parent = v
         return v
     
     def merge(self,u,v):
-        """連結した後の根を返す"""
+        """u,vを連結"""
         ru = self.leader(u)
         rv = self.leader(v)
         if ru == rv:
             return False
-        if self._size[ru] < self._size[rv]:#根をどっちにするかは、その都度考える
+        self.cc -= 1
+        if ru.size < rv.size:#根をどっちにするかは、その都度考える
             ru,rv = rv,ru
-        #ruにrvをmerge
-        self._parent[rv] = ru
-        self._size[ru] += self._size[rv]
+        ru.merge(rv) #ruにrvをmerge
         return True
     
     def same(self,u,v):
+        """u,vが連結か"""
         return self.leader(u) == self.leader(v)
     
     def size(self,v):
-        return self._size[self.leader(v)]
+        """vの属する連結成分の要素数"""
+        return self.leader(v).size
     
     def roots(self):
-        return [i for i,v in enumerate(self._parent) if i == v]
+        """根を列挙"""#必要に応じて、Element型のほうを返すようにする
+        return [i for i,v in self.elements.items() if v.parent is None]
     
     def members(self,v):
+        """vの属する連結成分の要素"""
         rv = self.leader(v)
-        return [i for i in range(self.n) if self.leader(i) == rv]
+        return [i for i,v in self.elements.items() if self.leader(i) == rv]
     
     def groups(self):
-        res = {i:list() for i in self.roots()}
-        for i in range(self.n):
-            res[self.leader(i)].append(i)
-        return res
+        """根と連結成分の要素を全列挙"""
+        group = {i:list() for i in self.roots()}
+        for i in self.elements.keys():
+            group[self.leader(i)].append(i)
+        return group
     
-    def count_connected_components(self):
-        return len(self.roots())
+    def get_cc(self):
+        """連結成分の個数"""
+        return self.cc
     
     def __str__(self):
         return f'{self.groups()}'

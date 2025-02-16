@@ -20,9 +20,10 @@ class ZetaMobiusTransform:
                 self.prime.append(i)
     
     def divisor_zeta_transform(self,f):
-        """
+        """累積maxとかもできる
         f(i) -> F(i)
-        f[i] = iの約数のfの総和　になる
+        f[i] = iの約数dについてf[d]の総和　になる
+        つまりiの個数 -> iの約数の個数(6なら、1,2,3,6の個数の和)
         """
         for p in self.prime:
             for i in range(1,self.n//p+1):
@@ -39,6 +40,7 @@ class ZetaMobiusTransform:
         """
         f(i) -> F(i)
         f[i] = iの倍数のfの総和　になる
+        つまりiの個数 -> iの倍数の個数(iを約数に持つものの個数)になる
         """
         for p in self.prime:
             for i in range(self.n//p,0,-1):

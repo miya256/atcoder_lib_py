@@ -1,7 +1,7 @@
 class CRT:
     def __init__(self, rems=None, mods=None):
-        self.rems = rems if rems else []
-        self.mods = mods if mods else []
+        self.rems = rems if rems else [] #あまり
+        self.mods = mods if mods else [] #除数
     
     def add(self, rem, mod):
         self.rems.append(rem)
@@ -18,13 +18,13 @@ class CRT:
         return x % mod
     
     def _crt(self, rems, mods):
-        """2元の場合"""
+        """2元の場合 modで割った余りがrem"""
         gcd, p, _ = self._extgcd(mods[0], mods[1])
         if (rems[1] - rems[0]) % gcd:
             return 0, -1
         m = mods[0] * mods[1] // gcd
         x = (rems[0] + mods[0] * ((rems[1] - rems[0]) * p // gcd % (mods[1] // gcd))) % m
-        return x, m
+        return x, m #mで割った余りがx
     
     def crt(self):
         """n元"""

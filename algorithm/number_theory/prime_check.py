@@ -7,6 +7,7 @@ def isprime(n):
     return True
 
 #ミラーラビン法
+#a^(p-1) - 1 = 0なので、a^(p-1) - 1の因数のどれかは0になる
 def isprime(n):
     s,t = 0,n-1
     while t % 2 == 0:

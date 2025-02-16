@@ -1,7 +1,6 @@
-from collections import Counter
-
 class Eratosthenes:
     def __init__(self,n):
+        """n以下"""
         self.n = n
         self.minfactor = [-1]*(n+1) #iを割り切れる最小の素数
         self.prime = []
@@ -17,7 +16,7 @@ class Eratosthenes:
         for i in range(1, n+1):
             if isprime[i]:
                 self.minfactor[i] = i
-                if i <= n**0.5:
+                if i*i <= n:
                     for j in range(i*i, n+1, i):
                         isprime[j] = False
                         if self.minfactor[j] == -1:
@@ -27,24 +26,27 @@ class Eratosthenes:
     def prime_factorize(self,n):
         if self.factor[n]:
             return self.factor[n]
-        factor = []
-        while n != 1:
-            p = self.minfactor[n]
-            while n % p == 0:
-                factor.append(p)
-                n //= p
-        self.factor[n] = list(factor)
+        factor = {}
+        x = n
+        while x != 1:
+            p = self.minfactor[x]
+            factor[p] = 1
+            x //= p
+            while x % p == 0:
+                factor[p] += 1
+                x //= p
+        self.factor[n] = dict(factor)
         return factor
     
     def enumerate_divisors(self,n):
         if self.divisor[n]:
             return self.divisor[n]
         divisor = [1]
-        for base,exp in Counter(self.prime_factorize(n)).items():
+        for base,exp in self.prime_factorize(n).items():
             for i in range(len(divisor)):
                 val = 1
-                for j in range(exp):
+                for _ in range(exp):
                     val *= base
                     divisor.append(divisor[i] * val)
-        self.divisor = sorted(divisor)
-        return self.divisor
+        self.divisor[n] = sorted(divisor)
+        return self.divisor[n]
