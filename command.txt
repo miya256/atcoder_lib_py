@@ -1,4 +1,11 @@
+作業フォルダへ移動
 cd C:\Users\miya2\OneDrive\デスクトップ\python\atcoder
 
-コンテスト前に1回実行して、↑キーで出てくるようにしよう
-Get-Content input.txt | python atcoder.py
+input.txtの入力を試す
+Get-Content test/input.txt | python test/atcoder.py
+
+atcoderのサンプルを自動テスト
+python test/auto_test.py test/atcoder.py
+
+ランダムにサンプルを生成して試す
+python test/random_test.py test/atcoder.py test/atcoder_naive.py

@@ -4,28 +4,21 @@ import pypyjit
 pypyjit.set_param("max_unroll_recursion=-1")
 from collections import deque
 
-class DFS:
-    def __init__(self,g):
-        """隣接リストor頂点数"""
-        if isinstance(g,int):
-            g = [[] for _ in range(g)]
-        self.n = len(g)
-        self.graph = g
-        self.visited = [False] * self.n #初期化するべき時に初期化する
-    
-    def add_edge(self,u,v):
-        self.graph[u].append(v)
-        self.graph[v].append(u)
-    
-    def dfs(self,starts): #始点が1つの場合も、長さ1の配列にして渡す
-        dq = deque(starts)
-        while dq:
-            v = dq.pop()
-            if not self.visited[v]:
-                self.visited[v] = True #ここで訪れた判定。訪れたくないなら、そもそもキューにいれない
-                for nv in self.graph[v]:
-                    if not self.visited[nv]:
-                        dq.append(nv)
+def dfs(*starts,visited=None):
+    """visitedはキーワード引数"""
+    if visited is None:
+        visited = [False]*n
+    dq = deque([(v,0) for v in starts])
+    while dq:
+        v,d = dq.pop()
+        if visited[v]:
+            continue
+        visited[v] = True #ここで訪れた判定
+        for nv,w in g[v]:
+            if visited[nv]:
+                continue
+            dq.append((nv,d+w))
+
 def dfs(v):
     visited_in[v] = True
     for nv in g[v]:
@@ -34,24 +27,11 @@ def dfs(v):
         dfs(nv)
     visited_out[v] = True
 
-
 #木のdfs
-def dfs(v,pre=-1):
+def dfs(v,par=-1):
     for nv in g[v]:
-        if nv == pre:
-            continue
-        dfs(nv,v)
-
-#非再帰
-def dfs(starts):
-    dq = deque(starts)
-    while dq:
-        v = dq.pop()
-        if not visited[v]:
-            visited[v] = True
-            for nv in g[v]:
-                if not visited[nv]:
-                    dq.append(nv)
+        if nv != par:
+            dfs(nv,v)
 
 class DFS:
     def __init__(self,grid):

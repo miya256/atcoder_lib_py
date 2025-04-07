@@ -1,7 +1,5 @@
-from atcoder.segtree import SegTree
-from collections import deque
-
-class HLD:
+#SegmentTreeも必要
+class HeavyLightDecomposition:
     def __init__(self,n,op,e):
         """
         parent : 頂点iの親
@@ -9,15 +7,15 @@ class HLD:
         size   : 頂点iの子の数(自分を含む)
         heavy  : heavy辺に隣接するノード、heavy辺の重み
         top    : 頂点iの連結成分の根
-        idx    : 頂点iのセグ木のindex
-        edgeWgt : 辺の重みを並べたやつ(左ほど深い)
+        idx    : 頂点iのedge_weightのindex
+        edge_weight : 辺の重みを並べたやつ(左ほど深い)
         """
         self.n = n
         self.op = op
         self.e = e
         self.tree = [[] for _ in range(n)]
         self.edges =[]
-        self.iscall = False
+        self.called = False
 
         self.parent = [-1]*n
         self.depth = [0]*n
@@ -25,7 +23,7 @@ class HLD:
         self.heavy = [(-1,-1)]*n
         self.top = [0]*n
         self.idx = [-1]*n
-        self.edgeWgt = []
+        self.edge_weight = []
     
     def add_edge(self,u,v,w):
         self.tree[u].append((v,w))
@@ -38,7 +36,7 @@ class HLD:
     def _dfs1(self,root):
         """parent,depth,size,heavyを求める"""
         visited = [False]*self.n
-        stack = deque([(root,-1,0,0)])
+        stack = [(root,-1,0,0)]
         while stack:
             v,prev,w,d = stack.pop()
             if visited[v]:
@@ -58,12 +56,12 @@ class HLD:
     
     def _dfs2(self,root):
         visited = [False]*self.n
-        stack = deque([(root,-1,0)])
+        stack = [(root,-1,0)]
         while stack:
             v,prev,w = stack.pop()
             self.top[v] = self.top[prev] if prev != -1 and self.heavy[prev][0] == v else v
-            self.idx[v] = len(self.edgeWgt)
-            self.edgeWgt.append(w)
+            self.idx[v] = len(self.edge_weight)
+            self.edge_weight.append(w)
             visited[v] = True
             for nv,w in self.tree[v]:
                 if visited[nv] or nv == self.heavy[v][0]:
@@ -74,36 +72,36 @@ class HLD:
                 stack.append((nv,v,w))
     
     def build(self,root):
-        self.iscall = True
+        self.called = True
         self._dfs1(root)
         self._dfs2(root)
         #左が深いほうが扱いやすいから逆にしてる
         self.idx = list(map(lambda x:len(self.idx)-x-1,self.idx))
-        self.edgeWgt = self.edgeWgt[::-1]
-        self.segEdgeWgt = SegTree(self.op,self.e,self.edgeWgt)
+        self.edge_weight = self.edge_weight[::-1]
+        self.edge_weight = SegmentTree(self.op,self.e,self.edge_weight)
     
     def set(self,u,v,w):
         """u,vの辺の重みをwに"""
-        assert self.iscall, "build(root)関数を実行してください"
+        assert self.called, "build(root)関数を実行してください"
         if self.parent[u] == v:
             u,v = v,u
-        self.segEdgeWgt.set(self.idx[v],w)
+        self.edge_weight.set(self.idx[v],w)
     
     def edge_prod(self,u,v):
         """uからvまでをprod"""
-        assert self.iscall, "build(root)関数を実行してください"
+        assert self.called, "build(root)関数を実行してください"
         res = self.e
         while True:
             ui,vi = self.idx[u],self.idx[v]
             if self.top[u] == self.top[v]:
                 if self.depth[u] < self.depth[v]:
                     ui,vi = vi,ui
-                res = self.op(res,self.segEdgeWgt.prod(ui,vi))
+                res = self.op(res,self.edge_weight.prod(ui,vi))
                 return res
             utop,vtop = self.top[u],self.top[v]
             if self.depth[utop] < self.depth[vtop]:
                 u,v = v,u
                 ui,vi = vi,ui
                 utop,vtop = vtop,utop
-            res = self.op(res,self.segEdgeWgt.prod(ui,self.idx[utop]+1))
+            res = self.op(res,self.edge_weight.prod(ui,self.idx[utop]+1))
             u = self.parent[utop]

@@ -41,6 +41,9 @@ class DynamicLazySegmentTree:
             self._push(p >> i)
         return self._tree(p)
     
+    def __setitem__(self,i,x):
+        self.set(i,x)
+    
     def set(self,p,x):
         p += self.size - self.lower
         for i in range(self.log,0,-1): #lazyを上から伝播させて

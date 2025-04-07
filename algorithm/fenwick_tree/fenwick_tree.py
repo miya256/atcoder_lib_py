@@ -1,94 +1,94 @@
 class FenwickTree:
-    def __init__(self,data,mod=None):
-        if isinstance(data,int):
+    def __init__(self, data):
+        """data: list or len"""
+        if isinstance(data, int):
             data = [0 for _ in range(data)]
-        self.n = len(data)
-        self.data = data
-        self.mod = mod
-        self.tree = []
-        self.all_sum = sum(data) % mod if mod else sum(data)
-        self._build(data)
+        self._n = len(data)
+        self._data = data
+        self._tree = [0] * self._n
+        self._all_sum = self._build(data)
     
-    def _build(self,data):
-        acc = [0]
-        for i in range(1,self.n+1):
-            acc.append(acc[-1] + data[i-1])
-            self.tree.append(acc[-1] - acc[-1-(-i&i)])
-            if self.mod:
-                acc[-1] %= self.mod
-                self.tree[-1] %= self.mod
+    def _build(self, data):
+        acc = [0] * (self._n+1)
+        for i in range(1, self._n+1):
+            acc[i] = acc[i-1] + data[i-1]
+            self._tree[i-1] = acc[i] - acc[i-(-i&i)]
+        return acc[-1]
     
-    def __iter__(self):
-        for data in self.data:
-            yield data
+    def __len__(self):
+        return self._n
     
-    def __getitem__(self,i):
-        return self.data[i]
+    def get(self, i):
+        return self._data[i]
     
-    def __setitem__(self,i,value):
-        self.set(i,value)
+    def __getitem__(self, i):
+        return self.get(i)
     
-    def add(self, i, x):
+    def add(self, i ,x):
         """i番目にxを足す"""
-        self.data[i] += x
-        self.all_sum += x
-        if self.mod:
-            self.data[i] %= self.mod
-            self.all_sum %= self.mod
-        i += 1
-        while i <= self.n:
-            self.tree[i-1] += x
-            if self.mod:
-                self.tree[i-1] %= self.mod
-            i += -i & i
+        self._add(i, x)
     
     def set(self, i, x):
         """加えるではなく、更新"""
-        self.add(i, x - self[i])
+        self._add(i, x-self._data[i])
+    
+    def __setitem__(self, i, x):
+        self.set(i, x)
 
-    def _prod(self, i):
-        res = 0
-        while i > 0:
-            res += self.tree[i-1]
-            if self.mod:
-                res %= self.mod
-            #-i&iはiの最右の1だけ1にする演算
-            #これはそれが持ってる区間のサイズと等しい
-            #自分が持ってるサイズ分を足し引きして移動している
-            i -= -i & i
-        return res
-
-    def prod(self,l,r):
-        """[l,r)"""
-        s = self._prod(r) - self._prod(l)
-        return s % self.mod if self.mod else s
+    def sum(self, l, r):
+        """[l,r)の和"""
+        return self._sum(l, r)
     
-    def all_prod(self):
-        return self.all_sum
+    def all_sum(self):
+        return self._all_sum
     
-    def bisect_left(self,x):
-        """[0,i)の累積和を二分探索"""
-        i = 1 << self.n.bit_length()-1
-        val = 0
-        while not i & 1:
-            if val + self.tree[i-1] < x:
-                val += self.tree[i-1]
-                i += (-i & i) >> 1
-            else:
-                i -= (-i & i) >> 1
-        return i-1 + (val + self.tree[i-1] < x)
+    def bisect_left(self, x):
+        """累積和がx以上になるindex"""
+        return self._bisect_left(x)
     
-    def bisect_right(self,x):
-        """[0,i)の累積和を二分探索"""
-        i = 1 << self.n.bit_length()-1
-        val = 0
-        while not i & 1:
-            if val + self.tree[i-1] <= x:
-                val += self.tree[i-1]
-                i += (-i & i) >> 1
-            else:
-                i -= (-i & i) >> 1
-        return i-1 + (val + self.tree[i-1] <= x)
+    def bisect_right(self, x):
+        """累積和がxを超えるindex"""
+        return self._bisect_right(x)
     
     def __str__(self):
-        return f'FenwickTree {list(self)}'
+        return f'FenwickTree {self._data}'
+    
+    def _add(self, i, x):
+        self._data[i] += x
+        self._all_sum += x
+        i += 1
+        while i <= self._n:
+            self._tree[i-1] += x
+            i += -i & i
+
+    def _prefix_sum(self, i):
+        sum = 0
+        while i > 0:
+            sum += self._tree[i-1]
+            i -= -i & i
+        return sum
+
+    def _sum(self, l, r):
+        return self._prefix_sum(r) - self._prefix_sum(l)
+    
+    def _bisect_left(self, x):
+        i = 1 << self._n.bit_length()-1
+        val = 0
+        while not i & 1:
+            if i-1 < self._n and val + self._tree[i-1] < x:
+                val += self._tree[i-1]
+                i += (-i & i) >> 1
+            else:
+                i -= (-i & i) >> 1
+        return i-1 + (val + self._tree[i-1] < x)
+    
+    def _bisect_right(self, x):
+        i = 1 << self._n.bit_length()-1
+        val = 0
+        while not i & 1:
+            if i-1 < self._n and val + self._tree[i-1] <= x:
+                val += self._tree[i-1]
+                i += (-i & i) >> 1
+            else:
+                i -= (-i & i) >> 1
+        return i-1 + (val + self._tree[i-1] <= x)

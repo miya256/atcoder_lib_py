@@ -9,3 +9,13 @@ def divisors(n):
                 upper_divisors.append(n//i)
         i += 1
     return lower_divisors + upper_divisors[::-1]
+
+def divisors_from_factor(prime_factor:dict):
+    divisors = [1]
+    for base,exp in prime_factor.items():
+        for i in range(len(divisors)):
+            val = 1
+            for _ in range(exp):
+                val *= base
+                divisors.append(divisors[i] * val)
+    return sorted(divisors)

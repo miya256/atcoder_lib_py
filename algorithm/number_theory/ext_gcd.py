@@ -8,7 +8,11 @@ def indefinite_equation(a, b, c):
     """ax+by=c の解"""
     gcd,x,y = extgcd(a,b) #c=gcd(a,b)の場合の解を求めて
     if c % gcd != 0:
-        return None
+        return None,None
     x *= c // gcd
     y *= c // gcd
     return x, y
+
+def inv(n,mod):
+    x,_ = indefinite_equation(n,mod,1)
+    return x

@@ -11,13 +11,6 @@ def f(s):#sの部分集合全列挙
         t -= 1
         t &= s
 
-    #0含める
-    t = s
-    while t:
-        t -= 1
-        t &= 1
-        f(t)+f(s^t)
-
 #int型(4byte)
 def bitCount(x):
     x = (x & 0x55555555) + ((x >> 1) & 0x55555555)

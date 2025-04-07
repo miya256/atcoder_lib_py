@@ -11,6 +11,18 @@ pypyjit.set_param("max_unroll_recursion=-1")
 from functools import cache
 @cache
 
+#四捨五入
+from decimal import Decimal, ROUND_HALF_UP
+Decimal(str(n)).quantize(Decimal('0'),ROUND_HALF_UP) #小数点以下
+Decimal(str(n)).quantize(Decimal('0.1'),ROUND_HALF_UP) #小数第2位で四捨五入
+Decimal(str(n)).quantize(Decimal('0.01'),ROUND_HALF_UP) #小数第3位で四捨五入
+Decimal(str(n)).quantize(Decimal('1E1'),ROUND_HALF_UP) #1桁目で四捨五入
+Decimal(str(n)).quantize(Decimal('1E2'),ROUND_HALF_UP) #2桁目で四捨五入
+
+#compareをkeyにしたいとき
+from functools import cmp_to_key
+a.sort(key=cmp_to_key(compare))
+
 #bisectはkeyを指定できる
 
 #sortedcontainer
@@ -139,6 +151,8 @@ min_left(p,func) : prod[j,p)でfuncを満たす最小のjを返す。
 #LazySegmentTree
 from atcoder.lazysegtree import LazySegTree
 """
+xは要素とは限らず、２冪の範囲についての値である。ABC357Fが勉強になる
+
 LazySegTree(op, e, mapping, composition, _id, lst)
             op(a,b)         : 区間取得の演算
             e               : opの単位元
@@ -183,3 +197,7 @@ max_right(p,lambda x:x > val)     #p以右で最初にval以下となるindex
 max_right(p,lambda x:x >= val)    #p以右で最初にval未満となるindex
 min_left(p,lambda x:x > val) - 1  #pより左で最初にval以下となるindex
 min_left(p,lambda x:x >= val) - 1 #pより左で最初にval未満となるindex
+
+#suffix arrayの二分探索
+l = bisect.bisect_left(sa,t,key=lambda x:s[x:x+len(t)])
+r = bisect.bisect(sa,t,key=lambda x:s[x:x+len(t)])

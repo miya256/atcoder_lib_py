@@ -9,9 +9,6 @@ class Mobius:
         self.mobius = [1]*(n+1)
         self._eratosthenes(n)
     
-    def __getitem__(self,i):
-        return self.mobius[i]
-    
     def _eratosthenes(self,n):
         isprime = [True] * (n+1)
         isprime[1] = False
@@ -24,3 +21,6 @@ class Mobius:
                         self.mobius[j] = 0
                     else:
                         self.mobius[j] = -self.mobius[j]
+    
+    def __call__(self,i):
+        return self.mobius[i]

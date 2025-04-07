@@ -1,0 +1,18 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "runWithInput",
+            "type": "shell",
+            "command": "Get-Content ${workspaceFolder}/input.txt | python ${workspaceFolder}/atcoder.py",  // PowerShellでリダイレクト
+            "windows": {
+                "command": "type ${workspaceFolder}\\input.txt | python ${workspaceFolder}\\atcoder.py"  // Windows用リダイレクト
+            },
+            "problemMatcher": [],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            }
+        }
+    ]
+}

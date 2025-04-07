@@ -1,5 +1,6 @@
 #文字列を逆にしたhashが欲しかったら逆のやつもつくればよい
 #s[l:r)の逆は、rev(s)[len-r:len-l)
+#回文判定は、rh.get_hash(l,r) == rev.get_rev_hash(l,r)
 import random
 
 class RollingHash:
@@ -16,21 +17,25 @@ class RollingHash:
             RollingHash.base = random.randrange(1 << 31, RollingHash.Mod)
         if len(RollingHash.basePow) <= len(s):
             self._makeBasePow(len(s))
-        self.hash = [1]
+        self._hash = [1]
         for t in s:
-            self.hash.append(self._calcMod(self._mul(self.hash[-1],RollingHash.base) + ord(t)))
+            self._hash.append(self._calcMod(self._mul(self._hash[-1],RollingHash.base) + ord(t)))
     
     def __getitem__(self,i):
         return self.s[i]
 
-    def gethash(self,l,r):
+    def get_hash(self,l,r):
         """[l,r)"""
-        res = self.hash[r] - self._mul(self.hash[l], RollingHash.basePow[r-l])
+        res = self._hash[r] - self._mul(self._hash[l], RollingHash.basePow[r-l])
         return res if res >= 0 else res + RollingHash.Mod
     
-    def join(self,hash_s,hash_t,len_s):
-        """s,tを結合した文字列のhash値"""
-        return ((hash_s * RollingHash.basePow[len_s]) % RollingHash.Mod + hash_t) % RollingHash.Mod
+    def get_rev_hash(self, l, r):
+        """インスタンス化するときにsを逆向きにいれたとき用"""
+        return self.get_hash(len(self.s)-r, len(self.s)-l)
+    
+    def join(self,hash_s,hash_t,len_t):
+        """s,tをこの順に結合した文字列のhash値"""
+        return ((hash_s * RollingHash.basePow[len_t]) % RollingHash.Mod + hash_t) % RollingHash.Mod
     
     def _calcMod(self,x):
         xu, xd = x >> 61, x & RollingHash.Mask61
@@ -48,7 +53,3 @@ class RollingHash:
         l = len(RollingHash.basePow)
         for _ in range(x - l + 1):
             RollingHash.basePow.append(self._mul(RollingHash.base, RollingHash.basePow[-1]))
-
-h = RollingHash("abcdefg")
-print(h[0:5:2])
-#ace

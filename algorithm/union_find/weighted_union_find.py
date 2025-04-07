@@ -1,34 +1,98 @@
 class WeightedUnionFind:
     class Element:
-        def __init__(self,value,weight=None):
-            self.value = value
+        def __init__(self, id):
+            self.id = id
             self.parent = None
             self.size = 1
-            self.weight = weight
             self.diff = 0 #親との差(weight - parent.weight)
         
-        def merge(self,other,w):
+        def merge(self, other, diff):
             other.parent = self
             self.size += other.size
-            other.diff = w
-            if other.weight is not None:
-                self.weight = other.weight - w
+            other.diff = diff
+        
+        def compare(self, other):
+            """selfにotherをmergeするとき、こうなっていればokというのを返す"""
+            return self.size > other.size
+        
+        def __str__(self):
+            return f'{self.id}'
 
-    def __init__(self,n=0):
-        self.n = n
-        self.cc = n #連結成分の個数
-        self.elements = {i:self.Element(i) for i in range(n)}
+    def __init__(self, n=0):
+        self._n = n
+        self._component_count = n #連結成分の個数
+        self._elements = {i: self.Element(i) for i in range(n)}
     
-    def add(self,value,weight=None):
+    def element(self, id) -> Element:
+        """頂点idをElement型で取得"""
+        return self._elements[id]
+    
+    def __getitem__(self, id):
+        return self.element(id)
+    
+    def add(self, id):
         """頂点を追加する"""
-        assert value not in self.elements, f'{value}はすでに存在します'
-        self.elements[value] = self.Element(value,weight)
-        self.n += 1
-        self.cc += 1
-
-    def leader(self,v):
+        self._add(id)
+    
+    def exist(self, id):
+        """点idが存在するか"""
+        return self._exist(id)
+    
+    def __contains__(self, id):
+        """in演算子で呼べる"""
+        return self.exist(id)
+    
+    def leader(self, v):
         """頂点vの属する連結成分の根"""
-        v = self.elements[v]
+        return self._leader(self._elements[v]).id
+    
+    def merge(self, u, v, w):
+        """u, vを連結(w = v-u)"""
+        return self._merge(self._elements[u], self._elements[v], w)
+    
+    def same(self, u, v):
+        """u,vが連結か"""
+        return self._same(self._elements[u], self._elements[v])
+    
+    def size(self, v):
+        """vの属する連結成分の要素数"""
+        return self._size(self._elements[v])
+    
+    def roots(self):
+        """根を列挙"""
+        return self._roots()
+    
+    def members(self, v):
+        """vの属する連結成分の要素"""
+        return self._members(self._elements[v])
+    
+    def groups(self):
+        """根と連結成分の要素を全列挙"""
+        return self._groups()
+    
+    def count_components(self):
+        """連結成分の個数"""
+        return self._component_count
+    
+    def diff(self, u, v):
+        """重みの差(weight[v]-weight[u])を返す"""
+        return self._diff(self._elements[u], self._elements[v])
+    
+    def __str__(self):
+        return f'{self.groups()}'
+    
+
+    def _add(self, id, weight=0):
+        """頂点を追加する"""
+        assert id not in self._elements, f'{id}はすでに存在します'
+        self._elements[id] = self.Element(id, weight)
+        self._n += 1
+        self._component_count += 1
+    
+    def _exist(self, id):
+        return id in self._elements
+
+    def _leader(self, v: Element) -> Element:
         if v.parent:
             stack = []
             while v.parent:
@@ -40,75 +104,40 @@ class WeightedUnionFind:
                 u.parent = v
         return v
     
-    def set_weight(self,v,w):
-        """頂点vの重みをwと決める"""
-        rv = self.leader(v)
-        v = self.elements[v]
-        #if rv.weight is not None and rv.weight != w-v.diff:
-        #ならば矛盾する
-        #連結成分ごと移動するとかならそのまま処理すればよい
-        rv.weight = w - v.diff
-    
-    def merge(self,u,v,w):
+    def _merge(self, u: Element, v: Element, w):
         """w = v.weight - u.weight"""
-        ru,rv = self.leader(u),self.leader(v)
-        u,v = self.elements[u],self.elements[v]
+        ru, rv = self._leader(u), self._leader(v)
         w += u.diff - v.diff
         if ru == rv:
             return False
-        self.cc -= 1
-        if ru.size < rv.size:
-            ru,rv = rv,ru
+        self._component_count -= 1
+        if not ru.compare(rv):
+            ru, rv = rv, ru
             w = -w
-        ru.merge(rv,w) #ruにrvをmerge
+        ru.merge(rv, w) #ruにrvをmerge
         return True
     
-    def same(self,u,v):
-        return self.leader(u) == self.leader(v)
+    def _same(self, u: Element, v: Element):
+        return self._leader(u) == self._leader(v)
     
-    def diff(self,u,v):
-        """
-        重みの差(weight[v]-weight[u])を返す
-        連結でなくとも、双方の重みが分かれば返す
-        """
-        ru,rv = self.leader(u),self.leader(v)
-        u,v = self.elements[u],self.elements[v]
-        assert ru == rv or ru.weight and rv.weight,"not connected and not decided weight"
-
-        if ru == rv:
-            return v.diff - u.diff
-        return (rv.weight + v.diff) - (ru.weight + u.diff)
+    def _size(self, v: Element):
+        return self._leader(v).size
     
-    def size(self,v):
-        return self.leader(v).size
+    def _roots(self):
+        return [i for i, v in self._elements.items() if v.parent is None]
     
-    def get_weight(self,v):
-        """重みが決まってなければ、根との差を返す"""
-        rv = self.leader(v)
-        v = self.elements[v]
-        if rv.weight is None:
-            return v.diff
-        return rv.weight + v.diff
+    def _members(self, v: Element):
+        rv = self._leader(v)
+        return [i for i, v in self._elements.items() if self._leader(v) == rv]
     
-    def roots(self):
-        """根を列挙"""#必要に応じて、Element型のほうを返すようにする
-        return [i for i,v in self.elements.items() if v.parent is None]
-    
-    def members(self,v):
-        """vの属する連結成分の要素"""
-        rv = self.leader(v)
-        return [i for i,v in self.elements.items() if self.leader(i) == rv]
-    
-    def groups(self):
-        """根と連結成分の要素を全列挙"""
-        group = {i:list() for i in self.roots()}
-        for i in self.elements.keys():
-            group[self.leader(i)].append(i)
+    def _groups(self):
+        group = {}
+        for i, v in self._elements.items():
+            group.setdefault(self._leader(v).id, []).append(i)
         return group
     
-    def get_cc(self):
-        """連結成分の個数"""
-        return self.cc
-    
-    def __str__(self):
-        return f'{self.groups()}'
+    def _diff(self, u: Element, v: Element):
+        assert self._same(u, v), f'{u.id}, {v.id}は連結ではありません'
+        ru,rv = self._leader(u),self._leader(v)
+        if ru == rv:
+            return v.diff - u.diff

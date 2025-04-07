@@ -66,6 +66,7 @@ class NTT:
         return x
     
     def convolution(self,a,b):
+        a, b = list(a), list(b)
         n = 1 << (len(a) + len(b) - 2).bit_length()
         a += [0] * (n - len(a))
         b += [0] * (n - len(b))

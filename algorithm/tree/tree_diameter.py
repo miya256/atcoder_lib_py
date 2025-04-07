@@ -1,21 +1,25 @@
-import sys
-sys.setrecursionlimit(10**6)
-import pypyjit
-pypyjit.set_param("max_unroll_recursion=-1")
-
-def dfs(v):
-    stack = [(v,-1,0)]
-    max_vertex, max_dist = -1,0
-    while stack:
-        v,par,dist = stack.pop()
-        if max_dist < dist:
-            max_dist = dist
-            max_vertex = v
-        for nv in g[v]:
-            if nv != par:
-                stack.append((nv,v,dist+1))
-    return max_vertex, max_dist
-
-def diameter():
-    v,d = dfs(0)
-    return dfs(v)[1]
+class Diameter:
+    def __init__(self,n):
+        self.n = n
+        self.graph = [[] for _ in range(n)]
+    
+    def add_edge(self,u,v,w=1):
+        self.graph[u].append((v,w))
+        self.graph[v].append((u,w))
+    
+    def dfs(self,v):
+        stack = [(v,-1,0)]
+        end, diameter = -1,0
+        while stack:
+            v,par,dist = stack.pop()
+            if diameter < dist:
+                diameter = dist
+                end = v
+            for nv,w in self.graph[v]:
+                if nv != par:
+                    stack.append((nv,v,dist+w))
+        return end, diameter
+    
+    def diameter(self):
+        end,_ = self.dfs(0)
+        return self.dfs(end)[1]
