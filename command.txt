@@ -1,15 +1,1 @@
-<<<<<<< HEAD
-作業フォルダへ移動
-cd C:\Users\miya2\OneDrive\デスクトップ\python\atcoder
 
-input.txtの入力を試す
-Get-Content test/input.txt | python test/atcoder.py
-
-atcoderのサンプルを自動テスト
-python test/auto_test.py test/atcoder.py
-
-ランダムにサンプルを生成して試す
-python test/random_test.py test/atcoder.py test/atcoder_naive.py
-=======
-
->>>>>>> 291921a41e97a25d874dbb2d2ab5f29cfcd903b2
