@@ -11,8 +11,9 @@ class Bipartite:
         return self.graph[i]
     
     def add_edge(self, u, v):
-        """uからvへの**有向辺**を張る"""
+        """uからvへの**無向辺**を張る"""
         self.graph[u].append(v)
+        self.graph[v].append(u)
     
     def _dfs(self, v, color):
         stack = [(v, 0)]

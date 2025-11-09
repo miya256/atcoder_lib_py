@@ -1,3 +1,4 @@
+#elementsは計算量やばかったら配列にする
 class UnionFind:
     class Element:
         def __init__(self, id):
@@ -20,7 +21,7 @@ class UnionFind:
     def __init__(self, n=0):
         self._n = n #頂点数
         self._component_count = n #連結成分の個数
-        self._elements = {i: self.Element(i) for i in range(n)}
+        self._elements = {i: UnionFind.Element(i) for i in range(n)}
     
     def element(self, id) -> Element:
         """頂点idをElement型で取得"""
@@ -33,13 +34,13 @@ class UnionFind:
         """頂点を追加する"""
         self._add(id)
     
-    def exist(self, id):
+    def contains(self, id):
         """点idが存在するか"""
-        return self._exist(id)
+        return self._contains(id)
     
     def __contains__(self, id):
         """in演算子で呼べる"""
-        return self.exist(id)
+        return self._contains(id)
     
     def leader(self, v):
         """頂点vの属する連結成分の根"""
@@ -79,11 +80,11 @@ class UnionFind:
 
     def _add(self, id):
         assert id not in self._elements, f'{id}はすでに存在します'
-        self._elements[id] = self.Element(id)
+        self._elements[id] = UnionFind.Element(id)
         self._n += 1
         self._component_count += 1
     
-    def _exist(self, id):
+    def _contains(self, id):
         return id in self._elements
     
     def _leader(self, v: Element) -> Element:

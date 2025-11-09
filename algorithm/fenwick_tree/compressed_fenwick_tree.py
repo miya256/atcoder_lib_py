@@ -3,31 +3,30 @@ class CompressedFenwickTree:
     """座標圧縮を用いたFenwickTree"""
     INF = 1<<61
 
-    class Shrink:
+    class Compressor:
         def __init__(self, num):
-            """num:出てくる数字。i番目の数字がxみたいな。l,rの数字は含めなくてよい"""
             self.num = sorted([i for i in set(num)])
-            self.shr = {v: i for i, v in enumerate(self.num)}
+            self.compressed = {v:i for i,v in enumerate(self.num)}
         
         def __len__(self):
             return len(self.num)
 
-        def original(self, shr):
+        def original(self, comp):
             """圧縮後の値から元の値を返す"""
-            return self.num[shr]
+            return self.num[comp]
 
-        def shrink(self, orig):
+        def compress(self, orig):
             """元の値から圧縮後の値を返す"""
-            if orig not in self.shr:
-                self.shr[orig] = bisect_left(self.num, orig)
-            return self.shr[orig]
+            if orig not in self.compressed:
+                self.compressed[orig] = bisect_left(self.num, orig)
+            return self.compressed[orig]
         
         def __call__(self, orig):
-            return self.shrink(orig)
+            return self.compress(orig)
         
     def __init__(self, num):
-        self._shr = self.Shrink(num)
-        self._n = len(self._shr)
+        self._comp = self.Compressor(num)
+        self._n = len(self._comp)
         self._tree = [0 for _ in range(self._n)]
         self._all_sum = 0
     
@@ -73,14 +72,14 @@ class CompressedFenwickTree:
         return self._bisect_right(x)
     
     def __str__(self):
-        idx = [self._shr.original(i) for i in range(self._n)]
+        idx = [self._comp.original(i) for i in range(self._n)]
         val = [self[i] for i in idx]
         return f'CompressedFenwickTree (\n index {idx}\n value {val}\n)'
     
 
     def _add(self, i, x):
         self._all_sum += x
-        i = self._shr(i)
+        i = self._comp(i)
         i += 1
         while i <= self._n:
             self._tree[i-1] += x
@@ -95,7 +94,7 @@ class CompressedFenwickTree:
 
     def _sum(self, l, r):
         """[l,r)"""
-        l, r = self._shr(l), self._shr(r)
+        l, r = self._comp(l), self._comp(r)
         return self._prefix_sum(r) - self._prefix_sum(l)
     
     def _bisect_left(self, x):
@@ -107,7 +106,7 @@ class CompressedFenwickTree:
                 i += (-i & i) >> 1
             else:
                 i -= (-i & i) >> 1
-        return self._shr.original(i-1 + (val + self._tree[i-1] < x))
+        return self._comp.original(i-1 + (val + self._tree[i-1] < x))
     
     def _bisect_right(self, x):
         i = 1 << self._n.bit_length()-1
@@ -118,4 +117,4 @@ class CompressedFenwickTree:
                 i += (-i & i) >> 1
             else:
                 i -= (-i & i) >> 1
-        return self._shr.original(i-1 + (val + self._tree[i-1] <= x))
+        return self._comp.original(i-1 + (val + self._tree[i-1] <= x))

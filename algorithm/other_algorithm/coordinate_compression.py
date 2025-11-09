@@ -1,24 +1,24 @@
 from bisect import bisect_left, bisect
-class Shrink:
-    def __init__(self,num):
+class Compressor:
+    def __init__(self, num):
         self.num = sorted([i for i in set(num)])
-        self.shr = {v:i for i,v in enumerate(self.num)}
+        self.compressed = {v:i for i,v in enumerate(self.num)}
     
     def __len__(self):
         return len(self.num)
 
-    def original(self,shr):
+    def original(self, comp):
         """圧縮後の値から元の値を返す"""
-        return self.num[shr]
+        return self.num[comp]
 
-    def shrink(self,orig):
+    def compress(self, orig):
         """元の値から圧縮後の値を返す"""
-        if orig not in self.shr:
-            self.shr[orig] = bisect_left(self.num,orig)
-        return self.shr[orig]
+        if orig not in self.compressed:
+            self.compressed[orig] = bisect_left(self.num, orig)
+        return self.compressed[orig]
     
-    def __call__(self,orig):
-        return self.shrink(orig)
+    def __call__(self, orig):
+        return self.compress(orig)
 
 
 """添え字
@@ -27,7 +27,7 @@ class Shrink:
 
 更新クエリのindex = [p1,p2,...] そのままいれる(-1とかしない)
 
-set(shr[p],x)
-prod(shr[l],shr[r])
+set(compressed[p],x)
+prod(compressed[l],compressed[r])
 クエリを処理するときも-1とかしないで、p,l,rを使う
 """

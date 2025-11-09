@@ -9,10 +9,10 @@ class BellmanFord:
         self.n = n
         self.edges = edges
     
-    def add_edge(self,u,v,w):
-        self.edges.append((u,v,w))
+    def add_edge(self, u, v, w):
+        self.edges.append((u, v, w))
     
-    def bellman_ford(self,start):
+    def dist(self, start):
         d = [self.INF] * self.n
         dn = [self.INF] * self.n
         dn[start] = 0

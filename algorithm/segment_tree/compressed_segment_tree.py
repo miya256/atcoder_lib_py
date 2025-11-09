@@ -3,31 +3,31 @@ class CompressedSegmentTree:
     """座標圧縮を用いたSegmentTree"""
     INF = 1<<61
     
-    class Shrink:
+    class Compressor:
         def __init__(self, num):
             self.num = sorted([i for i in set(num)])
-            self.shr = {v: i for i, v in enumerate(self.num)}
+            self.compressed = {v:i for i,v in enumerate(self.num)}
         
         def __len__(self):
             return len(self.num)
 
-        def original(self, shr):
+        def original(self, comp):
             """圧縮後の値から元の値を返す"""
-            return self.num[shr]
+            return self.num[comp]
 
-        def shrink(self, orig):
+        def compress(self, orig):
             """元の値から圧縮後の値を返す"""
-            if orig not in self.shr:
-                self.shr[orig] = bisect_left(self.num, orig)
-            return self.shr[orig]
+            if orig not in self.compressed:
+                self.compressed[orig] = bisect_left(self.num, orig)
+            return self.compressed[orig]
         
         def __call__(self, orig):
-            return self.shrink(orig)
+            return self.compress(orig)
         
     def __init__(self, op, e, num):
         """演算, 単位元, list or len"""
-        self._shr = self.Shrink(num)
-        self._n = len(self._shr)
+        self._comp = self.Compressor(num)
+        self._n = len(self._comp)
         self._op = op
         self._e = e
         self._size = 1 << (self._n-1).bit_length() #最下段の長さ
@@ -70,7 +70,7 @@ class CompressedSegmentTree:
         return self._min_left(r, f)
     
     def __str__(self):
-        idx = [self._shr.original(i) for i in range(self._n)]
+        idx = [self._comp.original(i) for i in range(self._n)]
         val = [self[i] for i in idx]
         return f'CompressedSegmentTree (\n index {idx}\n value {val}\n)'
 
@@ -79,7 +79,7 @@ class CompressedSegmentTree:
         self._tree[i] = self._op(self._tree[2*i], self._tree[2*i+1])
     
     def _set(self, i, x):
-        i = self._shr(i)
+        i = self._comp(i)
         i += self._size
         self._tree[i] = x
         while i:
@@ -88,7 +88,7 @@ class CompressedSegmentTree:
     
     def _prod(self, l, r):
         lt, rt = self._e, self._e
-        l, r = self._shr(l), self._shr(r)
+        l, r = self._comp(l), self._comp(r)
         l += self._size
         r += self._size
         while l < r:
@@ -103,9 +103,9 @@ class CompressedSegmentTree:
         return self._op(lt, rt)
     
     def _max_right(self, l, f):
-        l = self._shr(l)
+        l = self._comp(l)
         if l == self._n:
-            return self._shr.original(self._n-1)
+            return self._comp.original(self._n-1)
         
         l += self._size
         val = self._e#確定した区間の積
@@ -118,14 +118,14 @@ class CompressedSegmentTree:
                     if f(self._op(val, self._tree[l])): #満たすなら
                         val = self._op(val, self._tree[l]) #左は確定して
                         l += 1 #同じ段の右ノードに移動
-                return self._shr.original(l - self._size)
+                return self._comp.original(l - self._size)
             val = self._op(val, self._tree[l]) #満たすなら確定する
             l += 1#右に移動
             if l & -l == l: #f(prod(l,n)) = Trueなら(lが2の累乗)
                 return self.INF #dataの一番右を返す
     
     def _min_left(self, r, f):
-        r = self._shr(r)
+        r = self._comp(r)
         if r == 0:
             return -self.INF
         
@@ -140,7 +140,7 @@ class CompressedSegmentTree:
                     if f(self._op(val, self._tree[r-1])):
                         r -= 1
                         val = self._op(val, self._tree[r])
-                return self._shr.original(r - self._size)
+                return self._comp.original(r - self._size)
             r -= 1
             val = self._op(val, self._tree[r])
             if r & -r == r: #f(prod(0,r)) = Trueなら(rが2の累乗)

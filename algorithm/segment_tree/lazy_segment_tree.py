@@ -1,3 +1,8 @@
+#1点取得なら、BITやセグ木でいいか確認。
+#実際にBITのほうが速い
+
+#Range Affine Range Sum の場合、
+#ちゃんと区間の長さ分の定数を足さないとだめ
 class LazySegmentTree:
     def __init__(self, op, e, mapping, composition, id, data):
         """

@@ -11,115 +11,176 @@ from collections import defaultdict
 from heapq import heappush,heappop
 from collections import deque
 
-class BitVector:
-    def __init__(self,b):
-        """bは0or1の配列"""
-        self.b = b
-        self.len_b = len(b)
-        self.acc = [0]
-        for i in b:
-            self.acc.append(self.acc[-1] + i)
-    
-    def __getitem__(self,i):
-        return self.b[i]
-    
-    def rank(self,x,i=-1):
-        """
-        [0:i)のx(0or1)の個数
-        iを指定しなければ全範囲
-        """
-        assert -1 <= i <= self.len_b
-        assert x == 0 or x == 1
-        if i == -1: i = self.len_b
-        if x: return self.acc[i]
-        else: return i - self.acc[i]
-    
-    def select(self,x,k):
-        """k番目のx(0or1)のindex"""
-        assert x == 0 or x == 1
-        assert 0 < k <= self.rank(x)
-        l,r = 0,len(self.b)
-        while r-l > 1:
-            mid = (l+r)//2
-            if self.rank(x,mid) < k:
-                l = mid
-            else:
-                r = mid
-        return l
-    
-    def __str__(self):
-        return f"BitVector({self.b})"
-
 class WaveletMatrix:
-    def __init__(self,t):
-        """t: 配列"""
-        self.len_t = len(t)
+    class BitVector:
+        def __init__(self, b):
+            """bは0or1の配列"""
+            self.b = b
+            self.n = len(b)
+            self.acc = [0] + b
+            for i in range(len(b)):
+                self.acc[i+1] += self.acc[i]
+
+        def __getitem__(self, i):
+            return self.b[i]
+        
+        def rank(self, x, i=-1):
+            """[0,i)のx(0or1)の個数。iを指定しなければ全範囲"""
+            return self._rank(x, i)
+        
+        def select(self, x, k):
+            """k番目のx(0or1)のindex"""
+            return self._select(x, k)
+        
+        def __str__(self):
+            return f"BitVector({self.b})"
+        
+        
+        def _rank(self, x, i):
+            assert -1 <= i <= self.n
+            assert x == 0 or x == 1
+
+            if i == -1:
+                i = self.n
+            return self.acc[i] if x else i - self.acc[i]
+        
+        def _select(self, x, k):
+            assert x == 0 or x == 1
+            assert 0 < k <= self._rank(x)
+
+            l, r = 0, len(self.b)
+            while r-l > 1:
+                mid = (l+r)//2
+                if self._rank(x, mid) < k:
+                    l = mid
+                else:
+                    r = mid
+            return l
+    
+    def __init__(self, t: list):
+        self.n = len(t)
         self.max_t = max(t)
         self.bitsize = (self.max_t+1).bit_length()
         self.digit_loop = list(range(self.bitsize-1,-1,-1)) #桁を上から順に
         self.idx = defaultdict(int)
         self.matrix = self._build(t)
     
-    def __len__(self):
-        return self.len_t
-    
-    def _build(self,t):
+    def _build(self, t):
         matrix = []
         for digit in self.digit_loop:
-            matrix.append(BitVector([i>>digit & 1 for i in t]))
+            matrix.append(WaveletMatrix.BitVector([i>>digit & 1 for i in t]))
             zeros = [i for i in t if not i>>digit & 1]
             ones = [i for i in t if i>>digit & 1]
             t = zeros + ones
         #最後のtにおいて、各値の開始index
-        for i in range(self.len_t-1,-1,-1):
+        for i in range(self.n-1,-1,-1):
             self.idx[t[i]] = i
         return matrix
     
-    def _next_index(self,b,bit,i):
+    def __len__(self):
+        return self.n
+    
+    def get(self, i):
+        """t[i]の要素を計算"""
+        return self._get(i)
+    
+    def __getitem__(self, i):
+        return self._get(i)
+    
+    def rank(self, x, l=0, r=-1):
+        """t[l:r)におけるxの出現回数"""
+        return self._rank(x, l, r)
+    
+    def select(self, x, k):
+        """k個目のxのindex"""
+        return self._select(x, k)
+    
+    def kthMin(self, k, l=0, r=-1):
+        """t[l:r)でk番目に小さい値"""
+        return self._kthMin(k, l, r)
+    
+    def kthMax(self, k, l=0, r=-1):
+        """t[l:r)でk番目に大きい値"""
+        return self._kthMax(k, l, r)
+    
+    def rangefreq(self, low, high, l=0, r=-1):
+        """t[l:r)でlow以上high未満の個数"""
+        return self._rangefreq(low, high, l, r)
+    
+    def prev_value(self, x, l=0, r=-1):
+        """t[l:r)でx未満の最大値"""
+        return self._prev_value(x, l, r)
+    
+    def next_value(self, x, l=0, r=-1):
+        """t[l:r)でx以上の最小値"""
+        return self._next_value(x, l, r)
+    
+    def topk(self, k, l=0, r=-1):
+        """
+        t[l:r)で出現回数が多い文字k個を頻度とともに返す
+        同数の場合は昇順
+        [(数字,出現数),...]
+        """
+        return self._topk(k, l, r)
+    
+    def sum(self, l=0, r=-1):
+        """t[l:r)の合計"""
+        return self._sum(l, r)
+    
+    def rangelist(self, low, high, l=0, r=-1):
+        """t[l:r)でlow以上high未満の値を頻度とともに列挙"""
+        return self._rangelist(low, high, l, r)
+    
+    def intersect(self, l1, r1, l2, r2):
+        """
+        t[l1:r1),t[l2:r2)で共通して出現する値と頻度
+        [(数字,区間1の出現数,区間2の出現数),...]
+        """
+        return self._intersect(l1, r1, l2, r2)
+    
+    def __str__(self):
+        return f'{[self[i] for i in range(self.n)]}'
+    
+    
+    def _next_index(self, b, bit, i):
         if bit:
             return b.rank(0) + b.rank(1,i)
         else:
             return b.rank(0,i)
     
-    def __getitem__(self,i):
-        """t[i]の要素を計算"""
-        assert 0 <= i < self.len_t
+    def _get(self, i):
+        assert 0 <= i < self.n
         res = 0
-        for b,digit in zip(self.matrix,self.digit_loop):
+        for b, digit in zip(self.matrix,self.digit_loop):
             bit = b[i]
-            res |= bit<<digit
-            i = self._next_index(b,bit,i)
+            res |= bit << digit
+            i = self._next_index(b, bit, i)
         return res
     
-    def _rank(self,x,i):
-        for b,digit in zip(self.matrix,self.digit_loop):
-            i = self._next_index(b,x>>digit&1,i)
+    def _prefix_rank(self, x, i):
+        for b,digit in zip(self.matrix, self.digit_loop):
+            i = self._next_index(b, x>>digit&1, i)
         return i - self.idx[x]
     
-    def rank(self,x,l=0,r=-1):
-        """
-        t[l:r)におけるxの出現回数
-        """
-        assert -1 <= l <= self.len_t and -1 <= r <= self.len_t
+    def _rank(self, x, l=0, r=-1):
+        assert -1 <= l <= self.n and -1 <= r <= self.n
         if x > self.max_t:
             return 0
-        return self._rank(x,r) - self._rank(x,l)
+        return self._prefix_rank(x, r) - self._prefix_rank(x, l)
     
-    def select(self,x,k):
-        """k個目のxのindex"""
-        assert 0 < k <= self.rank(x)
+    def _select(self, x, k):
+        assert 0 < k <= self._rank(x)
         i = self.idx[x] + k - 1
-        for b,digit in zip(self.matrix[::-1],self.digit_loop[::-1]):
-            if x>>digit & 1:
+        for b, digit in zip(self.matrix[::-1],self.digit_loop[::-1]):
+            if x >> digit & 1:
                 i = b.select(1,i-b.rank(0)+1)
             else:
                 i = b.select(0,i+1)
         return i
     
-    def kthMin(self,k,l=0,r=-1):
-        """t[l:r)でk番目に小さい値"""
-        assert -1 <= l <= self.len_t and -1 <= r <= self.len_t
-        assert k <= r-l or l == 0 and r == -1 and k <= self.len_t
+    def _kthMin(self, k, l, r):
+        assert -1 <= l <= self.n and -1 <= r <= self.n
+        assert k <= r-l or l == 0 and r == -1 and k <= self.n
         res = 0
         for b,digit in zip(self.matrix,self.digit_loop):
             cnt0 = b.rank(0,r) - b.rank(0,l)
@@ -131,10 +192,9 @@ class WaveletMatrix:
                 k -= cnt0
         return res
     
-    def kthMax(self,k,l=0,r=-1):
-        """t[l:r)でk番目に大きい値"""
-        assert -1 <= l <= self.len_t and -1 <= r <= self.len_t
-        assert k <= r-l or l == 0 and r == -1 and k <= self.len_t
+    def _kthMax(self, k, l, r):
+        assert -1 <= l <= self.n and -1 <= r <= self.n
+        assert k <= r-l or l == 0 and r == -1 and k <= self.n
         res = 0
         for b,digit in zip(self.matrix,self.digit_loop):
             cnt1 = b.rank(1,r) - b.rank(1,l)
@@ -146,7 +206,7 @@ class WaveletMatrix:
                 k -= cnt1
         return res
     
-    def _rangefreq(self,high,l=0,r=-1):
+    def _prefix_freq(self, high, l, r):
         """t[0,r)でhigh未満の個数"""
         res = 0
         for b,digit in zip(self.matrix,self.digit_loop):
@@ -157,27 +217,19 @@ class WaveletMatrix:
             r = self._next_index(b,bit,r)
         return res
     
-    def rangefreq(self,low,high,l=0,r=-1):
-        """t[l:r)でlow以上high未満の個数"""
-        return self._rangefreq(high,l,r) - self._rangefreq(low,l,r)
+    def _rangefreq(self, low, high, l, r):
+        return self._prefix_freq(high, l, r) - self._prefix_freq(low, l, r)
     
-    def prev_value(self,x,l=0,r=-1):
-        """t[l:r)でx未満の最大値"""
-        cnt = self.rangefreq(0,x,l,r)
-        return self.kthMin(cnt,l,r) if cnt != 0 else None
+    def _prev_value(self, x, l, r):
+        cnt = self._rangefreq(0, x, l, r)
+        return self._kthMin(cnt, l, r) if cnt != 0 else None
     
-    def next_value(self,x,l=0,r=-1):
-        """t[l:r)でx以上の最小値"""
-        cnt = self.rangefreq(x,self.max_t+1,l,r)
-        return self.kthMax(cnt,l,r) if cnt != 0 else None
+    def _next_value(self, x, l, r):
+        cnt = self._rangefreq(x, self.max_t+1, l, r)
+        return self._kthMax(cnt, l, r) if cnt != 0 else None
     
-    def topk(self,k,l=0,r=-1):
-        """
-        t[l:r)で出現回数が多い文字k個を頻度とともに返す
-        同数の場合は昇順
-        [(数字,出現数),...]
-        """
-        hq = [(l-r,0,0,l,r)]
+    def _topk(self, k, l, r):
+        hq = [(l-r, 0, 0, l, r)]
         res = []
         #sumで範囲を指定しない場合にk=-1となる
         while hq and (k == -1 or len(res) < k):
@@ -195,21 +247,15 @@ class WaveletMatrix:
             heappush(hq,(l1-r1,num1,i+1,l1,r1))
         return res
     
-    def sum(self,l=0,r=-1):
-        """t[l:r)の合計"""
+    def _sum(self, l, r):
         return sum([num * cnt for num,cnt in self.topk(r-l,l,r)])
     
-    def rangelist(self,low,high,l=0,r=-1):
-        """t[l:r)でlow以上high未満の値を頻度とともに列挙"""
-        res = self.topk(r-l,l,r)
+    def _rangelist(self, low, high, l, r):
+        res = self._topk(r-l, l, r)
         res = [i for i in sorted(res) if low <= i[0] < high]
         return res
     
-    def intersect(self,l1,r1,l2,r2):
-        """
-        t[l1:r1),t[l2:r2)で共通して出現する値と頻度
-        [(数字,区間1の出現数,区間2の出現数),...]
-        """
+    def _intersect(self, l1, r1, l2, r2):
         dq = deque([(0,0,l1,r1,l2,r2)])
         res = []
         while dq:
@@ -232,6 +278,3 @@ class WaveletMatrix:
             if l1_1 != r1_1 and l2_1 != r2_1:
                 dq.append((num1,i+1,l1_1,r1_1,l2_1,r2_1))
         return res
-    
-    def __str__(self):
-        return f'{[self[i] for i in range(self.len_t)]}'

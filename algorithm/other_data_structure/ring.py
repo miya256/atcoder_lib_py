@@ -40,3 +40,9 @@ class Ring:
         """startからendまで、pointを避けるほうのコスト"""
         return self.forward_cost(start,end) if self.on_backward_path(start,end,point) else self.backward_cost(start,end)
     
+    def mid_point(self, a, b):
+        """a,bの中点(2つ)を返す。(n,a,b)=(3,1,2) -> 1.5, 0"""
+        p1 = ((a + b) / 2) % self.n
+        p2 = ((a + b + self.n) / 2) % self.n
+        return p1, p2
+        

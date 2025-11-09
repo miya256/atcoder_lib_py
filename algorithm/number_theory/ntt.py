@@ -72,14 +72,3 @@ class NTT:
         b += [0] * (n - len(b))
         c = self.dit([i * j % self.MOD for i,j in zip(self.dif(a),self.dif(b))])
         return c
-
-
-ntt = NTT()
-n,m = map(int,input().split())
-a = list(map(int,input().split()))
-b = list(map(int,input().split()))
-
-c = ntt.convolution(a,b)
-
-for i in range(n+m-1):
-    print(c[i])

@@ -1,3 +1,4 @@
+#nCk = n-1Ck-1 + n-1Ck
 class ModFactrial:
     def __init__(self,n,mod):
         """n: n!まで計算できる"""

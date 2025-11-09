@@ -77,10 +77,10 @@ class SampleGenerater:
         return random.uniform(lower,upper)
     
     def _make_upper_string(self, n):
-        return ''.join(random.choices("ABCDEFGHIJKLMNOPQRSTUVWXYZ",n))
+        return ''.join(random.choices("ABCDEFGHIJKLMNOPQRSTUVWXYZ",k=n))
     
     def _make_lower_string(self, n):
-        return ''.join(random.choices("abcdefghijklmnopqrstuvwxyz",n))
+        return ''.join(random.choices("abcdefghijklmnopqrstuvwxyz",k=n))
 
     def _make_1d_array(self, lower, upper, n):
         return [random.randint(lower,upper) for _ in range(n)]
@@ -119,8 +119,12 @@ class SampleGenerater:
         ここを書き換える。
         sampleが2次元配列になるようにsampleにいれる
         """
-        n = self.make_int(1,10000)
-        self.sample.append([n])
+        n = self.make_int(1,1000)
+        x = self.make_int(1,1000)
+        f = self.make_int(1,x)
+        s = self.make_int(1,x)
+        self.sample.append([n,x,f,s])
+
 
 
 def main():

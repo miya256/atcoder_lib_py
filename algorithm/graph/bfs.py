@@ -1,7 +1,6 @@
 from collections import deque
 
-def bfs(*starts,visited=None):
-    """visitedはキーワード引数"""
+def bfs(starts, visited=None):
     if visited is None:
         visited = [False]*n
     dq = deque([(v,0) for v in starts])
@@ -14,8 +13,7 @@ def bfs(*starts,visited=None):
             if not visited[nv]:
                 dq.append((nv,d+1))
 
-def bfs01(*starts,visited=None):
-    """visitedはキーワード引数"""
+def bfs01(starts, visited=None):
     if visited is None:
         visited = [False]*n
     dq = deque([(v,0) for v in starts])
@@ -32,26 +30,19 @@ def bfs01(*starts,visited=None):
             else:
                 dq.append((nv,d+w))
 
-#Grid
-from collections import deque
-class BFS:
-    def __init__(self,grid):
-        self.h = len(grid)
-        self.w = len(grid[0])
-        self.grid = grid
-        self.visited = [[False] * self.w for _ in range(self.h)]
-    
-    def bfs(self,starts):
-        dq = deque(starts)
-        while dq:
-            i,j = dq.popleft()
-            if not self.visited[i][j]:
-                self.visited[i][j] = True
-                for di,dj in zip([0,-1,0,1],[1,0,-1,0]):
-                    ni, nj = i+di, j+dj
-                    if not(0 <= ni < self.h and 0 <= nj < self.w):
-                        continue
-                    if self.visited[ni][nj]:
-                        continue
-                    #他にも壁とかがあれば条件を追加する
-                    dq.append((ni,nj))
+def bfs_grid(h, w, starts, visited=None):
+    if visited is None:
+        visited = [[False]*w for _ in range(h)]
+    dq = deque([(i,j,0) for i,j in starts])
+    while dq:
+        i,j,d = dq.popleft()
+        if visited[i][j]:
+            continue
+        visited[i][j] = True
+        for di,dj in (-1,0), (1,0), (0,-1), (0,1):
+            ni, nj = i+di, j+dj
+            if not(0 <= ni < h and 0 <= nj < w):
+                continue
+            if visited[ni][nj]:
+                continue
+            dq.append((ni,nj,d+1))

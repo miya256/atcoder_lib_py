@@ -4,8 +4,7 @@ import pypyjit
 pypyjit.set_param("max_unroll_recursion=-1")
 from collections import deque
 
-def dfs(*starts,visited=None):
-    """visitedはキーワード引数"""
+def dfs(starts,visited=None):
     if visited is None:
         visited = [False]*n
     dq = deque([(v,0) for v in starts])
@@ -14,10 +13,10 @@ def dfs(*starts,visited=None):
         if visited[v]:
             continue
         visited[v] = True #ここで訪れた判定
-        for nv,w in g[v]:
+        for nv in g[v]:
             if visited[nv]:
                 continue
-            dq.append((nv,d+w))
+            dq.append((nv,d+1))
 
 def dfs(v):
     visited_in[v] = True
@@ -33,37 +32,19 @@ def dfs(v,par=-1):
         if nv != par:
             dfs(nv,v)
 
-class DFS:
-    def __init__(self,grid):
-        self.h = len(grid)
-        self.w = len(grid[0])
-        self.grid = grid
-        self.visited = [[False] * self.w for _ in range(self.h)]
-    
-    def dfs(self,starts):
-        dq = deque(starts)
-        while dq:
-            i,j = dq.pop()
-            if not self.visited[i][j]:
-                self.visited[i][j] = True
-                for di,dj in zip([0,-1,0,1],[1,0,-1,0]):
-                    ni, nj = i+di, j+dj
-                    if not(0 <= ni < self.h and 0 <= nj < self.w):
-                        continue
-                    if self.visited[ni][nj]:
-                        continue
-                    dq.append((ni,nj))
-
-def dfs(starts):
-    dq = deque(starts)
+def dfs_grid(h, w, starts, visited=None):
+    if visited is None:
+        visited = [[False]*w for _ in range(h)]
+    dq = deque([(i,j,0) for i,j in starts])
     while dq:
-        i,j = dq.pop()
-        if not visited[i][j]:
-            visited[i][j] = True
-            for di,dj in zip([0,-1,0,1],[1,0,-1,0]):
-                ni, nj = i+di, j+dj
-                if not(0 <= ni < h and 0 <= nj < w):
-                    continue
-                if visited[ni][nj]:
-                    continue
-                dq.append((ni,nj))
+        i,j,d = dq.pop()
+        if visited[i][j]:
+            continue
+        visited[i][j] = True
+        for di,dj in (-1,0), (1,0), (0,-1), (0,1):
+            ni, nj = i+di, j+dj
+            if not(0 <= ni < h and 0 <= nj < w):
+                continue
+            if visited[ni][nj]:
+                continue
+            dq.append((ni,nj,d+1))

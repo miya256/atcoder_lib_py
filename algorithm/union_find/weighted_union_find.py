@@ -21,7 +21,7 @@ class WeightedUnionFind:
     def __init__(self, n=0):
         self._n = n
         self._component_count = n #連結成分の個数
-        self._elements = {i: self.Element(i) for i in range(n)}
+        self._elements = {i: WeightedUnionFind.Element(i) for i in range(n)}
     
     def element(self, id) -> Element:
         """頂点idをElement型で取得"""
@@ -85,7 +85,7 @@ class WeightedUnionFind:
     def _add(self, id, weight=0):
         """頂点を追加する"""
         assert id not in self._elements, f'{id}はすでに存在します'
-        self._elements[id] = self.Element(id, weight)
+        self._elements[id] = WeightedUnionFind.Element(id, weight)
         self._n += 1
         self._component_count += 1
     

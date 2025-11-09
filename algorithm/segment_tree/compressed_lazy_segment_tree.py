@@ -2,26 +2,26 @@ from bisect import bisect_left, bisect
 class CompressedLazySegmentTree:
     INF = 1<<61
 
-    class Shrink:
+    class Compressor:
         def __init__(self, num):
             self.num = sorted([i for i in set(num)])
-            self.shr = {v: i for i, v in enumerate(self.num)}
+            self.compressed = {v:i for i,v in enumerate(self.num)}
         
         def __len__(self):
             return len(self.num)
 
-        def original(self, shr):
+        def original(self, comp):
             """圧縮後の値から元の値を返す"""
-            return self.num[shr]
+            return self.num[comp]
 
-        def shrink(self, orig):
+        def compress(self, orig):
             """元の値から圧縮後の値を返す"""
-            if orig not in self.shr:
-                self.shr[orig] = bisect_left(self.num, orig)
-            return self.shr[orig]
+            if orig not in self.compressed:
+                self.compressed[orig] = bisect_left(self.num, orig)
+            return self.compressed[orig]
         
         def __call__(self, orig):
-            return self.shrink(orig)
+            return self.compress(orig)
         
     def __init__(self, op, e, mapping, composition, id, num):
         """
@@ -32,8 +32,8 @@ class CompressedLazySegmentTree:
         id: 恒等写像
         num: 直接アクセスする数字
         """
-        self._shr = self.Shrink(num)
-        self._n = len(self._shr)
+        self._comp = self.Compressor(num)
+        self._n = len(self._comp)
         self._op = op
         self._e = e
         self._mapping = mapping
@@ -90,7 +90,7 @@ class CompressedLazySegmentTree:
         return self._min_left(r, f)
     
     def __str__(self):
-        idx = [self._shr.original(i) for i in range(self._n)]
+        idx = [self._comp.original(i) for i in range(self._n)]
         val = [self[i] for i in idx]
         return f'CompressedLazySegmentTree (\n index {idx}\n value {val}\n)'
 
@@ -115,7 +115,7 @@ class CompressedLazySegmentTree:
         return self.prod(i, i+1)
     
     def _set(self, p, x):
-        p = self._shr(p)
+        p = self._comp(p)
         p += self._size
         for i in range(self._log, 0, -1): #lazyを上から伝播させて
             self._push(p >> i)
@@ -127,8 +127,8 @@ class CompressedLazySegmentTree:
     def _prod(self, l, r):
         if l == r:
             return self._e
-        l = self._shr(l)
-        r = self._shr(r)
+        l = self._comp(l)
+        r = self._comp(r)
         l += self._size
         r += self._size
         for i in range(self._log, 0, -1): #必要な部分のlazyを伝播
@@ -152,8 +152,8 @@ class CompressedLazySegmentTree:
     def _apply(self, l, r, f):
         if l == r:
             return
-        l = self._shr(l)
-        r = self._shr(r)
+        l = self._comp(l)
+        r = self._comp(r)
         l += self._size
         r += self._size
         for i in range(self._log, 0, -1):
@@ -183,7 +183,7 @@ class CompressedLazySegmentTree:
                 self._update(r-1 >> i)
     
     def _max_right(self, l, f):
-        l = self._shr(l)
+        l = self._comp(l)
         if l == self._n:
             return self.INF
         
@@ -203,14 +203,14 @@ class CompressedLazySegmentTree:
                     if f(self._op(val, self._tree[l])):
                         val = self._op(val, self._tree[l])
                         l += 1
-                return self._shr.original(l - self._size)
+                return self._comp.original(l - self._size)
             val = self._op(val, self._tree[l])
             l += 1
             if l & -l == l:
                 return self.INF
     
     def _min_left(self, r, f):
-        r = self._shr(r)
+        r = self._comp(r)
         if r == 0:
             return -self.INF
         
@@ -229,7 +229,7 @@ class CompressedLazySegmentTree:
                     if f(self._op(val, self._tree[r-1])):
                         r -= 1
                         val = self._op(val, self._tree[r])
-                return self._shr.original(r - self._size)
+                return self._comp.original(r - self._size)
             r -= 1
             val = self._op(val, self._tree[r])
             if r & -r == r:

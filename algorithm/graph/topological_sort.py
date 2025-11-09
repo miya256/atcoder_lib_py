@@ -22,51 +22,46 @@ class TopologicalSort:
         self.graph[u].append(v)
     
     def topologicalsort_dfs(self):
-        return self._topologicalsort_dfs()
-    
-    def topologicalsort_kahn(self):
-        return self._topologicalsort_kahn()
-    
-    def _dfs(self, v, postorder, visit_state):
-        stack = [v]
-        while stack:
-            v = stack.pop()
-            if v >= 0:
-                if visit_state[v] == self.VISITING:
-                    return False
-                if visit_state[v] == self.VISITED:
-                    continue
-                visit_state[v] = self.VISITING
-                stack.append(~v) #帰り用
-                for nv in self.graph[v]:
-                    if visit_state[nv] != self.VISITED:
-                        stack.append(nv)
-            else:
-                v = ~v
-                visit_state[v] = self.VISITED
-                postorder.append(v)
-        return True
-    
-    def _topologicalsort_dfs(self):
         """トポロジカルソート。サイクルがあったらNoneを返す"""
+        def dfs(v):
+            stack = [v]
+            while stack:
+                v = stack.pop()
+                if v >= 0:
+                    if visit_state[v] == self.VISITING:
+                        return False
+                    if visit_state[v] == self.VISITED:
+                        continue
+                    visit_state[v] = self.VISITING
+                    stack.append(~v) #帰り用
+                    for nv in self.graph[v]:
+                        if visit_state[nv] != self.VISITED:
+                            stack.append(nv)
+                else:
+                    v = ~v
+                    visit_state[v] = self.VISITED
+                    postorder.append(v)
+            return True
+    
         postorder = []
         visit_state = [self.UNVISITED for _ in range(self.n)]
         for v in range(self.n):
             if visit_state[v] == self.UNVISITED:
-                is_dag = self._dfs(v, postorder, visit_state)
+                is_dag = dfs(v)
                 if not is_dag:
                     return None
         return postorder[::-1]
     
-    def _calc_in_degree(self):
-        in_degree = [0] * self.n
-        for v in range(self.n):
-            for nv in self.graph[v]:
-                in_degree[nv] += 1
-        return in_degree
+    def topologicalsort_kahn(self):
+        """入次数が0のやつから順に"""
+        def calc_in_degree():
+            in_degree = [0] * self.n
+            for v in range(self.n):
+                for nv in self.graph[v]:
+                    in_degree[nv] += 1
+            return in_degree
     
-    def _topologicalsort_kahn(self):
-        in_degree = self._calc_in_degree()
+        in_degree = calc_in_degree()
         zero_in = [v for v in range(self.n) if in_degree[v] == 0]
 
         order = []
@@ -79,4 +74,3 @@ class TopologicalSort:
                     zero_in.append(nv)
         
         return order if len(order) == self.n else None
-    

@@ -1,8 +1,9 @@
-#ランレングス圧縮
-from itertools import groupby
-
-a = "aaabbbcccckdd"
-
-rle = [(val, len(list(cnt))) for val, cnt in groupby(a)]
-
-print(rle)
+def run_length_encoding(a):
+    rle = []
+    l = r = 0
+    while l < len(a):
+        while r < len(a) and a[l] == a[r]:
+            r += 1
+        rle.append((a[l], r-l))
+        l = r
+    return rle

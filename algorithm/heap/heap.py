@@ -1,40 +1,46 @@
 class Heap:
-    def __init__(self,key=lambda x:x):
+    def __init__(self, compare):
         self.heap = [None]
-        self.key = key
+        self.compare = compare
     
     def __len__(self):
         return len(self.heap)-1
     
-    def __getitem__(self,i):
+    def __getitem__(self, i):
         return self.heap[i+1]
     
-    def push(self,value):
+    def add(self, value):
         self.heap.append(value)
-        i = len(self)
-        while i > 1:
-            if self.key(self.heap[i]) < self.key(self.heap[i//2]):
-                self.heap[i//2],self.heap[i] = self.heap[i],self.heap[i//2]
-            i >>= 1
+        self._sift_up(len(self))
     
     def pop(self):
-        assert len(self) != 0, "heap is empty"
+        assert len(self) > 0, "heap is empty"
         res = self.heap[1]
         self.heap[1] = self.heap[-1]
         self.heap.pop()
-        i = 1
+        self._sift_down(1)
+        return res
+    
+    def _sift_up(self, i):
+        while i > 1:
+            if self.compare(self.heap[i//2], self.heap[i]):
+                break
+            self.heap[i//2], self.heap[i] = self.heap[i], self.heap[i//2]
+            i >>= 1
+    
+    def _sift_down(self, i):
         while True:
-            if i*2 > len(self): #子がいないなら終わり
-                return res
-            if i*2+1 > len(self): #左だけいるなら、左の子のほうが小さければ入れ替えて終わり
-                if self.key(self.heap[i*2]) < self.key(self.heap[i]):
-                    self.heap[i*2],self.heap[i] = self.heap[i],self.heap[i*2]
-                return res
-            if self.key(self.heap[i*2]) < self.key(self.heap[i*2+1]):
-                if self.key(self.heap[i*2]) < self.key(self.heap[i]):
-                    self.heap[i*2],self.heap[i] = self.heap[i],self.heap[i*2]
-                i = i*2
-            else:
-                if self.key(self.heap[i*2+1]) < self.key(self.heap[i]):
-                    self.heap[i*2+1],self.heap[i] = self.heap[i],self.heap[i*2+1]
-                i = i*2+1
+            smallest = i
+            if i*2 <= len(self) and self.compare(self.heap[i*2], self.heap[smallest]):
+                smallest = i*2
+            if i*2+1 <= len(self) and self.compare(self.heap[i*2+1], self.heap[smallest]):
+                smallest = i*2+1
+            
+            if smallest == i:
+                break
+            self.heap[i], self.heap[smallest] = self.heap[smallest], self.heap[i]
+            i = smallest
+
+def compare(parent, child):
+    """parent が child より優先されるなら True"""
+    return parent < child
