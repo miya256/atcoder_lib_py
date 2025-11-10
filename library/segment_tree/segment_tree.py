@@ -1,3 +1,7 @@
+#データクラスをうまく持てないか検討中
+#やっぱ型はほとんどeと同じ型だし、
+# 遅延セグ木だと、データと作用素で型違うから、objectはちょっとやだ
+
 class SegmentTree:
     """
     一点更新、区間取得を O(log n) で計算
@@ -15,7 +19,7 @@ class SegmentTree:
         min_left(r, condition) : condition(prod[j,r))が真になる最小のjを返す
     """
     
-    def __init__(self, op: object, e: object, data: list[object]|int):
+    def __init__(self, op: object, e: object, data: list[object]|int) -> None:
         if isinstance(data, int):
             data = [e for _ in range(data)]
         self._n = len(data)
@@ -118,5 +122,5 @@ class SegmentTree:
             if r & -r == r:
                 return 0
     
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'SegmentTree {self._tree[self._size:self._size+self._n]}'

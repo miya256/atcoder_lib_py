@@ -11,7 +11,7 @@ class FenwickTree:
         bisect_right(x): 累積和配列とみなし、二分探索
     """
 
-    def __init__(self, data: list|int):
+    def __init__(self, data: list|int) -> None:
         if isinstance(data, int):
             data = [0 for _ in range(data)]
         self._n = len(data)
@@ -92,5 +92,5 @@ class FenwickTree:
                 i -= (-i & i) >> 1
         return i-1 + (value + self._tree[i] <= x)
     
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'FenwickTree {self._data}'
