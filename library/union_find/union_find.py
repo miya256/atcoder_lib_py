@@ -8,13 +8,16 @@ class UnionFind:
         component_count: 連結成分の個数
     
     Methods:\n
-        leader(v)  : vの属する連結成分の根
-        merge(u, v): u, vを連結
-        same(u, v) : u, vが連結か
-        size(v)    : vの属する連結成分の要素数
-        members(v) : vの属する連結成分の要素
-        leaders    : すべてのleaderを列挙
-        groups     : すべてのleader, memberを列挙
+        element(id) : idをElememt型で取得
+        contains(id): idが存在するか
+        add(id)     : 頂点idを追加
+        leader(v)   : vの属する連結成分の根
+        merge(u, v) : u, vを連結
+        same(u, v)  : u, vが連結か
+        size(v)     : vの属する連結成分の要素数
+        members(v)  : vの属する連結成分の要素
+        leaders     : すべてのleaderを列挙
+        groups      : すべてのleader, memberを列挙
     """
 
     class Element:
@@ -73,9 +76,9 @@ class UnionFind:
         self._n += 1
         self._component_count += 1
     
-    def leader(self, v: object) -> object:
+    def leader(self, id: object) -> object:
         """vの属する連結成分の根"""
-        v = self.element(v)
+        v = self.element(id)
         if v.parent:
             stack = []
             while v.parent:
@@ -136,7 +139,7 @@ class UnionFind:
             group.setdefault(self.leader(i), []).append(i)
         return group
     
-    def __repr__(self):
+    def __repr__(self) -> str:
         string = ["UnionFind (\n"]
         for leader, members in self.groups.items():
             string.append(f'  leader={leader}, members={members}\n')
