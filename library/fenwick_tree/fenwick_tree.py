@@ -31,13 +31,20 @@ class FenwickTree:
         """データの大きさ"""
         return self._n
     
-    def get(self, i: int) -> int:
-        """i番目を取得"""
-        return self._data[i]
-    
     def __getitem__(self, i: int) -> int:
         """i番目を取得"""
         return self.get(i)
+    
+    def __setitem__(self, i: int, x: int) -> None:
+        """i番目をxにする"""
+        self.set(i, x)
+    
+    def __repr__(self) -> str:
+        return f'FenwickTree {self._data}'
+    
+    def get(self, i: int) -> int:
+        """i番目を取得"""
+        return self._data[i]
     
     def add(self, i: int, x: int) -> None:
         """i番目にxを加える"""
@@ -51,10 +58,6 @@ class FenwickTree:
     def set(self, i: int, x: int) -> None:
         """i番目をxにする"""
         self.add(i, x - self._data[i])
-    
-    def __setitem__(self, i: int, x: int) -> None:
-        """i番目をxにする"""
-        self.set(i, x)
     
     def _sum(self, i: int) -> int:
         """区間[0, i)の和"""
@@ -91,6 +94,3 @@ class FenwickTree:
             else:
                 i -= (-i & i) >> 1
         return i-1 + (value + self._tree[i] <= x)
-    
-    def __repr__(self) -> str:
-        return f'FenwickTree {self._data}'

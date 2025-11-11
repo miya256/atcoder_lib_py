@@ -35,16 +35,23 @@ class SegmentTree:
         for i in range(self._size-1, 0, -1):
             self._update(i)
     
-    def _update(self, i: int) -> None:
-        self._tree[i] = self._op(self._tree[2*i], self._tree[2*i+1])
-    
-    def get(self, i: int) -> object:
-        """i番目を取得"""
-        return self._tree[i+self._size]
+    def __len__(self):
+        return self._n
     
     def __getitem__(self, i: int) -> object:
         """i番目を取得"""
         return self.get(i)
+    
+    def __setitem__(self, i: int, x: object) -> None:
+        """i番目にxを代入"""
+        self.set(i, x)
+    
+    def __repr__(self) -> str:
+        return f'SegmentTree {self._tree[self._size:self._size+self._n]}'
+    
+    def get(self, i: int) -> object:
+        """i番目を取得"""
+        return self._tree[i+self._size]
     
     def set(self, i: int, x: object) -> None:
         """i番目にxを代入"""
@@ -53,10 +60,6 @@ class SegmentTree:
         while i:
             i >>= 1
             self._update(i)
-    
-    def __setitem__(self, i: int, x: object) -> None:
-        """i番目にxを代入"""
-        self.set(i, x)
     
     def prod(self, l: int, r: int) -> object:
         """区間[l, r)の積"""
@@ -122,5 +125,5 @@ class SegmentTree:
             if r & -r == r:
                 return 0
     
-    def __repr__(self) -> str:
-        return f'SegmentTree {self._tree[self._size:self._size+self._n]}'
+    def _update(self, i: int) -> None:
+        self._tree[i] = self._op(self._tree[2*i], self._tree[2*i+1])

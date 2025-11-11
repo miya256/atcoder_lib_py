@@ -1,0 +1,43 @@
+class Graph:
+    class Edge:
+        """
+        Attributes:
+            id: 辺の番号
+            u : 始点
+            v : 終点
+            w : 辺の重み
+        """
+        def __init__(self, id: int, u: int, v: int, w: int) -> None:
+            self.id = id
+            self.u = u
+            self.v = v
+            self.w = w
+        
+        def __repr__(self):
+            return f"Edge({self.id}, {self.u} -> {self.v}, {self.w})"
+
+    def __init__(self, n: int) -> None:
+        self._n = n
+        self._edges: list[Graph.Edge] = []
+        self._adj: list[list[Graph.Edge]] = [[] for _ in range(n)]
+    
+    @property
+    def n(self):
+        return self._n
+    
+    def add_edge(self, u: int, v: int, w: int = 1) -> int:
+        """u -> v に重み w の 有向辺 を張る"""
+        edge = Graph.Edge(len(self.edges), u, v, w)
+        self._edges.append(edge)
+        self._adj[u].append(edge)
+    
+    def neighbors(self, v: int) -> list[int]:
+        """v に隣接する頂点のリスト"""
+        return [edge.v for edge in self._adj[v]]
+    
+    def neighbors_with_weight(self, v: int) -> list[tuple[int, int]]:
+        """v に隣接する頂点のリスト（重み付き）"""
+        return [(edge.v, edge.w) for edge in self._adj[v]]
+    
+    def __getitem__(self, v: int) -> list[int]:
+        return self.neighbors(v)

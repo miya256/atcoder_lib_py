@@ -29,3 +29,12 @@ class Class:
 - メソッドや関数にもdocstringをかく
 - publicとprivateは意識する
 - @propertyとかも使っていく
+
+メソッドの順番
+1. 特殊メソッド
+2. publicメソッド
+3. privateメソッド
+（ただし_build()は例外的に__init__の下にかくとする）
+（また、関連性の強いものはpublicのとこに書いてもよい）
+4. @property
+5. @staticmethod
