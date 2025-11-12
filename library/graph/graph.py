@@ -22,19 +22,22 @@ class Graph:
         self._adj: list[list[Graph.Edge]] = [[] for _ in range(n)]
     
     def __len__(self) -> int:
+        """頂点数"""
         return self._n
     
     def __getitem__(self, v: int) -> list[int]:
+        """vに隣接する頂点のリスト"""
         return self.neighbors(v)
     
     def add_edge(self, u: int, v: int, w: int = 1) -> int:
         """u -> v に重み w の 有向辺 を張る"""
-        edge = Graph.Edge(len(self.edges), u, v, w)
+        edge = Graph.Edge(len(self._edges), u, v, w)
         self._edges.append(edge)
         self._adj[u].append(edge)
         return edge.id
     
     def edge(self, id: int) -> Edge:
+        """辺id"""
         return self._edges[id]
     
     def neighbors(self, v: int) -> list[int]:
@@ -47,8 +50,10 @@ class Graph:
     
     @property
     def n(self) -> int:
+        """頂点数"""
         return self._n
     
     @property
     def edges(self) -> list[tuple[int, int, int]]:
+        """辺のリスト（tuple）"""
         return [(edge.u, edge.v, edge.w) for edge in self._edges]
