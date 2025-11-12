@@ -13,7 +13,7 @@ def prim(graph: Graph) -> int:
         visited[u] = True
         weight += w
         node_count += 1
-        for v, w in graph.neighbors_with_weight(u):
+        for v, w in graph(u):
             if visited[v]:
                 continue
             heappush(hq, (w ,v))

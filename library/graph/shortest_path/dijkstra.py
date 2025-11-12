@@ -12,7 +12,7 @@ def dijkstra(graph: Graph, starts: list[int]) -> list[int]:
         d, u = heappop(hq)
         if d > dist[u]:
             continue
-        for v, w in graph.neighbors_with_weight(u):
+        for v, w in graph(u):
             if d + w < dist[v]:
                 dist[v] = d + w
                 heappush(hq, (d + w, v))

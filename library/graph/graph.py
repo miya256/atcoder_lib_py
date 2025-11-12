@@ -29,6 +29,10 @@ class Graph:
         """vに隣接する頂点のリスト"""
         return self.neighbors(v)
     
+    def __call__(self, v: int) -> list[tuple[int, int]]:
+        """vに隣接する頂点のリスト（重み付き）"""
+        return self.neighbors_with_weight(v)
+    
     def add_edge(self, u: int, v: int, w: int = 1) -> int:
         """u -> v に重み w の 有向辺 を張る"""
         edge = Graph.Edge(len(self._edges), u, v, w)
