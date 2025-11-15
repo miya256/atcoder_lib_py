@@ -180,6 +180,9 @@ class SampleTester:
 
 def main():
     args = sys.argv
+
+    #今は削除済み
+    #追加したい場合は、スタート -> 環境変数を編集と検索 -> 追加 -> 変数名はATCODER_USERNAME、変数値は値
     username = os.getenv("ATCODER_USERNAME")
     password = os.getenv("ATCODER_PASSWORD")
     login_data = {"username":username,"password":password}
