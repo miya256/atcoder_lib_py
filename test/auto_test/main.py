@@ -32,6 +32,7 @@ def main():
         problem_statement = get_problem_statement(soup)
     except Exception as e:
         print(format_text(e, fg=ERROR_COLOR))
+        return
     
     # テスト
     src = "./test/atcoder.py"

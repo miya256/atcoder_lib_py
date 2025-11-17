@@ -8,7 +8,7 @@ from terminal_formatter import format_text, Style, ERROR_COLOR
 
 
 RESULT_COLOR = {
-    "AC": "#00ff00",
+    "AC": "#77ff00",
     "WA": "#ffff00",
     "RE": "#ffff00",
     "CE": "#ffff00",
