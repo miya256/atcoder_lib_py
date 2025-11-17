@@ -12,7 +12,7 @@ def check_login(session: Session) -> AtcoderUser:
     
     #ログインページにリダイレクトされたらログインできてない
     if "https://atcoder.jp/login" in response.url:
-        raise Exception("ログインされていませんでした。")
+        raise Exception("ログインされていませんでした")
     
     soup = BeautifulSoup(response.text, "html.parser")
     icon = soup.find("span", class_="glyphicon glyphicon-cog")

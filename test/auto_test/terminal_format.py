@@ -5,6 +5,9 @@ class Style:
     Underline = 4 # 下線
     Strikethrough = 9 # 打消し線
 
+ERROR_COLOR = "#dd0000"
+SUCCESS_COLOR = "#00ff00"
+
 def format_text(
         text,
         *,

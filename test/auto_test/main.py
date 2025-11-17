@@ -1,10 +1,12 @@
 import os
 
 from access import access
-from terminal_format import format_text, Style
+from terminal_format import format_text, SUCCESS_COLOR, ERROR_COLOR
+from problem_info import get_time_limit, get_input_samples, get_output_samples
+
 
 def main():
-    url = "https://atcoder.jp/contests/abc432"
+    url = "https://atcoder.jp/contests/abc432/tasks/abc432_a"
 
     #atcoderにアクセス -> 開発者ツール -> Aplication -> REVEL_SESSION の値をコピぺ
     #スタート -> 環境変数を編集で検索 -> 開いて編集
@@ -12,11 +14,20 @@ def main():
     cookie_value = os.getenv("ATCODER_COOKIE")
     try:
         user, soup = access(url, cookie_value)
-        print(format_text("アクセス成功", fg="#00ff00"))
+        print(format_text("アクセス成功", fg=SUCCESS_COLOR))
         print(user)
     except Exception as e:
-        print(format_text(f"アクセス失敗\n{e}", fg="#dd0000"))
+        print(format_text(f"アクセス失敗\n{e}", fg=ERROR_COLOR))
         return
+    
+    try:
+        time_limit_s = get_time_limit(soup)
+        input_samples = get_input_samples(soup)
+        output_samples = get_output_samples(soup)
+    except Exception as e:
+        print(format_text(e, fg=ERROR_COLOR))
+    
+    
 
 
 if __name__ == "__main__":
