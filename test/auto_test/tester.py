@@ -16,6 +16,7 @@ RESULT_COLOR = {
     "MLE": "#ffff00",
 }
 
+
 def judge(
     output_sample: str,
     output: str,
@@ -93,6 +94,7 @@ def print_result(
     for output_i, correct_i in itertools.zip_longest(output_list, correct_list, fillvalue=""):
         print(f'{output_i:<{terminal_center}}{format_text("|", fg=color)} {correct_i}')
     print(format_text(error, fg=ERROR_COLOR))
+
 
 def test(
     src: str,

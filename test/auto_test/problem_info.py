@@ -17,8 +17,7 @@ def get_time_limit(soup: BeautifulSoup) -> float:
             raise Exception(f"実行時間制限が期待した文字列と一致しませんでした: {tag.text!r}")
     raise Exception("実行時間制限が見つかりませんでした")
 
-#preタグだけじゃわからないので、
-# 前の入力例1という文字とかから頑張って判定する
+
 def get_input_samples(soup: BeautifulSoup) -> list[str]:
     input_samples = []
     for tag in soup.find_all("h3"):

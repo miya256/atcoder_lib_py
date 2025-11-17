@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 
 from terminal_formatter import format_text, Style
 
+
 class AtcoderUser:
     COLOR_CODE = {
         "user-gray": "#808080",
