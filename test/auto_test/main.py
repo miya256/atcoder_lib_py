@@ -23,6 +23,7 @@ def main():
     # ページにアクセス
     try:
         url = get_current_url("Edge", "Visual Studio Code")
+        print(url)
     except Exception as e:
         sys.exit(print_error(e))
     if "atcoder.jp" not in url:
@@ -43,7 +44,6 @@ def main():
         problem_statement = get_problem_statement(soup)
     except Exception as e:
         sys.exit(print_error(e))
-        return
     
     # テスト
     src = "./test/atcoder.py"
