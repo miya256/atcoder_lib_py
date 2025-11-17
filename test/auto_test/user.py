@@ -1,7 +1,7 @@
 from requests import Session
 from bs4 import BeautifulSoup
 
-from terminal_format import format_text, Style
+from terminal_formatter import format_text, Style
 
 class AtcoderUser:
     COLOR_CODE = {
