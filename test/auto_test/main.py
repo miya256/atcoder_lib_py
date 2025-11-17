@@ -20,13 +20,15 @@ def main():
     # 絶対に公開してはいけない
     cookie_value = os.getenv("ATCODER_COOKIE")
 
-    # ページにアクセス
+    # URLを取得
     try:
         url = get_current_url("Edge", "Visual Studio Code")
     except Exception as e:
         sys.exit(print_error(e))
     if "atcoder.jp" not in url:
         sys.exit(print_error(f"AtCoder の URL を取得できませんでした\nURL: {url}"))
+
+    # ページにアクセス
     try:
         user, soup = access(url, cookie_value)
         print(format_text("アクセス成功", fg=SUCCESS_COLOR))
