@@ -1,4 +1,5 @@
 import os
+import sys
 
 from access import access
 from url_getter import get_current_url
@@ -8,6 +9,11 @@ from tester import test
 from submit_precheck import check_all
 
 
+def print_error(message: str | Exception) -> int:
+    print(format_text(message, fg=ERROR_COLOR))
+    return 1
+
+
 def main():
     # atcoderにアクセス -> 開発者ツール -> Aplication -> REVEL_SESSION の値をコピぺ
     # スタート -> 環境変数を編集で検索 -> 開いて編集
@@ -15,18 +21,19 @@ def main():
     cookie_value = os.getenv("ATCODER_COOKIE")
 
     # ページにアクセス
-    url = get_current_url("Edge", "Visual Studio Code")
+    try:
+        url = get_current_url("Edge", "Visual Studio Code")
+    except Exception as e:
+        sys.exit(print_error(e))
     if "atcoder.jp" not in url:
-        print(format_text(f"AtCoder の URL を取得できませんでした\nURL: {url}", fg=ERROR_COLOR))
-        return
+        sys.exit(print_error(f"AtCoder の URL を取得できませんでした\nURL: {url}"))
     try:
         user, soup = access(url, cookie_value)
         print(format_text("アクセス成功", fg=SUCCESS_COLOR))
         print(user)
         print(f"URL: {url}\n")
     except Exception as e:
-        print(format_text(f"アクセス失敗\n{e}", fg=ERROR_COLOR))
-        return
+        sys.exit(print_error(f"アクセス失敗\n{e}"))
     
     # 問題文やサンプルを取得
     try:
@@ -35,7 +42,7 @@ def main():
         output_samples = get_output_samples(soup)
         problem_statement = get_problem_statement(soup)
     except Exception as e:
-        print(format_text(e, fg=ERROR_COLOR))
+        sys.exit(print_error(e))
         return
     
     # テスト

@@ -6,11 +6,18 @@ import pyperclip
 def get_current_url(browser: str, editor: str) -> str:
     windows = gw.getAllWindows()
 
+    browser_window = None
+    editor_window = None
     for window in windows:
         if browser in window.title:
             browser_window = window
         if editor in window.title:
             editor_window = window
+    
+    if browser_window is None:
+        raise Exception("ブラウザが見つかりませんでした")
+    if editor is None:
+        raise Exception("エディタが見つかりませんでした")
 
     browser_window.activate()
     pyautogui.hotkey('ctrl', 'l') # URLの欄にカーソル
