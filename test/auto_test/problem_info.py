@@ -42,3 +42,11 @@ def get_output_samples(soup: BeautifulSoup) -> list[str]:
             pre = tag.find_next("pre")
             output_samples.append(pre.text)
     return output_samples
+
+
+def get_problem_statement(soup: BeautifulSoup) -> str:
+    section = soup.find("section")
+    if "問題文" not in section.find_next("h3"):
+        raise Exception("問題文の取得に失敗しました")
+    return section.text.strip()
+    
