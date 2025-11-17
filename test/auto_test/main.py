@@ -23,7 +23,6 @@ def main():
     # ページにアクセス
     try:
         url = get_current_url("Edge", "Visual Studio Code")
-        print(url)
     except Exception as e:
         sys.exit(print_error(e))
     if "atcoder.jp" not in url:
