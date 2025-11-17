@@ -15,8 +15,8 @@ def main():
     cookie_value = os.getenv("ATCODER_COOKIE")
 
     # ページにアクセス
-    url = get_current_url()
-    if "atcoder" not in url:
+    url = get_current_url("Edge", "Visual Studio Code")
+    if "atcoder.jp" not in url:
         print(format_text(f"AtCoder の URL を取得できませんでした\nURL: {url}", fg=ERROR_COLOR))
         return
     try:

@@ -3,17 +3,13 @@ import pyautogui
 import pyperclip
 
 
-BROWSER = "Edge"
-EDITOR = "Visual Studio Code"
-
-
-def get_current_url() -> str:
+def get_current_url(browser: str, editor: str) -> str:
     windows = gw.getAllWindows()
 
     for window in windows:
-        if BROWSER in window.title:
+        if browser in window.title:
             browser_window = window
-        if EDITOR in window.title:
+        if editor in window.title:
             editor_window = window
 
     browser_window.activate()
