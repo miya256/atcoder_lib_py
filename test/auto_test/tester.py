@@ -100,6 +100,9 @@ def test(
     input_samples: list[str],
     output_samples: list[str]
 ) -> None:
+    result_list: list[str] = []
     for i, (input_sample, output_sample) in enumerate(zip(input_samples, output_samples), 1):
         result, output, error, elapsed_time = test_one(src, time_limit_s, input_sample, output_sample)
         print_result(i, result, elapsed_time, output_sample, output, error)
+        result_list.append(format_text(result, fg=RESULT_COLOR[result], styles=[Style.Bold]))
+    print(*result_list)
