@@ -44,10 +44,12 @@ class FenwickTree:
     
     def get(self, i: int) -> int:
         """i番目を取得"""
+        assert 0 <= i < self._n, f"index error i={i}"
         return self._data[i]
     
     def add(self, i: int, x: int) -> None:
         """i番目にxを加える"""
+        assert 0 <= i < self._n, f"index error i={i}"
         self._data[i] += x
         self._all_sum += x
         i += 1
@@ -57,6 +59,7 @@ class FenwickTree:
     
     def set(self, i: int, x: int) -> None:
         """i番目をxにする"""
+        assert 0 <= i < self._n, f"index error i={i}"
         self.add(i, x - self._data[i])
     
     def _sum(self, i: int) -> int:
@@ -69,6 +72,7 @@ class FenwickTree:
     
     def sum(self, l: int, r: int) -> int:
         """区間[l, r)の和"""
+        assert 0 <= l <= r <= self._n, f"index error [l,r)=[{l},{r})"
         return self._sum(r) - self._sum(l)
     
     def bisect_left(self, x: int) -> int:

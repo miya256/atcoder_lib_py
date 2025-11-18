@@ -62,6 +62,7 @@ class UnionFind:
     
     def element(self, id: object) -> Element:
         """頂点idをElement型で取得"""
+        assert id in self, f"id={id} does not exist"
         if self._in_element_list(id):
             return self._element_list[id]
         return self._element_dict[id]
@@ -74,7 +75,7 @@ class UnionFind:
     
     def add(self, id: object) -> None:
         """頂点idを追加。int型でもdictのほうに追加される"""
-        assert id not in self, f'{id}はすでに存在します'
+        assert id not in self, f"id={id} already exists"
         self._element_dict[id] = UnionFind.Element(id)
         self._n += 1
         self._component_count += 1
