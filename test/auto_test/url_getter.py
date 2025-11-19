@@ -1,3 +1,5 @@
+import time
+
 import pygetwindow as gw
 import pyautogui
 import pyperclip
@@ -20,7 +22,8 @@ def get_current_url(browser: str, editor: str) -> str:
         raise Exception("エディタが見つかりませんでした")
 
     browser_window.activate()
-    pyautogui.hotkey('ctrl', 'l') # URLの欄にカーソル
+    pyautogui.hotkey('alt', 'd') # URLの欄にカーソル
+    time.sleep(0.1)
     pyautogui.hotkey('ctrl', 'c') # コピー
     editor_window.activate()
 
