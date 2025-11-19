@@ -7,6 +7,8 @@ from terminal_formatter import format_text, SUCCESS_COLOR, ERROR_COLOR
 from problem_info import get_time_limit, get_input_samples, get_output_samples, get_problem_statement
 from tester import test
 from submit_precheck import check_all
+from remove_assert import remove_assert
+from copy_code import copy_code
 
 
 def print_error(message: str | Exception) -> int:
@@ -53,6 +55,13 @@ def main():
     # 提出前チェック
     check_all(problem_statement)
 
+    # assert文除去
+    submit = "./test/auto_test/submit.py"
+    remove_assert(src, submit)
+
+    # submit.pyの内容をコピー
+    copy_code(submit)
+    
 
 if __name__ == "__main__":
     main()
