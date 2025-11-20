@@ -19,8 +19,8 @@ class TopologicalSorter(Graph):
             is_unique     : トポロジカル順が一意に定まるか
         """
 
-    def __init__(self, n: int) -> None:
-        super().__init__(n)
+    def __init__(self, n: int, m: int) -> None:
+        super().__init__(n, m)
         self._is_dag: bool | None = None
         self._is_unique: bool | None = None
     
@@ -63,8 +63,8 @@ class TopologicalSorter(Graph):
             return True
 
         postorder = []
-        visit_state = [UNVISITED for _ in range(self._n)]
-        for v in range(self._n):
+        visit_state = [UNVISITED for _ in range(self.n)]
+        for v in range(self.n):
             if visit_state[v] == UNVISITED:
                 if not dfs(v): #DAGではないなら
                     self._is_dag = False
@@ -81,7 +81,7 @@ class TopologicalSorter(Graph):
         辞書順とかにしやすい
         """
         def calc_in_degree():
-            in_degree = [0] * self._n
+            in_degree = [0] * self.n
             for _, v, _ in self.edges:
                 in_degree[v] += 1
             return in_degree
@@ -103,7 +103,7 @@ class TopologicalSorter(Graph):
         
         if self._is_unique is None:
             self._is_unique = True
-        if len(order) != self._n:
+        if len(order) != self.n:
             self._is_dag = False
             return None
         self._is_dag = True

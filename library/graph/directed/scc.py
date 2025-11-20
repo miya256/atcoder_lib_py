@@ -1,7 +1,9 @@
+#tarjanにすればさらに速くなる可能性が
+
 class SCC(Graph):
-    def __init__(self, n: int) -> None:
-        super().__init__(n)
-        self._rev_graph = Graph(n)
+    def __init__(self, n: int, m: int) -> None:
+        super().__init__(n, m)
+        self._rev_graph = Graph(n, m)
     
     def add_edge(self, u: int, v: int) -> int:
         self._rev_graph.add_edge(v, u)
@@ -41,14 +43,16 @@ class SCC(Graph):
                         stack.append(v)
             scc.reverse() #サイクルの逆向きに入るので戻す
             return scc
-    
-        visited = [False] * self._n
+
+        super().build()
+        self._rev_graph.build()
+        visited = [False] * self.n
         postorder = []
-        for v in range(self._n):
+        for v in range(self.n):
             if not visited[v]:
                 postorder.extend(dfs_postorder(v))
 
-        visited = [False] * self._n
+        visited = [False] * self.n
         scc = []
         while postorder:
             v = postorder.pop()
@@ -63,12 +67,12 @@ class SCC(Graph):
         つまりトポロジカル順に番号が振られる
         縮約グラフはDAG
         """
-        scc_id = [0] * self._n #頂点vの縮約グラフでの番号
+        scc_id = [0] * self.n #頂点vの縮約グラフでの番号
         for i in range(len(scc)):
             for v in scc[i]:
                 scc_id[v] = i
         edges = set()
-        for u in range(self._n):
+        for u in range(self.n):
             for v in self[u]:
                 if scc_id[u] != scc_id[v]:
                     edges.add((scc_id[u], scc_id[v]))
