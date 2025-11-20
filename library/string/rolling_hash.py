@@ -44,10 +44,6 @@ class RollingHash:
         res = self._hash[r] - self._mul(self._hash[l], RollingHash.base_pow[r-l])
         return res if res >= 0 else res + RollingHash.MOD
     
-    def join(self, hash_s: int, hash_t: int, len_t: int) -> int:
-        """s,tをこの順に結合した文字列のhash値"""
-        return ((hash_s * RollingHash.base_pow[len_t]) % RollingHash.MOD + hash_t) % RollingHash.MOD
-    
     def is_palindrome(self, l: int, r: int) -> bool:
         """[l, r)が回文か"""
         assert 0 <= l <= r <= len(self), f"index error [l,r)=[{l},{r})"
@@ -59,7 +55,7 @@ class RollingHash:
         if not hasattr(self, "_rev_hash"):
             self._rev_hash = RollingHash(self.string[::-1])
         return self._rev_hash
-
+    
     def _calc_mod(self, x: int) -> int:
         xu, xd = x >> 61, x & RollingHash.MASK61
         res = xu + xd
@@ -76,3 +72,9 @@ class RollingHash:
         l = len(RollingHash.base_pow)
         for _ in range(x - l + 1):
             RollingHash.base_pow.append(self._mul(RollingHash.base, RollingHash.base_pow[-1]))
+    
+    @staticmethod
+    def join(hash_s: int, hash_t: int, len_t: int) -> int:
+        """s,tをこの順に結合した文字列のhash値"""
+        return ((hash_s * RollingHash.base_pow[len_t]) % RollingHash.MOD + hash_t) % RollingHash.MOD
+    

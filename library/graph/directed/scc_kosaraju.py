@@ -1,5 +1,3 @@
-#tarjanにすればさらに速くなる可能性が
-
 class SCC(Graph):
     def __init__(self, n: int, m: int) -> None:
         super().__init__(n, m)
@@ -44,7 +42,7 @@ class SCC(Graph):
             scc.reverse() #サイクルの逆向きに入るので戻す
             return scc
 
-        super().build()
+        self.build()
         self._rev_graph.build()
         visited = [False] * self.n
         postorder = []
