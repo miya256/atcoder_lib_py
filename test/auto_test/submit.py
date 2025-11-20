@@ -65,63 +65,171 @@ class Graph:
         return list(zip(self._adj[self._start[v]: self._start[v+1]], self._weight[self._start[v]: self._start[v+1]]))
 
 
-class SCC(Graph):
-    def __init__(self, n: int, m: int) -> None:
-        super().__init__(n, m)
+class Diameter(Graph):
+    def __init__(self, n: int) -> None:
+        super().__init__(n, n-1)
     
-    def scc(self) -> None:
-        self.build()
-        low = [0] * self.n
-        ord = [-1] * self.n
-        k = 0
-        visited = [False] * self.n
-        visiting = []
-        ids = [0] * self.n
-        groups = []
+    def _dfs(self, v: int, dist: list[int] | None = None) -> tuple[int, int]:
+        """distを指定すればvからの距離、そうでなければ直径と端点"""
+        stack = [(v, -1, 0)]
+        end, diameter = -1, 0
+        while stack:
+            u, par, d = stack.pop()
 
-        def dfs(v: int, k: int) -> None:
-            stack = [(v, v)]
-            while stack:
-                u, par = stack.pop()
-                if u >= 0:
-                    if visited[u]:
-                        low[par] = min(low[par], ord[u])
-                        continue
-                    visited[u] = True
-                    visiting.append(u)
-                    ord[u] = low[u] = k
-                    k += 1
-                    stack.append((~u, par))
-                    for v in self[u]:
-                        if v != par:
-                            stack.append((v, u))
-                else:
-                    u = ~u
-                    if low[u] == ord[u]:
-                        groups.append([])
-                        while True:
-                            v = visiting.pop()
-                            ord[v] = self.n
-                            ids[v] = len(groups)
-                            groups[-1].append(v)
-                            if u == v:
-                                break
-                    low[par] = min(low[par], low[u])
-            return k
+            if dist is not None:
+                dist[u] = d
+
+            if diameter < d:
+                diameter = d
+                end = u
+
+            for v, w in self(u):
+                if v != par:
+                    stack.append((v, u, d+w))
         
-        for v in range(self.n):
-            if not visited[v]:
-                k = dfs(v, k)
-        
-        return groups[::-1], list(map(lambda x: len(groups) - x, ids))
+        return diameter, end
+    
+    def diameter(self) -> tuple[int, int, int]:
+        """直径、端点1、端点2"""
+        _, end1 = self._dfs(0)
+        diameter, end2 = self._dfs(end1)
+        return diameter, end1, end2
+    
+    def dist(self, v: int) -> list[int]:
+        """vからの距離"""
+        dist = [inf := 1<<61] * self.n
+        self._dfs(v, dist)
+        return dist
+    
 
-n,m = map(int,input().split())
-g = SCC(n,m)
-for _ in range(m):
-    a,b = map(int,input().split())
-    g.add_edge(a, b)
+class FenwickTree:
+    """
+    区間の和を O(log n) で計算
 
-scc, _ = g.scc()
-print(len(scc))
-for group in scc:
-    print(len(group), *group)
+    Methods:\n
+        get(i)         : i番目を取得
+        set(i, x)      : i番目をxにする
+        add(i, x)      : i番目にxを加算
+        sum(l, r)      : 区間[l, r)の和
+        bisect_left(x) : 累積和配列とみなし、二分探索
+        bisect_right(x): 累積和配列とみなし、二分探索
+    """
+
+    def __init__(self, data: list|int) -> None:
+        if isinstance(data, int):
+            data = [0 for _ in range(data)]
+        self._n = len(data)
+        self._data = data
+        self._tree = [0] * (self._n + 1)
+        self._all_sum = self._build(data)
+    
+    def _build(self, data: list) -> int:
+        """treeを作成。すべての和を返す"""
+        cum = [0] * (self._n + 1)
+        for i in range(1, self._n+1):
+            cum[i] = cum[i-1] + data[i-1]
+            self._tree[i] = cum[i] - cum[i-(-i&i)]
+        return cum[-1]
+    
+    def __len__(self) -> int:
+        """データの大きさ"""
+        return self._n
+    
+    def __getitem__(self, i: int) -> int:
+        """i番目を取得"""
+        return self.get(i)
+    
+    def __setitem__(self, i: int, x: int) -> None:
+        """i番目をxにする"""
+        self.set(i, x)
+    
+    def __repr__(self) -> str:
+        return f'FenwickTree {self._data}'
+    
+    def get(self, i: int) -> int:
+        """i番目を取得"""
+        return self._data[i]
+    
+    def add(self, i: int, x: int) -> None:
+        """i番目にxを加える"""
+        self._data[i] += x
+        self._all_sum += x
+        i += 1
+        while i <= self._n:
+            self._tree[i] += x
+            i += -i & i
+    
+    def set(self, i: int, x: int) -> None:
+        """i番目をxにする"""
+        self.add(i, x - self._data[i])
+    
+    def _sum(self, i: int) -> int:
+        """区間[0, i)の和"""
+        sum = 0
+        while i > 0:
+            sum += self._tree[i]
+            i -= -i & i
+        return sum
+    
+    def sum(self, l: int, r: int) -> int:
+        """区間[l, r)の和"""
+        return self._sum(r) - self._sum(l)
+    
+    def bisect_left(self, x: int) -> int:
+        """区間[0, index)の和がx以上になる最小のindex"""
+        i = 1 << self._n.bit_length() - 1
+        value = 0
+        while not i & 1:
+            if i-1 < self._n and value + self._tree[i] < x:
+                value += self._tree[i]
+                i += (-i & i) >> 1
+            else:
+                i -= (-i & i) >> 1
+        return i-1 + (value + self._tree[i] < x)
+    
+    def bisect_right(self, x: int) -> int:
+        """区間[0, index)の和がx超過になる最小のindex"""
+        i = 1 << self._n.bit_length()-1
+        value = 0
+        while not i & 1:
+            if i-1 < self._n and value + self._tree[i] <= x:
+                value += self._tree[i]
+                i += (-i & i) >> 1
+            else:
+                i -= (-i & i) >> 1
+        return i-1 + (value + self._tree[i] <= x)
+    
+
+from bisect import bisect_left
+
+n1 = int(input())
+t1 = Diameter(n1)
+for _ in range(n1-1):
+    u,v = map(lambda x:int(x)-1,input().split())
+    t1.add_edge(u,v)
+    t1.add_edge(v,u)
+t1.build()
+
+n2 = int(input())
+t2 = Diameter(n2)
+for _ in range(n2-1):
+    u,v = map(lambda x:int(x)-1,input().split())
+    t2.add_edge(u,v)
+    t2.add_edge(v,u)
+t2.build()
+
+r1, *end1 = t1.diameter()
+r2, *end2 = t2.diameter()
+r = max(r1,r2)
+
+di = [max(d1, d2) for d1,d2 in zip(t1.dist(end1[0]), t1.dist(end1[1]))]
+dj = [max(d1, d2) for d1,d2 in zip(t2.dist(end2[0]), t2.dist(end2[1]))]
+dj.sort()
+ft = FenwickTree(dj)
+
+ans = 0
+for i in range(n1):
+    idx = bisect_left(dj, r-di[i]-1) #rより小さくなる個数
+    cnt = n2-idx #r以上になる個数
+    ans += r * idx + (di[i]+1)*cnt + ft.sum(idx, n2)
+print(ans)

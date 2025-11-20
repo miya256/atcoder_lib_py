@@ -28,12 +28,8 @@ class Diameter(Graph):
         diameter, end2 = self._dfs(end1)
         return diameter, end1, end2
     
-    def find_farthest(self) -> list[tuple[int, int]]:
-        """すべてのvについて、vから最も遠い点までの(距離,頂点)を求める"""
-        diameter, end1, end2 = self.diameter()
-        dist1 = [diameter] * self.n
-        dist2 = [diameter] * self.n
-        self._dfs(end1, dist1)
-        self._dfs(end2, dist2)
-        #end1, end2まで同じ距離の場合は、番号が大きいほうが採用される
-        return [max((d1, end1), (d2, end2)) for d1, d2 in zip(dist1, dist2)]
+    def dist(self, v: int) -> list[int]:
+        """vからの距離"""
+        dist = [inf := 1<<61] * self.n
+        self._dfs(v, dist)
+        return dist
