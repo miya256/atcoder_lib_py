@@ -19,7 +19,7 @@ class Graph:
         self.n = n
         self.m = m
         self.edges: list[tuple[int, int, int]] = []
-        self._start = [0] * (n+1)
+        self._ptr = [0] * (n+1)
         self._adj: list[int] | None = None
         self._weight: list[int] | None = None
     
@@ -40,18 +40,18 @@ class Graph:
         self._adj = [0] * len(self.edges)
         self._weight = [0] * len(self.edges)
         for i in range(self.n):
-            self._start[i+1] += self._start[i]
+            self._ptr[i+1] += self._ptr[i]
         for u, v, w in self.edges:
-            self._start[u] -= 1
-            self._adj[self._start[u]] = v
-            self._weight[self._start[u]] = w
+            self._ptr[u] -= 1
+            self._adj[self._ptr[u]] = v
+            self._weight[self._ptr[u]] = w
     
     def add_edge(self, u: int, v: int, w: int = 1) -> int:
         """u -> v に重み w の 有向辺 を張る"""
         assert 0 <= u < self.n, f"u={u} is out of range"
         assert 0 <= v < self.n, f"v={v} is out of range"
         self.edges.append((u, v, w))
-        self._start[u] += 1
+        self._ptr[u] += 1
         return len(self.edges) - 1
     
     def edge(self, id: int) -> tuple[int, int, int]:
@@ -62,13 +62,13 @@ class Graph:
     def neighbors(self, v: int) -> list[int]:
         """vに隣接する頂点のリスト"""
         assert self._adj, "build() is not called"
-        return self._adj[self._start[v]: self._start[v+1]]
+        return self._adj[self._ptr[v]: self._ptr[v+1]]
     
     def neighbors_with_weight(self, v: int) -> list[tuple[int, int]]:
         """v に隣接する頂点のリスト（重み付き）"""
         assert self._adj, "build() is not called"
         return list(zip(
-            self._adj[self._start[v]: self._start[v+1]],
-            self._weight[self._start[v]: self._start[v+1]]
+            self._adj[self._ptr[v]: self._ptr[v+1]],
+            self._weight[self._ptr[v]: self._ptr[v+1]]
         ))
     
