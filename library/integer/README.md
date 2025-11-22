@@ -1,8 +1,8 @@
 # 整数系
 
-## number_theory
-数論
-素数、約数、gcd、CRT、メビウス関数、NTT
+
+## factor
+素数、約数
 
 ## bit
 bit操作
