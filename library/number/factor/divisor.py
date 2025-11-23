@@ -15,10 +15,10 @@ def enumerate_divisors(n: int) -> list[int]:
 def enumerate_divisors_from_factor(prime_factor: dict[int, int]) -> list[int]:
     """素因数から約数を列挙"""
     divisors = [1]
-    for base, exp in prime_factor.items():
+    for radix, exp in prime_factor.items():
         for d in divisors[:]: #appendしていくのでコピーから取り出している
             val = 1
             for _ in range(exp):
-                val *= base
+                val *= radix
                 divisors.append(d * val)
     return sorted(divisors)
