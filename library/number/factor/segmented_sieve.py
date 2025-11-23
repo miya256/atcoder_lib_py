@@ -1,4 +1,13 @@
 class SegmentedSieve:
+    """
+    区間篩 遅いかも
+    範囲が1からならspfのほう使う
+
+    Method:
+        is_prime          : 素数判定
+        prime_factorize   : 素因数分解
+        enumerate_divisors: 約数列挙
+    """
     def __init__(self, low: int, high: int) -> None:
         assert 0 < low < high, f"Value error: [low,high)=[{low},{high})"
         self._low = low
