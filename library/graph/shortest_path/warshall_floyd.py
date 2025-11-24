@@ -1,4 +1,4 @@
-class WarshallFloid(Graph):
+class WarshallFloyd(Graph):
     def __init__(self, n: int, m: int) -> None:
         super().__init__(n, m)
         inf = 1<<61
