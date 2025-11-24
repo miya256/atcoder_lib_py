@@ -24,6 +24,12 @@
 - NTT
 
 
+## [`fraction/`](fraction/) 分数系
+- ファレイ数列
+- fraction
+- Stern Brocot Tree
+
+
 ## [`linear_algebra/`](linear_algebra/) 線形代数系
 - [`integer_linear_eq.py`](linear_algebra/integer_linear_eq.py)　ー　一次不定方程式
 - ガウスの消去法
