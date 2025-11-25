@@ -32,9 +32,9 @@
 
 ## [`linear_algebra/`](linear_algebra/) 線形代数系
 - [`integer_linear_eq.py`](linear_algebra/integer_linear_eq.py)　ー　一次不定方程式
+- [`matrix.py`](linear_algebra/matrix.py)　ー　行列クラス
 - ガウスの消去法
 - 行列累乗
-- 行列積
 
 
 ## [`mod/`](mod/) mod系
