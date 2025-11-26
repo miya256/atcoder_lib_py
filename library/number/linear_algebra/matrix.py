@@ -154,10 +154,8 @@ class Matrix:
         return Matrix._from_vector(b, n, n)
 
     def transpose(self) -> "Matrix":
-        pass
-
-    def rotate(self, degree: int) -> None:
-        pass
+        data = [self[i,j] for j in range(self.m) for i in range(self.n)]
+        return Matrix._from_vector(data, self.m, self.n)
     
     @classmethod
     def _from_vector(cls, data: list, n: int, m: int) -> "Matrix":
