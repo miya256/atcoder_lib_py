@@ -40,7 +40,7 @@ class Matrix:
         assert self.m == other.n, f"shape error: ({self.n},{self.m}) and ({other.n},{other.m})"
         n, m, l = self.n, other.m, self.m
         data = [
-            sum(self[i,k] * other[k,j] % Matrix.Mod for k in range(l)) % Matrix.Mod
+            sum(self[i,k] * other[k,j] for k in range(l)) % Matrix.Mod
             for i in range(n) for j in range(m)
         ]
         return Matrix._from_vector(data, n, m)
@@ -115,11 +115,11 @@ class Matrix:
     def __repr__(self):
         string = []
         for i in range(self.n):
-            string.append(f"{self._a[i*self.n: (i+1)*self.n]}")
+            string.append(f"{self._a[i*self.m: (i+1)*self.m]}")
         return "[" + '\n '.join(string) + "]"
 
-    
     def inverse(self) -> "Matrix":
+        """逆行列"""
         assert self.n == self.m, f"shape error: ({self.n},{self.m})"
         n = self.n
         a = self._a[:]
@@ -127,7 +127,7 @@ class Matrix:
 
         for j in range(n):
             # 行の入れ替え
-            if a[j][j] == 0:
+            if a[j*n+j] == 0:
                 for i in range(j+1, n):
                     if a[i*n+j] != 0:
                         a[i*n: (i+1)*n], a[j*n: (j+1)*n] = a[j*n: (j+1)*n], a[i*n: (i+1)*n]
@@ -138,7 +138,7 @@ class Matrix:
             
             # (j,j)を1にする
             inv = pow(a[j*n+j], Matrix.Mod-2, Matrix.Mod)
-            for k in range(j, n):
+            for k in range(n):
                 a[j*n+k] = a[j*n+k] * inv % Matrix.Mod
                 b[j*n+k] = b[j*n+k] * inv % Matrix.Mod
             
@@ -147,15 +147,35 @@ class Matrix:
                 if i == j:
                     continue
                 factor = a[i*n+j]
-                for k in range(j, n):
+                for k in range(n):
                     a[i*n+k] = (a[i*n+k] - factor * a[j*n+k]) % Matrix.Mod
                     b[i*n+k] = (b[i*n+k] - factor * b[j*n+k]) % Matrix.Mod
-        
+            
         return Matrix._from_vector(b, n, n)
 
     def transpose(self) -> "Matrix":
+        """転置行列"""
         data = [self[i,j] for j in range(self.m) for i in range(self.n)]
         return Matrix._from_vector(data, self.m, self.n)
+    
+    def swap_rows(self, i: int, j: int) -> None:
+        """i行目とj行目を入れ替える"""
+        assert 0 <= i < self.n and 0 <= j < self.n, f"i,j={i},{j} is index out of range"
+        m = self.m
+        self._a[i*m: (i+1)*m], self._a[j*m: (j+1)*m] = self._a[j*m: (j+1)*m], self._a[i*m: (i+1)*m]
+    
+    def multiply_row(self, i: int, k: int) -> None:
+        """i行目をk倍する"""
+        assert 0 <= i < self.n, f"i={i} is index out of range"
+        for j in range(i*self.m, (i+1)*self.m):
+            self._a[j] = self._a[j] * k % Matrix.Mod
+    
+    def add_row_multiple(self, i: int, j: int, k: int) -> None:
+        """i行目にj行目のk倍を足す"""
+        assert 0 <= i < self.n and 0 <= j < self.n, f"i,j={i},{j} is index out of range"
+        for l in range(self.m):
+            self._a[i*self.m+l] += k * self._a[j*self.m+l]
+            self._a[i*self.m+l] %= Matrix.Mod
     
     @classmethod
     def _from_vector(cls, data: list, n: int, m: int) -> "Matrix":
