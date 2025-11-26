@@ -177,6 +177,21 @@ class Matrix:
             self._a[i*self.m+l] += k * self._a[j*self.m+l]
             self._a[i*self.m+l] %= Matrix.Mod
     
+    def join_columns(self, other: "Matrix") -> "Matrix":
+        """横に行列を結合"""
+        assert self.n == other.n, f"shape error: ({self.n},{self.m}) and ({other.n},{other.m})"
+        data = []
+        for i in range(self.n):
+            data.extend(self._a[i*self.m: (i+1)*self.m])
+            data.extend(other._a[i*other.m: (i+1)*other.m])
+        return Matrix._from_vector(data, self.n, self.m + other.m)
+    
+    def join_rows(self, other: "Matrix") -> "Matrix":
+        """縦に行列を結合"""
+        assert self.m == other.m, f"shape error: ({self.n},{self.m}) and ({other.n},{other.m})"
+        data = self._a + other._a
+        return Matrix._from_vector(data, self.n + other.n, self.m)
+        
     @classmethod
     def _from_vector(cls, data: list, n: int, m: int) -> "Matrix":
         obj = cls.__new__(cls)
