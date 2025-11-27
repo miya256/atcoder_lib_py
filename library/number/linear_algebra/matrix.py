@@ -1,6 +1,22 @@
 class Matrix:
     """
     n*m行列 mod限定
+
+    Attributes:
+        n: 行数
+        m: 列数
+    
+    Methods:
+        getitem[i,j]: i,j成分
+        setitem[i,j]: i,jに代入
+        +, -, *, **, +=, -=, *=, **=, ==, != 演算子
+        inverse         : 逆行列
+        transpose       : 転置行列
+        join_columns    : 横に行列を結合
+        join_rows       : 縦に行列を結合
+        swap_rows       : i行目とj行目を入れ替える（破壊的）
+        multiply_row    : i行目をk倍する（破壊的）
+        add_row_multiple: i行目にj行目のk倍を足す（破壊的）
     """
     Mod: int = 998244353
 

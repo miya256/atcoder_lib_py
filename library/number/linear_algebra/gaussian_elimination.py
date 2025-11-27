@@ -1,4 +1,5 @@
 def gaussian_eliminate(a: Matrix) -> int:
+    """掃き出し法"""
     rank = 0
     for j in range(a.m):
         if a[rank, j] == 0:
@@ -17,6 +18,7 @@ def gaussian_eliminate(a: Matrix) -> int:
 
 
 def solve_linear_eq(a: Matrix, b: Matrix) -> list[list[int]] | None:
+    """連立方程式の解"""
     c = a.join_columns(b)
     rank = gaussian_eliminate(c)
 
@@ -44,4 +46,6 @@ def solve_linear_eq(a: Matrix, b: Matrix) -> list[list[int]] | None:
             if v > j: # j以降はすべて0だから
                 break
             res[i][v] = -c[k, j] % a.Mod
+    # x = a0 + c1a1 + c2a2 + ...（cは未定定数）として 
+    # res[i] = ai
     return res
