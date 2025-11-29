@@ -122,7 +122,7 @@ class UnionFind:
     
     def _in_element_list(self, id: object) -> bool:
         """idが初期のやつか"""
-        return isinstance(id, int) and id < len(self._element_list)
+        return isinstance(id, int) and 0 <= id < len(self._element_list)
     
     @property
     def component_count(self) -> int:
