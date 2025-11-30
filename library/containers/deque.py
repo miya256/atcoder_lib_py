@@ -3,14 +3,14 @@ class Deque:
     ランダムアクセス可能 deque
 
     Methods:
-        get       : i番目を取得
-        set       : i番目に代入
-        is_full   : 満タンか
-        is_empty  : 空か
-        appendleft: 左に追加
-        append    : 右に追加
-        popleft   : 左から取り出す
-        pop       : 右から取り出す
+        get(i)         : i番目を取得
+        set(i, val)    : i番目に代入
+        is_full()      : 満タンか
+        is_empty()     : 空か
+        appendleft(val): 左に追加
+        append(val)    : 右に追加
+        popleft()      : 左から取り出す
+        pop()          : 右から取り出す
     """
     def __init__(self, data: list = []) -> None:
         self._buffer = data + [None] * (1<<20 - len(data))

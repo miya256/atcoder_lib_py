@@ -1,4 +1,11 @@
 class Diameter(Graph):
+    """
+    木の直径
+
+    Methods:
+        diameter(): 直径と端点を返す
+        dist(v)   : vからほかの点までの距離
+    """
     def __init__(self, n: int) -> None:
         super().__init__(n, n-1)
     

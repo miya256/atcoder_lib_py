@@ -3,8 +3,8 @@ class Heap:
     優先度付きキュー（ヒープ）
 
     Methods:
-        add: 追加
-        pop: 削除
+        add(value): 追加
+        pop()     : 削除
     """
     def __init__(self, compare: object) -> None:
         self._heap = [None]

@@ -3,16 +3,16 @@ class Trie:
     多重集合
 
     Methods:
-        add                    : 文字列を追加。O(|S|)
-        discard                : 文字列を削除。O(|S|)
-        contains               : 文字列が存在するか。O(|S|)
-        contains_prefix        : stringの接頭辞である文字列が存在するか。O(|S|)
-        count_lcp              : stringとのLCPの長さが i である文字列の個数。O(|S|)
-        count_words_with_prefix: prefixで始まる文字列の個数。O(|S|)
-        get_words_with_prefix  : prefixで始まる文字列を辞書順に列挙。計算量は、答えとなる文字列の長さの合計
-        count_all_words        : この木に入っているすべての文字列の個数。O(1)
-        get_all_words          : すべての文字列を辞書順に列挙。計算量は、答えとなる文字列の長さの合計
-        get_kth_word           : 辞書順でk番目の要素を取得(0-indexed)。O(木の高さ)？
+        add(string)                    : 文字列を追加。O(|S|)
+        discard(string)                : 文字列を削除。O(|S|)
+        contains(string)               : 文字列が存在するか。O(|S|)
+        contains_prefix(string)        : stringの接頭辞である文字列が存在するか。O(|S|)
+        count_lcp(string)              : stringとのLCPの長さが i である文字列の個数。O(|S|)
+        count_words_with_prefix(prefix): prefixで始まる文字列の個数。O(|S|)
+        get_words_with_prefix(prefix)  : prefixで始まる文字列を辞書順に列挙。計算量は、答えとなる文字列の長さの合計
+        count_all_words()              : この木に入っているすべての文字列の個数。O(1)
+        get_all_words()                : すべての文字列を辞書順に列挙。計算量は、答えとなる文字列の長さの合計
+        get_kth_word(k)                : 辞書順でk番目の要素を取得(0-indexed)。O(木の高さ)？
     """
     class Node:
         """

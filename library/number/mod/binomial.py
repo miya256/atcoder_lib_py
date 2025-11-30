@@ -1,6 +1,15 @@
 class Binomial:
     """
     二項係数 Mod
+
+    Methods:
+        fact(n)                          : n!
+        ifact(n)                         : n! ^ -1
+        permutation(n, r)                : nPr
+        permutation_with_repetition(n, r): n^r
+        combination(n, r)                : nCr
+        combination_with_repetition(n, r): nHr
+        multiset_permutation(frequencies): aabbbccccのような順列
     """
     def __init__(self, n: int, mod: int) -> None:
         """n: n!まで計算できる"""

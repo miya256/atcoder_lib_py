@@ -7,13 +7,14 @@ class Graph:
         n    : 頂点数
         m    : 辺数
         edges: 辺(u,v,w)
+        子クラスからも参照するからpublic
     
     Methods:
-        build                : CSRの配列をつくる
-        add_edge             : u -> v に重み w の 有向辺 を張る
-        edge                 : id番目の辺
-        neighbors            : 隣接頂点 __getitem__ に割り当て
-        neighbors_with_weight: 重み付き隣接頂点 __call__ に割り当て
+        build()                 : CSRの配列をつくる
+        add_edge(u, v, w=1)     : u -> v に重み w の 有向辺 を張る
+        edge(i)                 : i番目の辺
+        neighbors(v)            : 隣接頂点 __getitem__ に割り当て
+        neighbors_with_weight(v): 重み付き隣接頂点 __call__ に割り当て
     """
     def __init__(self, n: int, m: int) -> None:
         self.n = n
@@ -54,10 +55,10 @@ class Graph:
         self._ptr[u] += 1
         return len(self.edges) - 1
     
-    def edge(self, id: int) -> tuple[int, int, int]:
-        """辺id"""
-        assert 0 <= id < len(self.edges), f"id={id} is out of range"
-        return self.edges[id]
+    def edge(self, i: int) -> tuple[int, int, int]:
+        """辺i"""
+        assert 0 <= i < len(self.edges), f"i={i} is out of range"
+        return self.edges[i]
     
     def neighbors(self, v: int) -> list[int]:
         """vに隣接する頂点のリスト"""

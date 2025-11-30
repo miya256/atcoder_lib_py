@@ -1,4 +1,11 @@
 class SCC(Graph):
+    """
+    強連結成分分解
+    
+    Methods:
+        scc(): 強連結成分をトポロジカル順に返す O(n+m)
+        build_contracted_graph(scc): 縮約グラフをつくる O(n+m)
+    """
     def __init__(self, n: int, m: int) -> None:
         super().__init__(n, m)
         self._rev_graph = Graph(n, m)

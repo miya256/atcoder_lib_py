@@ -1,4 +1,7 @@
 class WarshallFloyd(Graph):
+    """
+    全頂点間の距離
+    """
     def __init__(self, n: int, m: int) -> None:
         super().__init__(n, m)
         inf = 1<<61

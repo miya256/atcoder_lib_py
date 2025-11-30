@@ -8,8 +8,8 @@ class HuffmanCode:
     アルファベット小文字
 
     Methods:
-        get_code: アルファベットの符号を返す
-        get_char: 符号をアルファベットに復元
+        get_code(char): アルファベットの符号を返す
+        get_char(code): 符号をアルファベットに復元
     """
     class Node:
         def __init__(self, cnt: int, char: str | None = None) -> None:

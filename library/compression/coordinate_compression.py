@@ -5,8 +5,8 @@ class Compressor:
     座標圧縮
 
     Methods:
-        original: 圧縮後の値 -> 元の値
-        compress: 元の値 -> 圧縮後の値
+        original(compressed): 圧縮後の値 -> 元の値
+        compress(original)  : 元の値 -> 圧縮後の値
     """
     def __init__(self, numbers: set) -> None:
         self._numbers = sorted(set(numbers))
