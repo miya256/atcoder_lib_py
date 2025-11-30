@@ -48,10 +48,12 @@ class FenwickTree:
     
     def get(self, i: int) -> object:
         """i番目を取得"""
+        assert 0 <= i < self._n, f"index error i={i}"
         return self._data[i]
     
     def apply(self, i: int, x: object) -> None:
         """i番目にxを作用。写像はop"""
+        assert 0 <= i < self._n, f"index error i={i}"
         self._data[i] = self._op(self._data[i], x)
         self.all_prod = self._op(self.all_prod, x)
         i += 1
@@ -61,7 +63,8 @@ class FenwickTree:
     
     def set(self, i: int, x: object) -> None:
         """加えるではなく、更新"""
-        self._apply(i, self._op_inv(x, self._data[i]))
+        assert 0 <= i < self._n, f"index error i={i}"
+        self.apply(i, self._op_inv(x, self._data[i]))
     
     def _prod(self, i: int) -> object:
         """区間[0, i)の積"""
@@ -73,19 +76,5 @@ class FenwickTree:
     
     def prod(self, l: int, r: int) -> object:
         """区間[l,r)の総積"""
+        assert 0 <= l <= r <= self._n, f"index error [l,r)=[{l},{r})"
         return self._op_inv(self._prod(r), self._prod(l))
-    
-def op(x,y):
-    return x+y
-def op_inv(x,y):
-    return x-y
-    
-n,q = map(int,input().split())
-a = list(map(int,input().split()))
-ft = FenwickTree(op, op_inv, 0, a)
-for _ in range(q):
-    t,l,r = map(int,input().split())
-    if t == 0:
-        ft.apply(l, r)
-    else:
-        print(ft.prod(l,r))

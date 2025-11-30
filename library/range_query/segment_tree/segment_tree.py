@@ -1,7 +1,3 @@
-#データクラスをうまく持てないか検討中
-#やっぱ型はほとんどeと同じ型だし、
-# 遅延セグ木だと、データと作用素で型違うから、objectはちょっとやだ
-
 class SegmentTree:
     """
     一点更新、区間取得を O(log n) で計算
@@ -127,3 +123,4 @@ class SegmentTree:
     
     def _update(self, i: int) -> None:
         self._tree[i] = self._op(self._tree[2*i], self._tree[2*i+1])
+

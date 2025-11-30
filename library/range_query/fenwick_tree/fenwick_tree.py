@@ -17,7 +17,7 @@ class FenwickTree:
         self._n = len(data)
         self._data = data
         self._tree = [0] * (self._n + 1)
-        self._all_sum = self._build(data)
+        self.all_sum = self._build(data)
     
     def _build(self, data: list) -> int:
         """treeを作成。すべての和を返す"""
@@ -51,7 +51,7 @@ class FenwickTree:
         """i番目にxを加える"""
         assert 0 <= i < self._n, f"index error i={i}"
         self._data[i] += x
-        self._all_sum += x
+        self.all_sum += x
         i += 1
         while i <= self._n:
             self._tree[i] += x
