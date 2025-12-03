@@ -1,6 +1,6 @@
-def binary_search(ok, ng, *args):
+def binary_search(ok: int, ng: int, *args) -> int:
     """二分探索"""
-    def satisfies(x):
+    def satisfies(x: int) -> bool:
         """xのとき条件を満たすか"""
         return
     
