@@ -1,0 +1,107 @@
+{
+    "di dj" : {
+		"prefix": "di, dj =",
+		"body": "di, dj = {'U':-1, 'D':1, 'L':0, 'R':0}, {'U':0, 'D':0, 'L':-1, 'R':1}"
+	},
+
+	"for di,dj in (-1,0), (1,0), (0,-1), (0,1)" : {
+		"prefix": "for di,dj in",
+		"body": [
+			"for di,dj in (-1,0), (1,0), (0,-1), (0,1):",
+			"\tni, nj = i+di, j+dj",
+			"\tif not(0 <= ni < $1 and 0 <= nj < $2):",
+			"\t\tcontinue",
+			"\t${3:#「visited」や「壁」も}"
+		]
+	},
+
+	"for di,dj,dir in (-1,0,U), (1,0,D), (0,-1,L), (0,1,R)" : {
+		"prefix": "for di,dj,dir in",
+		"body": [
+			"for di,dj,dir in (-1,0,'U'), (1,0,'D'), (0,-1,'L'), (0,1,'R'):",
+			"\tni, nj = i+di, j+dj",
+			"\tif not(0 <= ni < $1 and 0 <= nj < $2):",
+			"\t\tcontinue"
+		]
+	},
+
+	"for _ in range" : {
+		"prefix": "for _ in range",
+		"body": "for ${1|_,i,j,k|} in range($2)"
+	},
+
+	"abcdefghijklmnopqrstuvwxyz" : {
+		"prefix": "\"abcde",
+		"body": "\"abcdefghijklmnopqrstuvwxyz\""
+	},
+
+	"ABCDEFGHIJKLMNOPQRSTUVWXYZ" : {
+		"prefix": "\"ABCDE",
+		"body": "\"ABCDEFGHIJKLMNOPQRSTUVWXYZ\""
+	},
+
+	"mod=998244353" : {
+		"prefix": "mod",
+		"body": "mod = 998244353"
+	},
+
+	"float('inf')" : {
+		"prefix": "float",
+		"body": "float('inf')"
+	},
+
+	"inf" : {
+		"prefix": "inf",
+		"body": "inf = ${1|1<<61,float('inf')|}"
+	},
+
+	"INF" : {
+		"prefix": "INF",
+		"body": "INF = ${1|1<<61,float('inf')|}"
+	},
+
+	"lambda x:" : {
+		"prefix": "lambda",
+		"body": "lambda x:"
+	},
+
+	"key = lambda x:x[]" : {
+		"prefix": "key=lambda x:x[]",
+		"body": "key=lambda x:x[$1]"
+	},
+
+	"reverse = True" : {
+		"prefix": "reverse=True",
+		"body": "reverse=True"
+	},
+
+	"''.join" : {
+		"prefix": "''.join",
+		"body": "''.join($1)"
+	},
+
+	"flush=True" : {
+		"prefix": "flush=True",
+		"body": "flush=True"
+	},
+
+	"print(Yes,No,Takahashi,Aoki)" : {
+		"prefix": "print(\"Yes\")",
+		"body": "print(\"${1|Yes,No,Takahashi,Aoki|}\")"
+	},
+
+	"exit(print())" : {
+		"prefix": "exit(print())",
+		"body": "exit(print(\"${1|-1,Yes,No|}\"))"
+	},
+
+    "chmax" : {
+		"prefix": "chmax",
+		"body": "$1 = max($1, $2)"
+	},
+    
+	"chmin" : {
+		"prefix": "chmin",
+		"body": "$1 = min($1, $2)"
+	},
+}

@@ -1,0 +1,134 @@
+{
+    "import sys" : {
+		"prefix": "import sys メモ化しろ",
+		"body": [
+			"import sys",
+			"sys.setrecursionlimit(10**6)",
+			"import pypyjit",
+			"pypyjit.set_param(\"max_unroll_recursion=-1\")"
+		]
+	},
+
+	"from math import" : {
+		"prefix": "from math",
+		"body": "from math import gcd,lcm,dist"
+	},
+
+	"from decimal import" : {
+		"prefix": "from decimal",
+		"body": "from decimal import Decimal, ROUND_HALF_UP"
+	},
+
+	"round" : {
+		"prefix": "Decimal.quantize(Decimal(),ROUND_HALF_UP)",
+		"body": "Decimal(str($1)).quantize(Decimal('${2|0,0.1,0.01,1E1,1E2|}'),ROUND_HALF_UP)"
+	},
+
+	"from functools import cmp_to_key" : {
+		"prefix": "from functools cmp_to_key",
+		"body": "from functools import cmp_to_key"
+	},
+
+	"from functools import cache" : {
+		"prefix": "from functools cache",
+		"body": [
+			"from functools import cache",
+			"@cache\n"
+		]
+	},
+
+	"from collections import" : {
+		"prefix": "from collections",
+		"body": "from collections import deque, defaultdict, Counter\n"
+	},
+
+	"from heapq import" : {
+		"prefix": "from heapq",
+		"body": "from heapq import heapify, heappush, heappop\n"
+	},
+
+	"heappush" : {
+		"prefix": "heappush(hq, )",
+		"body": "heappush(hq, $1)"
+	},
+
+	"heappop" : {
+		"prefix": "heappop(hq)",
+		"body": "heappop(hq)"
+	},
+
+	"from itertools import" : {
+		"prefix": "from itertools",
+		"body": "from itertools import permutations,combinations,groupby\n"
+	},
+
+	"from bisect import" : {
+		"prefix": "from bisect",
+		"body": "from bisect import bisect_left, bisect_right"
+	},
+
+	"from copy import" : {
+		"prefix": "from copy",
+		"body": "from copy import deepcopy"
+	},
+
+	"from sortedcontainers import" : {
+		"prefix": "from sortedcontainers",
+		"body": "from sortedcontainers import SortedList,SortedSet,SortedDict\n"
+	},
+
+	"atcoder.dsu" : {
+		"prefix": "from atcoder.dsu",
+		"body": "from atcoder.dsu import DSU\n"
+	},
+
+	"atcoder.fenwicktree" : {
+		"prefix": "from atcoder.fenwicktree",
+		"body": "from atcoder.fenwicktree import FenwickTree\n"
+	},
+
+	"atcoder.floor_sum" : {
+		"prefix": "from atcoder.math",
+		"body": "from atcoder.math import floor_sum\n"
+	},
+
+	"atcoder.maxflow" : {
+		"prefix": "from atcoder.maxflow",
+		"body": "from atcoder.maxflow import MFGraph\n"
+	},
+
+	"atcoder.mincostflow" : {
+		"prefix": "from atcoder.mincostflow",
+		"body": "from atcoder.mincostflow import MCFGraph\n"
+	},
+
+	"atcoder.convolution" : {
+		"prefix": "from atcoder.convolution",
+		"body": "from atcoder.convolution import convolution\n"
+	},
+
+	"atcoder.scc" : {
+		"prefix": "from atcoder.scc",
+		"body": "from atcoder.scc import SCCGraph\n"
+	},
+
+	"atcoder.twosat" : {
+		"prefix": "from atcoder.twosat",
+		"body": "from atcoder.twosat import TwoSAT\n"
+	},
+
+	"atcoder.string" : {
+		"prefix": "from atcoder.string",
+		"body": "from atcoder.string import suffix_array, lcp_array, z_algorithm\n"
+	},
+
+	"atcoder.segtree" : {
+		"prefix": "from atcoder.segtree",
+		"body": "from atcoder.segtree import SegTree\n"
+	},
+
+	"atcoder.lazysegtree" : {
+		"prefix": "from atcoder.lazysegtree",
+		"body": "from atcoder.lazysegtree import LazySegTree\n"
+	}
+}
