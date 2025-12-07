@@ -1,91 +1,80 @@
-class FenwickTree:
+class Binomial:
     """
-    区間の積を O(log n) で計算
+    二項係数 Mod
 
-    Attributes:
-        op    : 二項演算
-        op_inv: opの逆演算
-        e     : opの単位元
-
-    Methods:\n
-        get(i)         : i番目を取得
-        set(i, x)      : i番目をxにする
-        apply(i, x)      : i番目にxを作用
-        prod(l, r)      : 区間[l, r)の総積
+    Methods:
+        fact(n)                          : n!
+        ifact(n)                         : n! ^ -1
+        permutation(n, r)                : nPr
+        permutation_with_repetition(n, r): n^r
+        combination(n, r)                : nCr
+        combination_with_repetition(n, r): nHr
+        multiset_permutation(frequencies): aabbbccccのような順列
     """
-    def __init__(self, op: object, op_inv: object, e: object, data: list|int) -> None:
-        if isinstance(data,int):
-            data = [e for _ in range(data)]
-        self._n = len(data)
-        self._op = op
-        self._op_inv = op_inv
-        self._e = e
-        self._data = data
-        self._tree = [0] * (self._n + 1)
-        self.all_prod = self._build(data)
+    def __init__(self, n: int, mod: int) -> None:
+        """n: n!まで計算できる"""
+        fact = [1 for _ in range(n+1)]
+        ifact = [1 for _ in range(n+1)]
+        for i in range(1, n+1):
+            fact[i] = fact[i-1] * i % mod
+        ifact[n] = pow(fact[n], mod-2, mod)
+        for i in range(n-1, -1, -1):
+            ifact[i] = ifact[i+1] * (i+1) % mod
 
-    def _build(self, data: list) -> object:
-        cun = [self._e for _ in range(self._n + 1)]
-        for i in range(1, self._n+1):
-            cun[i] = self._op(cun[i-1], data[i-1])
-            self._tree[i] = self._op_inv(cun[i], cun[i-(-i&i)])
-        return cun[-1]
+        self._fact = fact
+        self._ifact = ifact
+        self._mod = mod
+        self._n = n
     
-    def __len__(self):
-        """データの大きさ"""
-        return self._n
+    def fact(self, n: int) -> int:
+        """n!"""
+        return self._fact[n]
     
-    def __getitem__(self, i: int) -> object:
-        """i番目を取得"""
-        return self.get(i)
+    def ifact(self, n: int) -> int:
+        """n!^(-1)"""
+        return self._ifact[n]
+
+    def permutation(self, n: int, r: int) -> int:
+        """n個の中からr個選んで並べる順列の数"""
+        if n < r or r < 0:
+            return 0
+        return self._fact[n] * self._ifact[n-r] % self._mod
     
-    def __setitem__(self, i: int, x: object) -> None:
-        """i番目をxにする"""
-        self.set(i, x)
+    def permutation_with_repetition(self, n: int, r: int) -> int:
+        """n個の中からr個 重複を許して並べる順列の個数"""
+        if r < 0:
+            return 0
+        return pow(n, r, self._mod)
+
+    def combination(self, n: int, r: int) -> int:
+        """n個の中からr個選ぶ組み合わせの数"""
+        if n < r or r < 0:
+            return 0
+        return self._fact[n] * self._ifact[r] * self._ifact[n-r] % self._mod
     
-    def __repr__(self) -> str:
-        return f'FenwickTree {self._data}'
+    def combination_with_repetition(self, n: int, r: int) -> int:
+        """重複組み合わせ"""
+        return self.combination(n+r-1, r)
     
-    def get(self, i: int) -> object:
-        """i番目を取得"""
-        return self._data[i]
+    def multiset_permutation(self, frequencies: list[int]) -> int:
+        """aabbbccccのような順列"""
+        res = self._fact[sum(frequencies)]
+        for i in frequencies:
+            res = (res * self._ifact[i]) % self._mod
+        return res
     
-    def apply(self, i: int, x: object) -> None:
-        """i番目にxを作用。写像はop"""
-        self._data[i] = self._op(self._data[i], x)
-        self.all_prod = self._op(self.all_prod, x)
-        i += 1
-        while i <= self._n:
-            self._tree[i] = self._op(self._tree[i], x)
-            i += -i & i
-    
-    def set(self, i: int, x: object) -> None:
-        """加えるではなく、更新"""
-        self._apply(i, self._op_inv(x, self._data[i]))
-    
-    def _prod(self, i: int) -> object:
-        """区間[0, i)の積"""
-        prod = self._e
-        while i > 0:
-            prod = self._op(prod, self._tree[i])
-            i -= -i & i
-        return prod
-    
-    def prod(self, l: int, r: int) -> object:
-        """区間[l,r)の総積"""
-        return self._op_inv(self._prod(r), self._prod(l))
-    
-def op(x,y):
-    return x+y
-def op_inv(x,y):
-    return x-y
-    
-n,q = map(int,input().split())
-a = list(map(int,input().split()))
-ft = FenwickTree(op, op_inv, 0, a)
-for _ in range(q):
-    t,l,r = map(int,input().split())
-    if t == 0:
-        ft.apply(l, r)
-    else:
-        print(ft.prod(l,r))
+import random
+
+mod = 998244353
+#print(random.randint(0, mod-1))
+
+n,m = map(int,input().split())
+binom = Binomial(n, mod)
+
+ans = 1
+
+for _ in range(m):
+    l,r = map(int,input().split())
+    ans += pow(2, r-l, mod) - 2
+    ans %= mod
+print(ans)

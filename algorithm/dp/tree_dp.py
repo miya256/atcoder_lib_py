@@ -83,3 +83,5 @@ def propagate(pdata,cdata,par,ch,w):
 def merge(data1,data2,v):
     """vを根とする部分木同士を合成"""
     pass
+
+# 初期値は関数にすればいい init()
