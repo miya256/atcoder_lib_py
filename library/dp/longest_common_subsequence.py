@@ -1,3 +1,5 @@
+# もし片方に重複がない（順列）ならラベルつけして、LISできる
+
 def lcs(s: str, t: str, is_restored: bool = False) -> int|str:
     """s,tの最長共通部分列"""
     dp = [[0]*(len(t)+1) for _ in range(len(s)+1)]
