@@ -6,11 +6,11 @@ class SegmentTree(Generic[Monoid]):
     """
     一点更新、区間取得を O(log n) で計算
 
-    Attributes\n:
+    Attributes:
         op(x, y): xとyの二項演算（関数型）
         e       : opの単位元
 
-    Methods:\n
+    Methods:
         get(i)    : i番目を取得
         set(i, x) : i番目をxにする
         prod(i, x): 区間[l, r)の積

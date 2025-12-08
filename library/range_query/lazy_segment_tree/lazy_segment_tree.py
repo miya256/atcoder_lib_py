@@ -5,7 +5,7 @@ Operator = TypeVar("Operator")
 
 class LazySegmentTree(Generic[Monoid, Operator]):
     """
-    一点更新、区間取得を O(log n) で計算
+    区間作用、区間取得を O(log n) で計算
 
     Attributes:
         op(x,y)         : 二項演算
@@ -206,26 +206,3 @@ class LazySegmentTree(Generic[Monoid, Operator]):
         self._all_apply(2*i, self._lazy[i])
         self._all_apply(2*i+1, self._lazy[i])
         self._lazy[i] = self._id
-        
-
-mod = 998244353
-def op(a,b):
-    return (a[0]+b[0])%mod, a[1]+b[1]
-def mapping(f,x):
-    return (f[0]*x[0] + f[1]*x[1])%mod, x[1]
-def composition(g,f):
-    return (f[0]*g[0])%mod, (f[1]*g[0]+g[1])%mod
-
-n,q = map(int,input().split())
-a = list(map(int,input().split()))
-a = [(i,1) for i in a]
-seg = LazySegmentTree(op,(0,0),mapping,composition,(1,0),a)
-
-for _ in range(q):
-    query = list(map(int,input().split()))
-    if query[0] == 0:
-        _,l,r,b,c = query
-        seg.apply(l,r,(b,c))
-    else:
-        _,l,r = query
-        print(seg.prod(l,r)[0])
