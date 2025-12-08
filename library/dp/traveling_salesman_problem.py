@@ -1,4 +1,6 @@
-def tsp(n: int, dist: object) -> int:
+from typing import Callable
+
+def tsp(n: int, dist: Callable[[int, int], int]) -> int:
     """
     1周して戻ってくる最短距離
     dist(i,j): iとjの距離を返す関数

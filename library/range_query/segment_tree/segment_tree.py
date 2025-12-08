@@ -1,4 +1,8 @@
-class SegmentTree:
+from typing import Generic, TypeVar, Callable
+
+Monoid = TypeVar("Monoid")
+
+class SegmentTree(Generic[Monoid]):
     """
     一点更新、区間取得を O(log n) で計算
 
@@ -15,41 +19,46 @@ class SegmentTree:
         min_left(r, condition) : condition(prod[j,r))が真になる最小のjを返す
     """
     
-    def __init__(self, op: object, e: object, data: list[object]|int) -> None:
+    def __init__(
+        self,
+        op: Callable[[Monoid, Monoid], Monoid],
+        e: Monoid,
+        data: list[Monoid] | int
+    ) -> None:
         if isinstance(data, int):
             data = [e for _ in range(data)]
         self._n = len(data)
         self._op = op
         self._e = e
-        self._size = 1 << (len(data)-1).bit_length() #最下段の長さ
-        self._tree = [e for _ in range(self._size*2)] #tree[1]が最上段,tree[size]が元のdata[0]
+        self._size = 1 << (len(data)-1).bit_length() # 最下段の長さ
+        self._tree = [e for _ in range(self._size*2)] # tree[1]が最上段,tree[size]が元のdata[0]
         self._build(data)
     
-    def _build(self, data: list[object]) -> None:
+    def _build(self, data: list[Monoid]) -> None:
         for i, val in enumerate(data):
             self._tree[i+self._size] = val
         for i in range(self._size-1, 0, -1):
             self._update(i)
     
-    def __len__(self):
+    def __len__(self) -> int:
         return self._n
     
-    def __getitem__(self, i: int) -> object:
+    def __getitem__(self, i: int) -> Monoid:
         """i番目を取得"""
         return self.get(i)
     
-    def __setitem__(self, i: int, x: object) -> None:
+    def __setitem__(self, i: int, x: Monoid) -> None:
         """i番目にxを代入"""
         self.set(i, x)
     
     def __repr__(self) -> str:
         return f'SegmentTree {self._tree[self._size:self._size+self._n]}'
     
-    def get(self, i: int) -> object:
+    def get(self, i: int) -> Monoid:
         """i番目を取得"""
         return self._tree[i+self._size]
     
-    def set(self, i: int, x: object) -> None:
+    def set(self, i: int, x: Monoid) -> None:
         """i番目にxを代入"""
         i += self._size
         self._tree[i] = x
@@ -57,7 +66,7 @@ class SegmentTree:
             i >>= 1
             self._update(i)
     
-    def prod(self, l: int, r: int) -> object:
+    def prod(self, l: int, r: int) -> Monoid:
         """区間[l, r)の積"""
         lt, rt = self._e, self._e
         l += self._size
@@ -73,11 +82,11 @@ class SegmentTree:
             r >>= 1
         return self._op(lt, rt)
     
-    def all_prod(self) -> object:
+    def all_prod(self) -> Monoid:
         """全体の積"""
         return self._tree[1]
     
-    def max_right(self, l: int, condition: object) -> int:
+    def max_right(self, l: int, condition: Callable[[Monoid], bool]) -> int:
         """condition(prod[l,j))が真になる最大のjを返す"""
         if l == self._n:
             return self._n
@@ -99,7 +108,7 @@ class SegmentTree:
             if l & -l == l: #condition(prod(l,n)) = Trueなら(lが2の累乗)
                 return self._n #一番右を返す
         
-    def min_left(self, r: int, condition: object) -> int:
+    def min_left(self, r: int, condition: Callable[[Monoid], bool]) -> int:
         """condition(prod[j,r))が真になる最小のjを返す"""
         if r == 0:
             return 0

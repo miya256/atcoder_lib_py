@@ -1,8 +1,10 @@
+from typing import Callable
+
 class SparseTable:
     """
     冪等性が必要なのでmax,minとかはOK、sumとかはダメ
     """
-    def __init__(self, op: object, data: list) -> None:
+    def __init__(self, op: Callable, data: list) -> None:
         self.op = op
         self.data = [[(v, i) for i, v in enumerate(data)]]
         for i in range(1, len(data).bit_length()):

@@ -1,3 +1,5 @@
+from typing import Callable
+
 class Heap:
     """
     優先度付きキュー（ヒープ）
@@ -6,7 +8,7 @@ class Heap:
         add(value): 追加
         pop()     : 削除
     """
-    def __init__(self, compare: object) -> None:
+    def __init__(self, compare: Callable[[object, object], bool]) -> None:
         self._heap = [None]
         self._compare = compare
     

@@ -1,4 +1,8 @@
-class FenwickTree:
+from typing import Generic, TypeVar, Callable
+
+T = TypeVar("T")
+
+class FenwickTree(Generic[T]):
     """
     区間の積を O(log n) で計算
 
@@ -13,7 +17,12 @@ class FenwickTree:
         apply(i, x)      : i番目にxを作用
         prod(l, r)      : 区間[l, r)の総積
     """
-    def __init__(self, op: object, op_inv: object, e: object, data: list|int) -> None:
+    def __init__(
+        self,
+        op: Callable[[T, T], T],
+        op_inv: Callable[[T, T], T],
+        e: T, data: list|int
+    ) -> None:
         if isinstance(data,int):
             data = [e for _ in range(data)]
         self._n = len(data)
@@ -24,34 +33,34 @@ class FenwickTree:
         self._tree = [0] * (self._n + 1)
         self.all_prod = self._build(data)
 
-    def _build(self, data: list) -> object:
+    def _build(self, data: list) -> T:
         cun = [self._e for _ in range(self._n + 1)]
         for i in range(1, self._n+1):
             cun[i] = self._op(cun[i-1], data[i-1])
             self._tree[i] = self._op_inv(cun[i], cun[i-(-i&i)])
         return cun[-1]
     
-    def __len__(self):
+    def __len__(self) -> int:
         """データの大きさ"""
         return self._n
     
-    def __getitem__(self, i: int) -> object:
+    def __getitem__(self, i: int) -> T:
         """i番目を取得"""
         return self.get(i)
     
-    def __setitem__(self, i: int, x: object) -> None:
+    def __setitem__(self, i: int, x: T) -> None:
         """i番目をxにする"""
         self.set(i, x)
     
     def __repr__(self) -> str:
         return f'FenwickTree {self._data}'
     
-    def get(self, i: int) -> object:
+    def get(self, i: int) -> T:
         """i番目を取得"""
         assert 0 <= i < self._n, f"index error i={i}"
         return self._data[i]
     
-    def apply(self, i: int, x: object) -> None:
+    def apply(self, i: int, x: T) -> None:
         """i番目にxを作用。写像はop"""
         assert 0 <= i < self._n, f"index error i={i}"
         self._data[i] = self._op(self._data[i], x)
@@ -61,12 +70,12 @@ class FenwickTree:
             self._tree[i] = self._op(self._tree[i], x)
             i += -i & i
     
-    def set(self, i: int, x: object) -> None:
+    def set(self, i: int, x: T) -> None:
         """加えるではなく、更新"""
         assert 0 <= i < self._n, f"index error i={i}"
         self.apply(i, self._op_inv(x, self._data[i]))
     
-    def _prod(self, i: int) -> object:
+    def _prod(self, i: int) -> T:
         """区間[0, i)の積"""
         prod = self._e
         while i > 0:
@@ -74,7 +83,7 @@ class FenwickTree:
             i -= -i & i
         return prod
     
-    def prod(self, l: int, r: int) -> object:
+    def prod(self, l: int, r: int) -> T:
         """区間[l,r)の総積"""
         assert 0 <= l <= r <= self._n, f"index error [l,r)=[{l},{r})"
         return self._op_inv(self._prod(r), self._prod(l))
