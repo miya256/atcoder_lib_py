@@ -1,3 +1,5 @@
+from typing import Iterator
+
 class FenwickTree:
     """
     区間の和を O(log n) で計算
@@ -38,6 +40,10 @@ class FenwickTree:
     def __setitem__(self, i: int, x: int) -> None:
         """i番目をxにする"""
         self.set(i, x)
+    
+    def __iter__(self) -> Iterator[int]:
+        for i in range(self._n):
+            yield self.get(i)
     
     def __repr__(self) -> str:
         return f'FenwickTree {self._data}'

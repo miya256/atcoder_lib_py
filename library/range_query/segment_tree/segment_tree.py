@@ -1,4 +1,4 @@
-from typing import Generic, TypeVar, Callable
+from typing import Generic, TypeVar, Callable, Iterator
 
 Monoid = TypeVar("Monoid")
 
@@ -50,9 +50,13 @@ class SegmentTree(Generic[Monoid]):
     def __setitem__(self, i: int, x: Monoid) -> None:
         """i番目にxを代入"""
         self.set(i, x)
+
+    def __iter__(self) -> Iterator[Monoid]:
+        for i in range(self._n):
+            yield self.get(i)
     
     def __repr__(self) -> str:
-        return f'SegmentTree {self._tree[self._size:self._size+self._n]}'
+        return f'SegmentTree {list(self)}'
     
     def get(self, i: int) -> Monoid:
         """i番目を取得"""

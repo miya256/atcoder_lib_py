@@ -1,4 +1,4 @@
-from typing import Generic, TypeVar, Callable
+from typing import Generic, TypeVar, Callable, Iterator
 
 Monoid = TypeVar("Monoid")
 Operator = TypeVar("Operator")
@@ -61,8 +61,12 @@ class LazySegmentTree(Generic[Monoid, Operator]):
     def __setitem__(self, i: int, x: Monoid) -> None:
         self.set(i, x)
     
+    def __iter__(self) -> Iterator[Monoid]:
+        for i in range(self._n):
+            yield self.get(i)
+    
     def __repr__(self) -> str:
-        return f'LazySegmentTree {[self[i] for i in range(self._n)]}'
+        return f'LazySegmentTree {list(self)}'
     
     def get(self, p: int) -> Monoid:
         p += self._size
