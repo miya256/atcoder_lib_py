@@ -210,26 +210,36 @@ class LazySegmentTree(Generic[Monoid, Operator]):
         self._all_apply(2*i, self._lazy[i])
         self._all_apply(2*i+1, self._lazy[i])
         self._lazy[i] = self._id
-        
 
-mod = 998244353
-def op(a,b):
-    return (a[0]+b[0])%mod, a[1]+b[1]
+def encode(val, len):
+    return len << 32 | val
+def decode(data):
+    return data % (1<<32), data >> 32
+
+def op(x,y):
+    x0, x1 = decode(x)
+    y0, y1 = decode(y)
+    return encode((x0+y0)%mod, x1+y1)
+
 def mapping(f,x):
-    return (f[0]*x[0] + f[1]*x[1])%mod, x[1]
+    if f is None:
+        return x
+    x0, x1 = decode(x)
+    return encode(f*x1%mod, x1)
+
 def composition(g,f):
-    return (f[0]*g[0])%mod, (f[1]*g[0]+g[1])%mod
+    if g is None:
+        return f
+    return g
 
-n,q = map(int,input().split())
+n,m = map(int,input().split())
 a = list(map(int,input().split()))
-a = [(i,1) for i in a]
-seg = LazySegmentTree(op,(0,0),mapping,composition,(1,0),a)
-
-for _ in range(q):
-    query = list(map(int,input().split()))
-    if query[0] == 0:
-        _,l,r,b,c = query
-        seg.apply(l,r,(b,c))
-    else:
-        _,l,r = query
-        print(seg.prod(l,r)[0])
+a = [encode(ai, 1) for ai in a]
+mod = 998244353
+seg = LazySegmentTree(op, 0, mapping, composition, None, a)
+for _ in range(m):
+    l,r = map(int,input().split())
+    s = decode(seg.prod(l-1,r))[0]
+    seg.apply(l-1, r, s * pow(r-l+1,mod-2,mod) % mod)
+for i in range(n):
+    print(decode(seg[i])[0])

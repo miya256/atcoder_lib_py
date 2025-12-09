@@ -69,14 +69,14 @@ class LazySegmentTree(Generic[Monoid, Operator]):
         return f'LazySegmentTree {list(self)}'
     
     def get(self, p: int) -> Monoid:
-        assert 0 <= i < self._n, f"index error i={i}"
+        assert 0 <= p < self._n, f"index error p={p}"
         p += self._size
         for i in range(self._log, 0, -1): #lazyを上から伝播させて
             self._push(p >> i)
         return self._tree[p]
     
     def set(self, p: int, x: Monoid) -> None:
-        assert 0 <= i < self._n, f"index error i={i}"
+        assert 0 <= p < self._n, f"index error p={p}"
         p += self._size
         for i in range(self._log, 0, -1): #lazyを上から伝播させて
             self._push(p >> i)
