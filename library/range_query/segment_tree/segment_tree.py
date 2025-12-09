@@ -60,10 +60,12 @@ class SegmentTree(Generic[Monoid]):
     
     def get(self, i: int) -> Monoid:
         """i番目を取得"""
+        assert 0 <= i < self._n, f"index error i={i}"
         return self._tree[i+self._size]
     
     def set(self, i: int, x: Monoid) -> None:
         """i番目にxを代入"""
+        assert 0 <= i < self._n, f"index error i={i}"
         i += self._size
         self._tree[i] = x
         while i:
@@ -72,6 +74,7 @@ class SegmentTree(Generic[Monoid]):
     
     def prod(self, l: int, r: int) -> Monoid:
         """区間[l, r)の積"""
+        assert 0 <= l <= r <= self._n, f"index error [l,r)=[{l},{r})"
         lt, rt = self._e, self._e
         l += self._size
         r += self._size
@@ -92,6 +95,7 @@ class SegmentTree(Generic[Monoid]):
     
     def max_right(self, l: int, condition: Callable[[Monoid], bool]) -> int:
         """condition(prod[l,j))が真になる最大のjを返す"""
+        assert 0 <= l <= self._n, f"index error l={l}"
         if l == self._n:
             return self._n
         
@@ -114,6 +118,7 @@ class SegmentTree(Generic[Monoid]):
         
     def min_left(self, r: int, condition: Callable[[Monoid], bool]) -> int:
         """condition(prod[j,r))が真になる最小のjを返す"""
+        assert 0 <= r <= self._n, f"index error r={r}"
         if r == 0:
             return 0
         

@@ -69,12 +69,14 @@ class LazySegmentTree(Generic[Monoid, Operator]):
         return f'LazySegmentTree {list(self)}'
     
     def get(self, p: int) -> Monoid:
+        assert 0 <= i < self._n, f"index error i={i}"
         p += self._size
         for i in range(self._log, 0, -1): #lazyを上から伝播させて
             self._push(p >> i)
         return self._tree[p]
     
     def set(self, p: int, x: Monoid) -> None:
+        assert 0 <= i < self._n, f"index error i={i}"
         p += self._size
         for i in range(self._log, 0, -1): #lazyを上から伝播させて
             self._push(p >> i)
@@ -85,6 +87,7 @@ class LazySegmentTree(Generic[Monoid, Operator]):
     
     def prod(self, l: int, r: int) -> Monoid:
         """区間[l, r)の積"""
+        assert 0 <= l <= r <= self._n, f"index error [l,r)=[{l},{r})"
         if l == r:
             return self._e
         l += self._size
@@ -112,6 +115,7 @@ class LazySegmentTree(Generic[Monoid, Operator]):
     
     def apply(self, l: int, r: int, f: Operator) -> None:
         """区間[l, r)にfを作用"""
+        assert 0 <= l <= r <= self._n, f"index error [l,r)=[{l},{r})"
         if l == r:
             return
         l += self._size
@@ -144,6 +148,7 @@ class LazySegmentTree(Generic[Monoid, Operator]):
     
     def max_right(self, l: int, condition: Callable[[Monoid], bool]) -> int:
         """condition(prod[l,j))が真になる最大のjを返す"""
+        assert 0 <= l <= self._n, f"index error l={l}"
         if l == self._n:
             return self._n
         
@@ -171,6 +176,7 @@ class LazySegmentTree(Generic[Monoid, Operator]):
     
     def min_left(self, r: int, condition: Callable[[Monoid], bool]) -> int:
         """condition(prod[j,r))が真になる最小のjを返す"""
+        assert 0 <= r <= self._n, f"index error r={r}"
         if r == 0:
             return 0
         
