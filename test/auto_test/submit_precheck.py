@@ -21,6 +21,11 @@ def check_keywords(problem_spec: ProblemSpec) -> list[Warning]:
         "1000000007": "mod はとりましたか？",
     }
 
+    if problem_spec.problem_statement is None:
+        return []
+    if problem_spec.output_statement is None:
+        return []
+
     warnings: list[Warning] = []
     for keyword, message in keywords.items():
         if keyword in problem_spec.problem_statement or keyword in problem_spec.output_statement:

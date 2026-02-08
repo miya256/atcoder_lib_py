@@ -55,6 +55,7 @@ class ProblemSpec:
         for tag in self.soup.find_all("h3"):
             if tag.text == "出力":
                 return tag.find_next().text
+        self._print_parse_error("出力の説明文の取得に失敗しました")
         return None
     
     def _parse_input_samples(self) -> dict[Optional[str]]:
