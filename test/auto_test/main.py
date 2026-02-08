@@ -6,12 +6,7 @@ from terminal_formatter import format_text, SUCCESS_COLOR, ERROR_COLOR
 from url_getter import get_current_url
 from access import access
 
-from problem_info_getter import (
-    get_time_limit,
-    get_input_samples,
-    get_output_samples,
-    get_problem_statement,
-)
+from parser import ProblemSpec
 from tester import test
 from submit_precheck import check_all
 
@@ -41,28 +36,22 @@ def main():
 
     # ページにアクセス
     try:
-        user, soup = access(url, cookie_value)
+        user, html = access(url, cookie_value)
         print(format_text("アクセス成功", fg=SUCCESS_COLOR))
         print(user)
         print(f"URL: {url}\n")
     except Exception as e:
         sys.exit(print_error(f"アクセス失敗\n{e}"))
     
-    # 問題文やサンプルを取得
-    try:
-        time_limit_s = get_time_limit(soup)
-        input_samples = get_input_samples(soup)
-        output_samples = get_output_samples(soup)
-        problem_statement = get_problem_statement(soup)
-    except Exception as e:
-        sys.exit(print_error(e))
+    # 問題文やサンプルをパース
+    problem_spec = ProblemSpec(html)
     
     # テスト
     src = "./test/atcoder.py"
-    test(src, time_limit_s, input_samples, output_samples)
+    test(src, problem_spec)
 
     # 提出前チェック
-    check_all(problem_statement)
+    check_all(problem_spec)
 
     # コードを整える（assert文除去など）
     submit = "./test/auto_test/submit.py"

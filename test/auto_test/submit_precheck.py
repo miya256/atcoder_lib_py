@@ -1,6 +1,5 @@
-from bs4 import BeautifulSoup
-
 from terminal_formatter import format_text
+from parser import ProblemSpec
 
 
 class Warning:
@@ -13,30 +12,30 @@ class Warning:
         return self.text
     
 
-def check_mod(problem_statement: str) -> Warning | None:
+def check_mod(problem_spec: ProblemSpec) -> Warning | None:
     """998244353があるときに警告"""
-    if "998244353" in problem_statement:
+    if "998244353" in problem_spec.problem_statement:
         return Warning("mod はとりましたか？")
 
-def check_lex_order(problem_statement: str) -> Warning | None:
+def check_lex_order(problem_spec: ProblemSpec) -> Warning | None:
     """辞書順という言葉があるときに警告"""
-    if "辞書順" in problem_statement:
+    if "辞書順" in problem_spec.problem_statement:
         return Warning("辞書順にしましたか？")
 
-def check_numeric_order(problem_statement: str) -> Warning | None:
+def check_numeric_order(problem_spec: ProblemSpec) -> Warning | None:
     """昇順という言葉があるときに警告"""
-    if "昇順" in problem_statement:
+    if "昇順" in problem_spec.problem_statement:
         return Warning("昇順にしましたか？")
 
 
-def check_all(problem_statement: str) -> None:
+def check_all(problem_spec: ProblemSpec) -> None:
     warnings = []
 
-    if warning := check_mod(problem_statement):
+    if warning := check_mod(problem_spec):
         warnings.append(warning)
-    if warning := check_lex_order(problem_statement):
+    if warning := check_lex_order(problem_spec):
         warnings.append(warning)
-    if warning := check_numeric_order(problem_statement):
+    if warning := check_numeric_order(problem_spec):
         warnings.append(warning)
 
     if warnings:
