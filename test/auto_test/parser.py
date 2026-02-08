@@ -3,6 +3,8 @@ from typing import Optional
 
 from bs4 import BeautifulSoup
 
+from terminal_formatter import format_text, ERROR_COLOR
+
 
 class ProblemSpec:
     def __init__(self, html: str) -> None:
@@ -12,6 +14,9 @@ class ProblemSpec:
         self.input_samples: dict[Optional[str]] = self._parse_input_samples()
         self.output_samples: dict[Optional[str]] = self._parse_output_samples()
         self.problem_statement: Optional[str] = self._parse_problem_statement()
+
+    def _print_parse_error(self, message) -> None:
+        print(format_text(message, fg=ERROR_COLOR))
     
     def _parse_time_limit(self) -> float:
         for tag in self.soup.find_all("p"):
@@ -24,9 +29,9 @@ class ProblemSpec:
                     value /= 1000
                 return value
             else:
-                # raise Exception(f"実行時間制限が期待した文字列と一致しませんでした: {tag.text!r}")
+                self._print_parse_error(f"実行時間制限が期待した文字列と一致しませんでした: {tag.text!r}")
                 return 2.0 # 見つからなかったらとりあえず2秒
-        # raise Exception("実行時間制限が見つかりませんでした")
+        self._print_parse_error("実行時間制限が見つかりませんでした")
         return 2.0
     
     def _parse_input_samples(self) -> dict[Optional[str]]:
@@ -35,7 +40,7 @@ class ProblemSpec:
             if match := re.search(r"入力例 (\d)", tag.text):
                 sample_number = int(match.group(1))
                 if sample_number in input_samples:
-                    # raise Exception(f"入力例番号に重複が見られました: 入力例 {sample_number}")
+                    self._print_parse_error(f"入力例番号に重複が見られました: 入力例 {sample_number}")
                     input_samples[sample_number] = None
                     continue
                 pre = tag.find_next("pre")
@@ -48,7 +53,7 @@ class ProblemSpec:
             if match := re.search(r"出力例 (\d)", tag.text):
                 sample_number = int(match.group(1))
                 if sample_number in output_samples:
-                    # raise Exception(f"出力例番号に重複が見られました: 出力例 {sample_number}")
+                    self._print_parse_error(f"出力例番号に重複が見られました: 出力例 {sample_number}")
                     output_samples[sample_number] = None
                     continue
                 pre = tag.find_next("pre")
@@ -58,6 +63,6 @@ class ProblemSpec:
     def _parse_problem_statement(self) -> Optional[str]:
         section = self.soup.find("section")
         if section is None or "問題文" not in section.find_next("h3"):
-            # raise Exception("問題文の取得に失敗しました")
+            self._print_parse_error("問題文の取得に失敗しました")
             return None
         return section.text.strip()
