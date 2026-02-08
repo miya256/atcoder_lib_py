@@ -4,7 +4,7 @@ import sys
 from access import access
 from url_getter import get_current_url
 from terminal_formatter import format_text, SUCCESS_COLOR, ERROR_COLOR
-from problem_info import get_time_limit, get_input_samples, get_output_samples, get_problem_statement
+from problem_info_getter import get_time_limit, get_input_samples, get_output_samples, get_problem_statement
 from tester import test
 from submit_precheck import check_all
 from remove_assert import remove_assert
