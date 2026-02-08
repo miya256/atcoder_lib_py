@@ -104,12 +104,12 @@ def test(src: str, problem_spec: ProblemSpec) -> None:
     for i in sorted(set(input_samples.keys()) | set(output_samples.keys())):
         if (i not in input_samples) or (i not in output_samples):
             message = format_text(
-                f"入出力例 {i} の組みが存在しませんでした\n", 
+                f"Sample {i} - 入出力例の組みが存在しませんでした", 
                 fg="#000000",
-                bg="#ff7700",
+                bg="#ffff00",
                 styles=[Style.Bold]
-            )
-            result_list.append(format_text("SKIP", fg="#ff7700", styles=[Style.Bold]))
+            ) + "\n"
+            result_list.append(format_text("SKIP", fg="#000000", bg="#ffff00", styles=[Style.Bold]))
             print(message)
             continue
 
