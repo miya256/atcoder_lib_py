@@ -20,6 +20,7 @@ class ProblemSpec:
         print(format_text(message, fg=ERROR_COLOR))
     
     def _parse_time_limit(self) -> float:
+        default_time_limit = 2.0
         for tag in self.soup.find_all("p"):
             if "Time Limit" not in tag.text:
                 continue
@@ -31,11 +32,12 @@ class ProblemSpec:
                 return value
             else:
                 self._print_parse_error(f"実行時間制限が期待した文字列と一致しませんでした: {tag.text!r}")
-                return 2.0 # 見つからなかったらとりあえず2秒
+                return default_time_limit
         self._print_parse_error("実行時間制限が見つかりませんでした")
-        return 2.0
+        return default_time_limit
     
     def _parse_memory_limit(self) -> int:
+        default_memory_limit = 1024
         for tag in self.soup.find_all("p"):
             if "Memory Limit" not in tag.text:
                 continue
@@ -44,8 +46,9 @@ class ProblemSpec:
                 return value
             else:
                 self._print_parse_error(f"実行時間制限が期待した文字列と一致しませんでした: {tag.text!r}")
+                return default_memory_limit
         self._print_parse_error("実行時間制限が見つかりませんでした")
-        return 1024 # たぶんこれくらい
+        return default_memory_limit
     
     def _parse_input_samples(self) -> dict[Optional[str]]:
         input_samples = {}
