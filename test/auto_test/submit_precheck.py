@@ -18,10 +18,15 @@ def check_mod(problem_statement: str) -> Warning | None:
     if "998244353" in problem_statement:
         return Warning("mod はとりましたか？")
 
-def check_lexorder(problem_statement: str) -> Warning | None:
+def check_lex_order(problem_statement: str) -> Warning | None:
     """辞書順という言葉があるときに警告"""
     if "辞書順" in problem_statement:
         return Warning("辞書順にしましたか？")
+
+def check_numeric_order(problem_statement: str) -> Warning | None:
+    """昇順という言葉があるときに警告"""
+    if "昇順" in problem_statement:
+        return Warning("昇順にしましたか？")
 
 
 def check_all(problem_statement: str) -> None:
@@ -29,7 +34,9 @@ def check_all(problem_statement: str) -> None:
 
     if warning := check_mod(problem_statement):
         warnings.append(warning)
-    if warning := check_lexorder(problem_statement):
+    if warning := check_lex_order(problem_statement):
+        warnings.append(warning)
+    if warning := check_numeric_order(problem_statement):
         warnings.append(warning)
 
     if warnings:
