@@ -12,31 +12,27 @@ class Warning:
         return self.text
     
 
-def check_mod(problem_spec: ProblemSpec) -> Warning | None:
-    """998244353があるときに警告"""
-    if "998244353" in problem_spec.problem_statement:
-        return Warning("mod はとりましたか？")
+def check_keywords(problem_spec: ProblemSpec) -> list[Warning]:
+    keywords = {
+        "辞書順": "辞書順にしましたか？",
+        "昇順": "昇順にしましたか？",
+        "降順": "降順にしましたか？",
+        "998244353": "mod はとりましたか？",
+        "1000000007": "mod はとりましたか？",
+    }
 
-def check_lex_order(problem_spec: ProblemSpec) -> Warning | None:
-    """辞書順という言葉があるときに警告"""
-    if "辞書順" in problem_spec.problem_statement:
-        return Warning("辞書順にしましたか？")
+    warnings: list[Warning] = []
+    for keyword, message in keywords.items():
+        if keyword in problem_spec.problem_statement or keyword in problem_spec.output_statement:
+            warnings.append(Warning(message))
+    return warnings
 
-def check_numeric_order(problem_spec: ProblemSpec) -> Warning | None:
-    """昇順という言葉があるときに警告"""
-    if "昇順" in problem_spec.problem_statement:
-        return Warning("昇順にしましたか？")
 
 
 def check_all(problem_spec: ProblemSpec) -> None:
     warnings = []
 
-    if warning := check_mod(problem_spec):
-        warnings.append(warning)
-    if warning := check_lex_order(problem_spec):
-        warnings.append(warning)
-    if warning := check_numeric_order(problem_spec):
-        warnings.append(warning)
+    warnings.extend(check_keywords(problem_spec))
 
     if warnings:
         print(format_text("\n===== 提出前チェック =====", bg=Warning.Color))
