@@ -11,6 +11,7 @@ class ProblemSpec:
         self.soup = BeautifulSoup(html, "html.parser")
 
         self.time_limit_s: float = self._parse_time_limit()
+        self.memory_limit_mib: int = self._parse_memory_limit()
         self.input_samples: dict[Optional[str]] = self._parse_input_samples()
         self.output_samples: dict[Optional[str]] = self._parse_output_samples()
         self.problem_statement: Optional[str] = self._parse_problem_statement()
@@ -33,6 +34,15 @@ class ProblemSpec:
                 return 2.0 # 見つからなかったらとりあえず2秒
         self._print_parse_error("実行時間制限が見つかりませんでした")
         return 2.0
+    
+    def _parse_memory_limit(self) -> int:
+        for tag in self.soup.find_all("p"):
+            if "Memory Limit" not in tag.text:
+                continue
+            if match := re.search(r".*Memory Limit: (\d+) MiB", tag.text):
+                value = int(match.group(1))
+                return value
+        return 1024 # たぶんこれくらい
     
     def _parse_input_samples(self) -> dict[Optional[str]]:
         input_samples = {}
