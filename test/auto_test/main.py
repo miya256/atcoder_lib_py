@@ -7,7 +7,7 @@ from terminal_formatter import format_text, SUCCESS_COLOR, ERROR_COLOR
 from problem_info_getter import get_time_limit, get_input_samples, get_output_samples, get_problem_statement
 from tester import test
 from submit_precheck import check_all
-from remove_assert import remove_assert
+from code_refiner import refine_code
 from copy_code import copy_code
 
 
@@ -56,9 +56,9 @@ def main():
     # 提出前チェック
     check_all(problem_statement)
 
-    # assert文除去
+    # コードを整える（assert文除去など）
     submit = "./test/auto_test/submit.py"
-    remove_assert(src, submit)
+    refine_code(src, submit)
 
     # submit.pyの内容をコピー
     copy_code(submit)

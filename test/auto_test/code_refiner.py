@@ -12,3 +12,7 @@ def remove_assert(src: str, dst: str) -> None:
         for line in lines:
             if not pattern.match(line):
                 f.write(line)
+
+
+def refine_code(src: str, dst: str) -> None:
+    remove_assert(src, dst)
