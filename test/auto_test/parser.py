@@ -46,9 +46,9 @@ class ProblemSpec:
                 value = int(match.group(1))
                 return value
             else:
-                self._print_parse_error(f"実行時間制限が期待した文字列と一致しませんでした: {tag.text!r}")
+                self._print_parse_error(f"メモリ制限が期待した文字列と一致しませんでした: {tag.text!r}")
                 return default_memory_limit
-        self._print_parse_error("実行時間制限が見つかりませんでした")
+        self._print_parse_error("メモリ制限が見つかりませんでした")
         return default_memory_limit
     
     def _parse_output_statement(self) -> Optional[str]:
