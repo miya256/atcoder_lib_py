@@ -42,6 +42,9 @@ class ProblemSpec:
             if match := re.search(r".*Memory Limit: (\d+) MiB", tag.text):
                 value = int(match.group(1))
                 return value
+            else:
+                self._print_parse_error(f"実行時間制限が期待した文字列と一致しませんでした: {tag.text!r}")
+        self._print_parse_error("実行時間制限が見つかりませんでした")
         return 1024 # たぶんこれくらい
     
     def _parse_input_samples(self) -> dict[Optional[str]]:
