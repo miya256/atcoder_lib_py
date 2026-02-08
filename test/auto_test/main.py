@@ -19,6 +19,7 @@ def print_error(message: str | Exception) -> int:
 def main():
     # atcoderにアクセス -> 開発者ツール -> Aplication -> REVEL_SESSION の値をコピぺ
     # スタート -> 環境変数を編集で検索 -> 開いて編集
+    # VSCode を開きなおす（開いたままだと環境変数の更新が反映されないため）
     # 絶対に公開してはいけない
     cookie_value = os.getenv("ATCODER_COOKIE")
 
@@ -64,4 +65,5 @@ def main():
     
 
 if __name__ == "__main__":
+
     main()
