@@ -8,7 +8,7 @@ from access import access
 
 from parser import ProblemSpec
 from tester import test
-from submit_precheck import check_all
+import submit_precheck
 
 from code_refiner import refine_code
 from copy_code import copy_code
@@ -51,7 +51,7 @@ def main():
     test(src, problem_spec)
 
     # 提出前チェック
-    check_all(problem_spec)
+    submit_precheck.check_all(problem_spec)
 
     # コードを整える（assert文除去など）
     submit = "./test/auto_test/submit.py"
