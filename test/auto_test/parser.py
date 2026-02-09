@@ -16,7 +16,6 @@ class ProblemSpec:
         self.input_samples: dict[Optional[str]] = self._parse_input_samples() # 入力例
         self.output_samples: dict[Optional[str]] = self._parse_output_samples() # 出力例
         self.problem_statement: Optional[str] = self._parse_problem_statement() # 問題文
-        print(self.input_samples)
 
     def _print_parse_error(self, message) -> None:
         print(format_text(message, fg=ERROR_COLOR))
