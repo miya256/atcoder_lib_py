@@ -59,7 +59,7 @@ def main():
         src_lines: list[str] = f.readlines()
 
     # 提出前チェック
-    submit_precheck.check_all(problem_spec)
+    submit_precheck.check_all(problem_spec, src_lines)
 
     # コードを整える（assert文除去など）
     submit_lines = refine_code(src_lines)
