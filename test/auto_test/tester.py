@@ -5,6 +5,7 @@ import shutil
 import itertools
 
 from terminal_formatter import format_text, Style, ERROR_COLOR
+from parser import ProblemSpec
 
 
 RESULT_COLOR = {
@@ -96,15 +97,25 @@ def print_result(
     print(format_text(error, fg=ERROR_COLOR))
 
 
-def test(
-    src: str,
-    time_limit_s: float,
-    input_samples: list[str],
-    output_samples: list[str]
-) -> None:
+def test(src: str, problem_spec: ProblemSpec) -> None:
     result_list: list[str] = []
-    for i, (input_sample, output_sample) in enumerate(zip(input_samples, output_samples), 1):
-        result, output, error, elapsed_time = test_one(src, time_limit_s, input_sample, output_sample)
+    input_samples = problem_spec.input_samples
+    output_samples = problem_spec.output_samples
+    for i in sorted(set(input_samples.keys()) | set(output_samples.keys())):
+        if (i not in input_samples) or (i not in output_samples):
+            message = format_text(
+                f"Sample {i} - 入出力例の組みが存在しませんでした", 
+                fg="#000000",
+                bg="#ffff00",
+                styles=[Style.Bold]
+            ) + "\n"
+            result_list.append(format_text("SKIP", fg="#000000", bg="#ffff00", styles=[Style.Bold]))
+            print(message)
+            continue
+
+        input_sample = input_samples[i]
+        output_sample = output_samples[i]
+        result, output, error, elapsed_time = test_one(src, problem_spec.time_limit_s, input_sample, output_sample)
         print_result(i, result, elapsed_time, output_sample, output, error)
         result_list.append(format_text(result, fg=RESULT_COLOR[result], styles=[Style.Bold]))
     print(*result_list)

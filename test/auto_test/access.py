@@ -23,7 +23,7 @@ def check_login(session: Session) -> AtcoderUser:
     return user
 
 
-def access(url: str, cookie_value: str) -> tuple[AtcoderUser, BeautifulSoup]:
+def access(url: str, cookie_value: str) -> tuple[AtcoderUser, str]:
     session = Session()
     session.cookies.set("REVEL_SESSION", cookie_value)
 
@@ -33,4 +33,4 @@ def access(url: str, cookie_value: str) -> tuple[AtcoderUser, BeautifulSoup]:
         raise
     
     response = session.get(url)
-    return user, BeautifulSoup(response.text, "html.parser")
+    return user, response.text
