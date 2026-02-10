@@ -12,7 +12,7 @@ class ProblemSpec:
 
         self.time_limit_s: float = self._parse_time_limit() # 実行時間制限
         self.memory_limit_mib: int = self._parse_memory_limit() # メモリ制限
-        self._parse_constraints()
+        self.constraints: list[str] = self._parse_constraints()
         self.output_statement: Optional[str] = self._parse_output_statement() # 出力形式の説明
         self.input_samples: dict[Optional[str]] = self._parse_input_samples() # 入力例
         self.output_samples: dict[Optional[str]] = self._parse_output_samples() # 出力例
@@ -52,14 +52,17 @@ class ProblemSpec:
         self._print_parse_error("メモリ制限が見つかりませんでした")
         return default_memory_limit
     
-    def _parse_constraints(self):
+    def _parse_constraints(self) -> list[str]:
+        constraints: list[str] = []
         try:
             h3 = self.soup.find("h3", string="制約")
             ul = h3.find_next_sibling("ul")
             for li in ul.find_all("li"):
-                print(li)
+                constraints.append(li.text)
+            return constraints
         except:
             self._print_parse_error("制約が見つかりませんでした")
+            return []
     
     def _parse_output_statement(self) -> Optional[str]:
         try:
