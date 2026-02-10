@@ -12,6 +12,7 @@ class ProblemSpec:
 
         self.time_limit_s: float = self._parse_time_limit() # 実行時間制限
         self.memory_limit_mib: int = self._parse_memory_limit() # メモリ制限
+        self._parse_constraints()
         self.output_statement: Optional[str] = self._parse_output_statement() # 出力形式の説明
         self.input_samples: dict[Optional[str]] = self._parse_input_samples() # 入力例
         self.output_samples: dict[Optional[str]] = self._parse_output_samples() # 出力例
@@ -51,12 +52,22 @@ class ProblemSpec:
         self._print_parse_error("メモリ制限が見つかりませんでした")
         return default_memory_limit
     
+    def _parse_constraints(self):
+        try:
+            h3 = self.soup.find("h3", string="制約")
+            ul = h3.find_next_sibling("ul")
+            for li in ul.find_all("li"):
+                print(li)
+        except:
+            self._print_parse_error("制約が見つかりませんでした")
+    
     def _parse_output_statement(self) -> Optional[str]:
-        for tag in self.soup.find_all("h3"):
-            if tag.text == "出力":
-                return tag.find_next().text
-        self._print_parse_error("出力の説明文の取得に失敗しました")
-        return None
+        try:
+            h3 = self.soup.find("h3", string="出力")
+            return h3.find_next().text
+        except:
+            self._print_parse_error("出力の説明文の取得に失敗しました")
+            return None
     
     def _parse_input_samples(self) -> dict[Optional[str]]:
         input_samples = {}
@@ -85,6 +96,7 @@ class ProblemSpec:
         return output_samples
     
     def _parse_problem_statement(self) -> Optional[str]:
+        # 問題文がいろんなタグで区切られてることがあるのでsectionを使っている
         section = self.soup.find("section")
         if section is None or "問題文" not in section.find_next("h3"):
             self._print_parse_error("問題文の取得に失敗しました")
