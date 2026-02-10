@@ -1,18 +1,13 @@
 import re
 
 
-def remove_assert(src: str, dst: str) -> None:
+def remove_assert(src_lines: list[str]) -> list[str]:
+    """assert文を取り除く"""
     #行の先頭に、空白やタブが0個以上、assert がくる正規表現
     pattern = re.compile(r'^[ \t]*assert\b')
-
-    with open(src, "r", encoding="utf-8") as f:
-        lines = f.readlines()
-
-    with open(dst, "w", encoding="utf-8") as f:
-        for line in lines:
-            if not pattern.match(line):
-                f.write(line)
+    return [line for line in src_lines if not pattern.match(line)]
 
 
-def refine_code(src: str, dst: str) -> None:
-    remove_assert(src, dst)
+def refine_code(src_lines: list[str]) -> list[str]:
+    src_lines = remove_assert(src_lines)
+    return src_lines

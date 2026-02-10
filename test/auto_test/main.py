@@ -1,5 +1,8 @@
 import os
 import sys
+from pathlib import Path
+
+import pyperclip
 
 from terminal_formatter import format_text, SUCCESS_COLOR, ERROR_COLOR
 
@@ -11,7 +14,6 @@ from tester import test
 import submit_precheck
 
 from code_refiner import refine_code
-from copy_code import copy_code
 
 
 def print_error(message: str | Exception) -> int:
@@ -25,10 +27,13 @@ def main():
     # VSCode を開きなおす（開いたままだと環境変数の更新が反映されないため）
     # 絶対に公開してはいけない
     cookie_value = os.getenv("ATCODER_COOKIE")
+    browser = "Edge"
+    editor = "Visual Studio Code"
+    src_path = Path("./test/atcoder.py")
 
     # URLを取得
     try:
-        url = get_current_url("Edge", "Visual Studio Code")
+        url = get_current_url(browser, editor)
     except Exception as e:
         sys.exit(print_error(e))
     if "atcoder.jp" not in url:
@@ -47,18 +52,20 @@ def main():
     problem_spec = ProblemSpec(html)
     
     # テスト
-    src = "./test/atcoder.py"
-    test(src, problem_spec)
+    test(src_path, problem_spec)
+
+    # ソースコードを読み込む
+    with open(src_path, "r", encoding="utf-8") as f:
+        src_lines: list[str] = f.readlines()
 
     # 提出前チェック
     submit_precheck.check_all(problem_spec)
 
     # コードを整える（assert文除去など）
-    submit = "./test/auto_test/submit.py"
-    refine_code(src, submit)
+    submit_lines = refine_code(src_lines)
 
-    # submit.pyの内容をコピー
-    copy_code(submit)
+    # クリップボードに提出用コードをコピー
+    pyperclip.copy(''.join(submit_lines))
     
 
 if __name__ == "__main__":
