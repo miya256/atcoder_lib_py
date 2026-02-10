@@ -62,6 +62,10 @@ def check_recursion(src_lines: list[str]) -> list[Warning]:
     return warnings
 
 
+def check_constraints(problem_spec: ProblemSpec) -> list[Warning]:
+    """制約に自然数以外が含まれているか確認する（特に0のケースは要注意）"""
+
+
 def check_all(problem_spec: ProblemSpec, src_lines: list[str]) -> None:
     warnings = []
 
