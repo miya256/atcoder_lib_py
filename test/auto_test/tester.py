@@ -1,3 +1,4 @@
+from pathlib import Path
 import time
 import re
 import subprocess
@@ -35,7 +36,7 @@ def judge(
 
 
 def test_one(
-    src: str,
+    src_path: Path,
     time_limit_s: float,
     input_sample: str,
     output_sample: str
@@ -43,7 +44,7 @@ def test_one(
     start_s = time.perf_counter()
     try:
         process = subprocess.Popen(
-            ["python", src],           # 実行する Python スクリプト
+            ["python", src_path],           # 実行する Python スクリプト
             stdin=subprocess.PIPE,     # 標準入力をパイプで渡す
             stdout=subprocess.PIPE,    # 標準出力をパイプで受け取る
             stderr=subprocess.PIPE     # 標準エラーをパイプで受け取る
@@ -97,7 +98,7 @@ def print_result(
     print(format_text(error, fg=ERROR_COLOR))
 
 
-def test(src: str, problem_spec: ProblemSpec) -> None:
+def test(src_path: Path, problem_spec: ProblemSpec) -> None:
     result_list: list[str] = []
     input_samples = problem_spec.input_samples
     output_samples = problem_spec.output_samples
@@ -115,7 +116,7 @@ def test(src: str, problem_spec: ProblemSpec) -> None:
 
         input_sample = input_samples[i]
         output_sample = output_samples[i]
-        result, output, error, elapsed_time = test_one(src, problem_spec.time_limit_s, input_sample, output_sample)
+        result, output, error, elapsed_time = test_one(src_path, problem_spec.time_limit_s, input_sample, output_sample)
         print_result(i, result, elapsed_time, output_sample, output, error)
         result_list.append(format_text(result, fg=RESULT_COLOR[result], styles=[Style.Bold]))
     print(*result_list)
