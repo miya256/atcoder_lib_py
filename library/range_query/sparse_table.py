@@ -15,6 +15,6 @@ class SparseTable:
     
     def prod(self, l: int, r: int) -> tuple[int, int]:
         """[l,r)までopした結果(値, index)"""
-        assert 0 <= l <= r <= len(self.data), f"index error [l,r)=[{l},{r})"
+        assert 0 <= l <= r <= len(self.data[0]), f"index error [l,r)=[{l},{r})"
         idx = (r-l).bit_length() - 1
         return self.op(self.data[idx][l], self.data[idx][r-(1<<idx)])
