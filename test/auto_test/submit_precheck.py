@@ -64,17 +64,19 @@ def check_recursion(src_lines: list[str]) -> list[Warning]:
 
 def check_constraints(problem_spec: ProblemSpec) -> list[Warning]:
     """制約に自然数以外が含まれているか確認する（特に0のケースは要注意）"""
-
+    #print(problem_spec.constraints)
+    return []
 
 def check_all(problem_spec: ProblemSpec, src_lines: list[str]) -> None:
     warnings = []
 
     warnings.extend(check_keywords(problem_spec))
     warnings.extend(check_recursion(src_lines))
+    warnings.extend(check_constraints(problem_spec))
 
     if warnings:
         print(format_text("\n===== 提出前チェック =====", bg=Warning.Color))
         for i, warning in enumerate(warnings, 1):
             print(format_text(f"{i}. {warning}", fg=Warning.Color))
 
-    return warnings 
+    return warnings
