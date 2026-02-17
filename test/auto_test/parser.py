@@ -68,7 +68,7 @@ class ProblemSpec:
                     input_samples[sample_number] = None
                     continue
                 pre = tag.find_next("pre")
-                input_samples[sample_number] = pre.text.lstrip("\n")
+                input_samples[sample_number] = pre.text.lstrip()
         return input_samples
     
     def _parse_output_samples(self) -> dict[Optional[str]]:
@@ -81,7 +81,7 @@ class ProblemSpec:
                     output_samples[sample_number] = None
                     continue
                 pre = tag.find_next("pre")
-                output_samples[sample_number] = pre.text.lstrip("\n")
+                output_samples[sample_number] = pre.text.lstrip()
         return output_samples
     
     def _parse_problem_statement(self) -> Optional[str]:
