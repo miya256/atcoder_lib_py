@@ -11,7 +11,7 @@
 
 	"from math import" : {
 		"prefix": "from math",
-		"body": "from math import gcd,lcm,dist"
+		"body": "from math import gcd, lcm, dist"
 	},
 
 	"from decimal import" : {
@@ -59,7 +59,7 @@
 
 	"from itertools import" : {
 		"prefix": "from itertools",
-		"body": "from itertools import permutations,combinations,groupby\n"
+		"body": "from itertools import permutations, combinations, groupby\n"
 	},
 
 	"from bisect import" : {
@@ -74,7 +74,7 @@
 
 	"from sortedcontainers import" : {
 		"prefix": "from sortedcontainers",
-		"body": "from sortedcontainers import SortedList,SortedSet,SortedDict\n"
+		"body": "from sortedcontainers import SortedList, SortedSet, SortedDict\n"
 	},
 
 	"atcoder.dsu" : {

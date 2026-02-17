@@ -4,10 +4,10 @@
 		"body": "di, dj = {'U':-1, 'D':1, 'L':0, 'R':0}, {'U':0, 'D':0, 'L':-1, 'R':1}"
 	},
 
-	"for di,dj in (-1,0), (1,0), (0,-1), (0,1)" : {
-		"prefix": "for di,dj in",
+	"for di, dj in (-1,0), (1,0), (0,-1), (0,1)" : {
+		"prefix": "for di, dj in",
 		"body": [
-			"for di,dj in (-1,0), (1,0), (0,-1), (0,1):",
+			"for di, dj in (-1,0), (1,0), (0,-1), (0,1):",
 			"\tni, nj = i+di, j+dj",
 			"\tif not(0 <= ni < $1 and 0 <= nj < $2):",
 			"\t\tcontinue",
@@ -15,10 +15,10 @@
 		]
 	},
 
-	"for di,dj,dir in (-1,0,U), (1,0,D), (0,-1,L), (0,1,R)" : {
-		"prefix": "for di,dj,dir in",
+	"for di, dj,dir in (-1,0,U), (1,0,D), (0,-1,L), (0,1,R)" : {
+		"prefix": "for di, dj, dir in",
 		"body": [
-			"for di,dj,dir in (-1,0,'U'), (1,0,'D'), (0,-1,'L'), (0,1,'R'):",
+			"for di, dj, dir in (-1,0,'U'), (1,0,'D'), (0,-1,'L'), (0,1,'R'):",
 			"\tni, nj = i+di, j+dj",
 			"\tif not(0 <= ni < $1 and 0 <= nj < $2):",
 			"\t\tcontinue"
@@ -28,6 +28,11 @@
 	"for _ in range" : {
 		"prefix": "for _ in range",
 		"body": "for ${1|_,i,j,k|} in range($2)"
+	},
+
+	"for i, v in enumerate" : {
+		"prefix": "for i, v in enumerate",
+		"body": "for i, $1 in enumerate($2)"
 	},
 
 	"abcdefghijklmnopqrstuvwxyz" : {
@@ -65,9 +70,9 @@
 		"body": "lambda x:"
 	},
 
-	"key = lambda x:x[]" : {
-		"prefix": "key=lambda x:x[]",
-		"body": "key=lambda x:x[$1]"
+	"key = lambda x: " : {
+		"prefix": "key=lambda x: ",
+		"body": "key=lambda x: $1"
 	},
 
 	"reverse = True" : {
@@ -88,6 +93,11 @@
 	"print(Yes,No,Takahashi,Aoki)" : {
 		"prefix": "print(\"Yes\")",
 		"body": "print(\"${1|Yes,No,Takahashi,Aoki|}\")"
+	},
+
+	"print(Yes if else No)" : {
+		"prefix": "print(\"Yes\" if else \"No\")",
+		"body": "print(\"Yes\" if $1 else \"No\")\n"
 	},
 
 	"exit(print())" : {
