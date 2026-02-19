@@ -4,6 +4,8 @@ class IntervalSet:
     """
     区間を管理する[l, r)
     偶数番目が l, 奇数番目が r
+
+    Methods:
     """
 
     def __init__(self) -> None:
@@ -18,21 +20,69 @@ class IntervalSet:
                 yield (l, r)
             except StopIteration:
                 return
+            
+    def __or__(self, other: "IntervalSet") -> "IntervalSet":
+        new_set = IntervalSet()
+        for l, r in self:
+            new_set.add(l, r)
+        for l, r in other:
+            new_set.add(l, r)
+        return new_set
+    
+    def __and__(self, other: "IntervalSet") -> "IntervalSet":
+        new_set = IntervalSet()
+        i = j = 0
+        while i < len(self._data) and j < len(other._data):
+            l1, r1 = self._data[i], self._data[i+1]
+            l2, r2 = other._data[j], other._data[j+1]
+            l = max(l1, l2)
+            r = min(r1, r2)
+            if l < r:
+                new_set.add(l, r)
+            # rが小さいほうを次へ進める。同じなら両方進める
+            if r1 <= r2:
+                i += 2
+            if r1 >= r2:
+                j += 2
+        return new_set
+
+    def __xor__(self, other: "IntervalSet") -> "IntervalSet":
+        new_set = IntervalSet()
+        for l, r in self:
+            new_set.flip(l, r)
+        for l, r in other:
+            new_set.flip(l, r)
+        return new_set
+    
+    def __sub__(self, other: "IntervalSet") -> "IntervalSet":
+        new_set = IntervalSet()
+        for l, r in self:
+            new_set.add(l, r)
+        for l, r in other:
+            new_set.discard(l, r)
+        return new_set
+    
+    def __ior__(self, other: "IntervalSet") -> "IntervalSet":
+        for l, r in other:
+            self.add(l, r)
+        return self
+    
+    def __iand__(self, other: "IntervalSet") -> "IntervalSet":
+        self._data = (self & other)._data
+        return self
+    
+    def __ixor__(self, other: "IntervalSet") -> "IntervalSet":
+        for l, r in other:
+            self.flip(l, r)
+        return self
+    
+    def __isub__(self, other: "IntervalSet") -> "IntervalSet":
+        for l, r in other:
+            self.discard(l, r)
+        return self
     
     def __repr__(self) -> str:
         return f"{[(l, r) for l, r in self]}"
-    
-    def contains(self, x: int) -> bool:
-        """区間にxが含まれるか"""
-        i = self._data.bisect_right(x)
-        return i % 2
-    
-    def get_interval(self, x: int) -> tuple[int, int] | None:
-        """xを含む区間を返す"""
-        i = self._data.bisect_right(x)
-        if i % 2 == 0: # xは区間に含まれない
-            return None
-        return self._data[i-1], self._data[i]
     
     def add(self, l: int, r: int) -> None:
         """区間[l, r)を追加"""
@@ -63,6 +113,18 @@ class IntervalSet:
         assert l < r, f"Invalid interval: [l,r)=[{l},{r})"
         self._data.discard(l) if l in self._data else self._data.add(l)
         self._data.discard(r) if r in self._data else self._data.add(r)
+    
+    def contains(self, x: int) -> bool:
+        """区間にxが含まれるか"""
+        i = self._data.bisect_right(x)
+        return i % 2
+    
+    def get_interval(self, x: int) -> tuple[int, int] | None:
+        """xを含む区間を返す"""
+        i = self._data.bisect_right(x)
+        if i % 2 == 0: # xは区間に含まれない
+            return None
+        return self._data[i-1], self._data[i]
 
     def mex(self, x: int) -> int:
         """x 以上で区間に含まれない最小の数"""
@@ -73,9 +135,3 @@ class IntervalSet:
         """[l, r)の中の区間の長さの合計"""
         # 高速に求められたらいいなあ
         return 0
-
-
-s = IntervalSet()
-s.add(3, 10)
-s.flip(5,7)
-print(s)
