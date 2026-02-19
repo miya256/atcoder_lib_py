@@ -6,6 +6,12 @@ class IntervalSet:
     偶数番目が l, 奇数番目が r
 
     Methods:
+        add(l, r)      : 区間[l, r)を追加
+        discard(l, r)  : 区間[l, r)を削除
+        flip(l, r)     : 区間[l, r)を反転
+        contains(x)    : 区間にxが含まれるか
+        get_interval(x): xを含む区間を返す
+        mex(x)         : x 以上で区間に含まれない最小の数
     """
 
     def __init__(self) -> None:
@@ -98,7 +104,7 @@ class IntervalSet:
         self._data.add(r)
 
     def discard(self, l: int, r: int) -> None:
-        """区間[l, r)を追加"""
+        """区間[l, r)を削除"""
         assert l < r, f"Invalid interval: [l,r)=[{l},{r})"
         # 反転させてから追加
         self._data.add(min(l, self._data[0]) - 1)
