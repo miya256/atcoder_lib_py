@@ -65,9 +65,9 @@
 		"body": "INF = ${1|1<<61,float('inf')|}"
 	},
 
-	"lambda x:" : {
-		"prefix": "lambda",
-		"body": "lambda x:"
+	"lambda x: int(x)-1" : {
+		"prefix": "lambda x: int(x)-1",
+		"body": "lambda x: int(x)-1"
 	},
 
 	"key = lambda x: " : {
