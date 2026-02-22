@@ -5,8 +5,21 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
 
 files = [
-    "../library/range_query/segment_tree/segment_tree.py",
+    "../library/compression/run_length_encoding.py",
+    "../library/compression/coordinate_compression.py",
+    "../library/connectivity/union_find.py",
+    "../library/graph/graph.py",
+    "../library/graph/search/bfs.py",
+    "../library/number/factor/divisor.py",
+    "../library/number/mod/binomial.py",
+    "../library/number/tools/ring.py",
     "../library/range_query/fenwick_tree/fenwick_tree.py",
+    "../library/range_query/segment_tree/segment_tree.py",
+    "../library/range_query/lazy_segment_tree/lazy_segment_tree.py",
+    "../library/split_search/binary_search.py",
+    "../library/string/rolling_hash.py",
+    "../library/string/trie.py",
+    "../library/string/z_algorithm.py",
 ]
 
 def extract_definitions(lines: list[str]) -> tuple[str, str]:
