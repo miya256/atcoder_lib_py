@@ -4,6 +4,7 @@ import re
 import subprocess
 import shutil
 import itertools
+import difflib
 
 from terminal_formatter import format_text, Style, ERROR_COLOR
 from parser import ProblemSpec
@@ -79,20 +80,28 @@ def print_result(
     error: str
 ) -> None:
     def coloring(output: str, correct: str) -> tuple[str, str]:
-        output_tokens = re.split(r'(\s+)', output)
-        correct_tokens = re.split(r'(\s+)', correct)
-        i = j = 0
-        while i < len(output_tokens) or j < len(correct_tokens):
-            while i < len(output_tokens) and output_tokens[i].isspace():
-                i += 1
-            while j < len(correct_tokens) and correct_tokens[j].isspace():
-                j += 1
-            if i >= len(output_tokens) or j >= len(correct_tokens) or output_tokens[i] != correct_tokens[j]:
-                output_tokens[i] = format_text(output_tokens[i], fg="#00ffff")
-                correct_tokens[j] = format_text(correct_tokens[j], fg="#00ffff")
-            i += 1
-            j += 1
-        return ''.join(output_tokens), ''.join(correct_tokens)
+        diff_color = "#00ffff"
+        output_tokens = re.findall(r'\S+|\s+', output)
+        correct_tokens = re.findall(r'\S+|\s+', correct)
+
+        sm = difflib.SequenceMatcher(None, output_tokens, correct_tokens)
+
+        new_output = []
+        new_correct = []
+
+        for tag, i1, i2, j1, j2 in sm.get_opcodes():
+            if tag == "equal":
+                new_output.extend(output_tokens[i1:i2])
+                new_correct.extend(correct_tokens[j1:j2])
+            elif tag == "replace":
+                new_output.append(format_text(''.join(output_tokens[i1:i2]), fg=diff_color))
+                new_correct.append(format_text(''.join(correct_tokens[j1:j2]), fg=diff_color))
+            elif tag == "delete":
+                new_output.append(format_text(''.join(output_tokens[i1:i2]), fg=diff_color))
+            elif tag == "insert":
+                new_correct.append(format_text(''.join(correct_tokens[j1:j2]), fg=diff_color))
+
+        return ''.join(new_output), ''.join(new_correct)
         
     terminal_width = shutil.get_terminal_size().columns
     terminal_center = terminal_width//2-1
