@@ -16,7 +16,7 @@ python test/auto_test/main.py
 ```
 
 ### 1つの入力を試す
-test/input.txt 入力をコピペしましょう。
+test/input.txtに入力をコピペしましょう。
 ```
 cat test/input.txt | python test/atcoder.py
 ```
