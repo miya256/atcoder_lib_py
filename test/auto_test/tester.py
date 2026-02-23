@@ -78,11 +78,28 @@ def print_result(
     output: str,
     error: str
 ) -> None:
+    def coloring(output: str, correct: str) -> tuple[str, str]:
+        output_tokens = re.split(r'(\s+)', output)
+        correct_tokens = re.split(r'(\s+)', correct)
+        i = j = 0
+        while i < len(output_tokens) or j < len(correct_tokens):
+            while i < len(output_tokens) and output_tokens[i].isspace():
+                i += 1
+            while j < len(correct_tokens) and correct_tokens[j].isspace():
+                j += 1
+            if i >= len(output_tokens) or j >= len(correct_tokens) or output_tokens[i] != correct_tokens[j]:
+                output_tokens[i] = format_text(output_tokens[i], fg="#00ffff")
+                correct_tokens[j] = format_text(correct_tokens[j], fg="#00ffff")
+            i += 1
+            j += 1
+        return ''.join(output_tokens), ''.join(correct_tokens)
+        
     terminal_width = shutil.get_terminal_size().columns
     terminal_center = terminal_width//2-1
     color = RESULT_COLOR[result]
     elapsed_time_ms = int(elapsed_time * 1000)
 
+    output, correct = coloring(output, correct)
     output_list = re.split(r'[\r\n]+', output)
     correct_list = re.split(r'[\r\n]+', correct)
 
