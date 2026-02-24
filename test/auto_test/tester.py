@@ -103,7 +103,12 @@ def test(src_path: Path, problem_spec: ProblemSpec) -> None:
     input_samples = problem_spec.input_samples
     output_samples = problem_spec.output_samples
     for i in sorted(set(input_samples.keys()) | set(output_samples.keys())):
-        if (i not in input_samples) or (i not in output_samples):
+        if (
+            i not in input_samples 
+            or i not in output_samples
+            or input_samples[i] is None
+            or output_samples[i] is None
+        ):
             message = format_text(
                 f"Sample {i} - 入出力例の組みが存在しませんでした", 
                 fg="#000000",
