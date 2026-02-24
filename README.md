@@ -9,17 +9,24 @@
 ### ライブラリ
 コードの一番上に貼りましょう。
 
-### 自動テスト（すべての入力例を試す）
-test/atcoder.pyに書いたコードをテストします。
-```
-python test/auto_test/main.py
-```
-
 ### 1つの入力を試す
 test/input.txtに入力をコピペしましょう。
 ```
 cat test/input.txt | python test/atcoder.py
 ```
+
+### 自動テスト（すべての入力例を試す）
+
+#### セットアップ
+`.env` を作成し、`.env.sample` を例に必要な値を設定してください。
+
+#### 実行
+```
+python test/auto_test/main.py
+```
+
+※ 本ツールは主に Windows + Edge を想定しています。  
+※ macOS や他のブラウザではショートカットキーが動作しない場合があります。
 
 ## フォルダ
 
