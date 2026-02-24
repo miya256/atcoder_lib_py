@@ -51,6 +51,17 @@ cat test/input.txt | python test/atcoder.py
 #### コード整形
 - assert文を消す
 
+### 実行例
+
+#### 修正前（WA）
+- 解が存在しない場合に -1 を出力していなかった。
+
+![Before Fix](img/test_before_fix.png)
+
+#### 修正後（AC）
+
+![After Fix](img/test_after_fix.png)
+
 ## 今後の検討
 
 ### 制約チェック
