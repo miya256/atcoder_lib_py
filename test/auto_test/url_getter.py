@@ -18,7 +18,7 @@ def get_current_url(browser: str, editor: str) -> str:
     
     if browser_window is None:
         raise Exception("ブラウザが見つかりませんでした")
-    if editor is None:
+    if editor_window is None:
         raise Exception("エディタが見つかりませんでした")
 
     browser_window.activate()
