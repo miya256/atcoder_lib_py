@@ -2,6 +2,8 @@ import os
 import sys
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 import pyperclip
 
 from terminal_formatter import format_text, SUCCESS_COLOR, ERROR_COLOR
@@ -22,14 +24,12 @@ def print_error(message: str | Exception) -> int:
 
 
 def main():
-    # atcoderにアクセス -> 開発者ツール -> Aplication -> REVEL_SESSION の値をコピぺ
-    # スタート -> 環境変数を編集で検索 -> 開いて編集
-    # VSCode を開きなおす（開いたままだと環境変数の更新が反映されないため）
-    # 絶対に公開してはいけない
-    cookie_value = os.getenv("ATCODER_COOKIE")
-    browser = "Edge"
-    editor = "Visual Studio Code"
-    src_path = Path("./test/atcoder.py")
+    load_dotenv()  # .envを読む（ただし既存環境変数は上書きしない）
+
+    cookie_value = os.getenv("ATCODER_REVEL_SESSION")
+    browser = os.getenv("BROWSER", "Edge")
+    editor = os.getenv("EDITOR", "Visual Studio Code")
+    src_path = Path(os.getenv("SRC_PATH", "./test/atcoder.py"))
 
     # URLを取得
     try:
