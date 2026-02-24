@@ -3,8 +3,8 @@ import time
 import re
 import subprocess
 import shutil
-import itertools
 import difflib
+from itertools import zip_longest
 
 from terminal_formatter import format_text, Style, ERROR_COLOR
 from parser import ProblemSpec
@@ -79,28 +79,37 @@ def print_result(
     output: str,
     error: str
 ) -> None:
-    def coloring(output: str, correct: str) -> tuple[str, str]:
+    def format_diff(output: str, correct: str) -> tuple[str, str]:
+        """差分に色をつける"""
         diff_color = "#00ffff"
-        output_tokens = re.findall(r'\S+|\s+', output)
-        correct_tokens = re.findall(r'\S+|\s+', correct)
 
+        # 色つけてからだと、ターミナルの文字がずれるので、先にpadding
+        output = '\n'.join([f"{output_i:<{terminal_center}}" for output_i in output.splitlines()])
+        correct = '\n'.join([f"{correct_i}" for correct_i in correct.splitlines()])
+
+        output_tokens = re.split(r'(\s+)', output)
+        correct_tokens = re.split(r'(\s+)', correct)
         sm = difflib.SequenceMatcher(None, output_tokens, correct_tokens)
 
         new_output = []
         new_correct = []
-
-        for tag, i1, i2, j1, j2 in sm.get_opcodes():
-            if tag == "equal":
-                new_output.extend(output_tokens[i1:i2])
-                new_correct.extend(correct_tokens[j1:j2])
-            elif tag == "replace":
-                new_output.append(format_text(''.join(output_tokens[i1:i2]), fg=diff_color))
-                new_correct.append(format_text(''.join(correct_tokens[j1:j2]), fg=diff_color))
-            elif tag == "delete":
-                new_output.append(format_text(''.join(output_tokens[i1:i2]), fg=diff_color))
-            elif tag == "insert":
-                new_correct.append(format_text(''.join(correct_tokens[j1:j2]), fg=diff_color))
-
+        for tag, li, ri, lj, rj in sm.get_opcodes():
+            for output_token, correct_token in zip_longest(
+                output_tokens[li: ri],
+                correct_tokens[lj: rj],
+                fillvalue=""
+            ):
+                if tag == "equal":
+                    new_output.append(output_token)
+                    new_correct.append(correct_token)
+                elif tag == "replace":
+                    new_output.append(format_text(output_token, fg=diff_color))
+                    new_correct.append(format_text(correct_token, fg=diff_color))
+                elif tag == "delete":
+                    new_output.append(format_text(output_token, fg=diff_color))
+                elif tag == "insert":
+                    new_correct.append(format_text(correct_token, fg=diff_color))
+        
         return ''.join(new_output), ''.join(new_correct)
         
     terminal_width = shutil.get_terminal_size().columns
@@ -108,19 +117,23 @@ def print_result(
     color = RESULT_COLOR[result]
     elapsed_time_ms = int(elapsed_time * 1000)
 
-    output, correct = coloring(output, correct)
-    output_list = re.split(r'[\r\n]+', output)
-    correct_list = re.split(r'[\r\n]+', correct)
+    output, correct = format_diff(output, correct)
 
     print(format_text(
         f"Sample {sample_number} - {result} - {elapsed_time_ms}ms",
         fg=color,
         styles=[Style.Bold]
     ))
-    print(f'{'output':<{terminal_center}}{format_text("|", fg=color)} correct')
+    print(f'{'output': <{terminal_center}}{format_text("|", fg=color)} correct')
     print(format_text('-'*terminal_width, fg=color))
-    for output_i, correct_i in itertools.zip_longest(output_list, correct_list, fillvalue=""):
-        print(f'{output_i:<{terminal_center}}{format_text("|", fg=color)} {correct_i}')
+
+    for output_i, correct_i in zip_longest(
+        output.splitlines(),
+        correct.splitlines(),
+        fillvalue=" "*terminal_center
+    ):
+        print(f'{output_i}{format_text("|", fg=color)} {correct_i}')
+
     print(format_text(error, fg=ERROR_COLOR))
 
 
