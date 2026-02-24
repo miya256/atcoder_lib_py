@@ -61,7 +61,7 @@ class ProblemSpec:
     def _parse_input_samples(self) -> dict[Optional[str]]:
         input_samples = {}
         for tag in self.soup.find_all("h3"):
-            if match := re.search(r"入力例 (\d)", tag.text):
+            if match := re.search(r"入力例 (\d+)", tag.text):
                 sample_number = int(match.group(1))
                 if sample_number in input_samples:
                     self._print_parse_error(f"入力例番号に重複が見られました: 入力例 {sample_number}")
@@ -74,7 +74,7 @@ class ProblemSpec:
     def _parse_output_samples(self) -> dict[Optional[str]]:
         output_samples = {}
         for tag in self.soup.find_all("h3"):
-            if match := re.search(r"出力例 (\d)", tag.text):
+            if match := re.search(r"出力例 (\d+)", tag.text):
                 sample_number = int(match.group(1))
                 if sample_number in output_samples:
                     self._print_parse_error(f"出力例番号に重複が見られました: 出力例 {sample_number}")
