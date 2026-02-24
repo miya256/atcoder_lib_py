@@ -87,8 +87,8 @@ def print_result(
         output = '\n'.join([f"{output_i:<{terminal_center}}" for output_i in output.splitlines()])
         correct = '\n'.join([f"{correct_i}" for correct_i in correct.splitlines()])
 
-        output_tokens = re.split(r'(\s+)', output)
-        correct_tokens = re.split(r'(\s+)', correct)
+        output_tokens = re.split(r'(\s+)', output) if output else []
+        correct_tokens = re.split(r'(\s+)', correct) if correct else []
         sm = difflib.SequenceMatcher(None, output_tokens, correct_tokens)
 
         new_output = []
