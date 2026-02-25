@@ -4,7 +4,7 @@ on:
   pull_request:
 
 jobs:
-  typecheck:
+  quality-check:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,3 +18,8 @@ jobs:
 
       - name: Run pyright
         run: uv run pyright
+      
+      - name: Run Ruff
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
