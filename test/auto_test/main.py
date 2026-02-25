@@ -1,5 +1,4 @@
 import os
-import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -52,10 +51,10 @@ def main():
     except Exception as e:
         print_error(f"アクセス失敗\n{e}")
         return 1
-    
+
     # 問題文やサンプルをパース
     problem_spec = ProblemSpec(html)
-    
+
     # テスト
     test(src_path, problem_spec)
 
@@ -70,8 +69,8 @@ def main():
     submit_lines = refine_code(src_lines)
 
     # クリップボードに提出用コードをコピー
-    pyperclip.copy(''.join(submit_lines))
-    
+    pyperclip.copy("".join(submit_lines))
+
 
 if __name__ == "__main__":
     main()

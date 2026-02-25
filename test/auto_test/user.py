@@ -19,8 +19,12 @@ class AtcoderUser:
     def __init__(self, name: str, rate: str | None, color: str | None) -> None:
         self.name = name
         self.rate = rate
-        self.color = AtcoderUser.COLOR_CODE[color] if color in AtcoderUser.COLOR_CODE else "#ffffff"
-    
+        self.color = (
+            AtcoderUser.COLOR_CODE[color]
+            if color in AtcoderUser.COLOR_CODE
+            else "#ffffff"
+        )
+
     def __repr__(self):
         name = format_text(self.name, fg=self.color, styles=[Style.Bold])
         rate = format_text(self.rate, fg=self.color)
@@ -31,11 +35,11 @@ def get_user_color(soup: BeautifulSoup) -> str | None:
     username_a = soup.find("a", class_="username")
     if not isinstance(username_a, Tag):
         return None
-    
+
     username_span = username_a.find("span")
     if not isinstance(username_span, Tag):
         return None
-    
+
     user_color = username_span["class"][0]
     return user_color
 
@@ -48,7 +52,7 @@ def get_user_rating(soup: BeautifulSoup) -> str | None:
     rating_th = soup.find("th", text="Rating")
     if not isinstance(rating_th, Tag):
         return None
-    
+
     rating_tr = rating_th.find_parent("tr")
     if not isinstance(rating_tr, Tag):
         return None
@@ -56,9 +60,10 @@ def get_user_rating(soup: BeautifulSoup) -> str | None:
     rating_span = rating_tr.find("span")
     if not isinstance(rating_span, Tag):
         return None
-    
+
     rating = rating_span.text
     return rating
+
 
 def get_user(session: Session, username: str) -> AtcoderUser:
     response = session.get(f"https://atcoder.jp/users/{username}")

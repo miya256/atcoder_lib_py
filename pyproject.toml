@@ -16,7 +16,16 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pyright>=1.1.408",
+    "ruff>=0.15.2",
 ]
 
 [tool.pyright]
-include = ["test/auto_test"]
+include = [
+    "test/auto_test",
+]
+
+[tool.ruff]
+line-length = 88
+include = [
+    "test/auto_test/**/*.py",
+]
