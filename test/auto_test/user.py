@@ -30,12 +30,10 @@ class AtcoderUser:
 def get_user_color(soup: BeautifulSoup) -> str | None:
     username_a = soup.find("a", class_="username")
     if not isinstance(username_a, Tag):
-        print_error("ユーザの色を取得できませんでした")
         return None
     
     username_span = username_a.find("span")
     if not isinstance(username_span, Tag):
-        print_error("ユーザの色を取得できませんでした")
         return None
     
     user_color = username_span["class"][0]
@@ -65,6 +63,11 @@ def get_user_rating(soup: BeautifulSoup) -> str | None:
 def get_user(session: Session, username: str) -> AtcoderUser:
     response = session.get(f"https://atcoder.jp/users/{username}")
     soup = BeautifulSoup(response.text, "html.parser")
+
     user_color = get_user_color(soup)
+    if user_color is None:
+        print_error("ユーザの色を取得できませんでした")
     user_rating = get_user_rating(soup)
+    if user_rating is None:
+        print_error("ユーザの Rating を取得できませんでした")
     return AtcoderUser(username, user_rating, user_color)

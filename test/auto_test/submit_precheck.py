@@ -62,7 +62,7 @@ def check_recursion(src_lines: list[str]) -> list[Warning]:
     return warnings
 
 
-def check_all(problem_spec: ProblemSpec, src_lines: list[str]) -> None:
+def check_all(problem_spec: ProblemSpec, src_lines: list[str]) -> list[Warning]:
     warnings = []
 
     warnings.extend(check_keywords(problem_spec))
