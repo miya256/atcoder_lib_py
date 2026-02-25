@@ -47,7 +47,7 @@ def get_user_rating(soup: BeautifulSoup) -> str | None:
     if not isinstance(table_tag, Tag):
         return None
 
-    rating_th = soup.find("th", string="Rating")
+    rating_th = soup.find("th", text="Rating")
     if not isinstance(rating_th, Tag):
         return None
     
