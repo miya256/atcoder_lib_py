@@ -13,8 +13,8 @@ class ProblemSpec:
         self.time_limit_s: float = self._parse_time_limit() # 実行時間制限
         self.memory_limit_mib: int = self._parse_memory_limit() # メモリ制限
         self.output_statement: Optional[str] = self._parse_output_statement() # 出力形式の説明
-        self.input_samples: dict[Optional[str]] = self._parse_input_samples() # 入力例
-        self.output_samples: dict[Optional[str]] = self._parse_output_samples() # 出力例
+        self.input_samples: dict[int, Optional[str]] = self._parse_input_samples() # 入力例
+        self.output_samples: dict[int, Optional[str]] = self._parse_output_samples() # 出力例
         self.problem_statement: Optional[str] = self._parse_problem_statement() # 問題文
 
     def _print_parse_error(self, message) -> None:
@@ -58,7 +58,7 @@ class ProblemSpec:
         self._print_parse_error("出力の説明文の取得に失敗しました")
         return None
     
-    def _parse_input_samples(self) -> dict[Optional[str]]:
+    def _parse_input_samples(self) -> dict[int, Optional[str]]:
         input_samples = {}
         for tag in self.soup.find_all("h3"):
             if match := re.search(r"入力例 (\d+)", tag.text):
@@ -71,7 +71,7 @@ class ProblemSpec:
                 input_samples[sample_number] = pre.text.lstrip()
         return input_samples
     
-    def _parse_output_samples(self) -> dict[Optional[str]]:
+    def _parse_output_samples(self) -> dict[int, Optional[str]]:
         output_samples = {}
         for tag in self.soup.find_all("h3"):
             if match := re.search(r"出力例 (\d+)", tag.text):
