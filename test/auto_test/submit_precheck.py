@@ -9,10 +9,10 @@ class Warning:
 
     def __init__(self, text: str) -> None:
         self.text = text
-    
+
     def __repr__(self):
         return self.text
-    
+
 
 def check_keywords(problem_spec: ProblemSpec) -> list[Warning]:
     """問題文にキーワードが含まれているか確認する"""
@@ -31,7 +31,10 @@ def check_keywords(problem_spec: ProblemSpec) -> list[Warning]:
 
     warnings: list[Warning] = []
     for keyword, message in keywords.items():
-        if keyword in problem_spec.problem_statement or keyword in problem_spec.output_statement:
+        if (
+            keyword in problem_spec.problem_statement
+            or keyword in problem_spec.output_statement
+        ):
             warnings.append(Warning(message))
     return warnings
 
@@ -41,7 +44,7 @@ def check_recursion(src_lines: list[str]) -> list[Warning]:
     warnings: list[Warning] = []
     INDENT = 4
     func_pattern = re.compile(r"^\s*def\s+(\w+)\s*\(")
-    func_stack: list[tuple[str, int]] = [("DUMMY_FUNC", -1)] # (関数名, ネストの深さ)
+    func_stack: list[tuple[str, int]] = [("DUMMY_FUNC", -1)]  # (関数名, ネストの深さ)
     for line in src_lines:
         if line.strip() == "":
             continue
@@ -49,12 +52,14 @@ def check_recursion(src_lines: list[str]) -> list[Warning]:
         nests = (len(line) - len(line.lstrip(" "))) // INDENT
         while func_stack and func_stack[-1][1] >= nests:
             func_stack.pop()
-        
+
         call_pattern = re.compile(rf"\b{func_stack[-1][0]}\s*\(")
         if call_pattern.search(line):
-            warnings.append(Warning(
-                f"再帰関数 {func_stack[-1][0]} が検出されました。再帰上限を調整しましたか？"
-            ))
+            warnings.append(
+                Warning(
+                    f"再帰関数 {func_stack[-1][0]} が検出されました。再帰上限を調整しましたか？"
+                )
+            )
         if match := func_pattern.match(line):
             func_name = match.group(1)
             func_stack.append((func_name, nests))
@@ -73,4 +78,4 @@ def check_all(problem_spec: ProblemSpec, src_lines: list[str]) -> list[Warning]:
         for i, warning in enumerate(warnings, 1):
             print(format_text(f"{i}. {warning}", fg=Warning.Color))
 
-    return warnings 
+    return warnings

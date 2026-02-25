@@ -25,7 +25,7 @@ def judge(
     output: str,
     error: str,
     time_limit_s: float,
-    elapsed_time: float
+    elapsed_time: float,
 ) -> str:
     if error:
         return "RE"
@@ -37,36 +37,29 @@ def judge(
 
 
 def test_one(
-    src_path: Path,
-    time_limit_s: float,
-    input_sample: str,
-    output_sample: str
+    src_path: Path, time_limit_s: float, input_sample: str, output_sample: str
 ) -> tuple[str, str, str, float]:
     start_s = time.perf_counter()
     process = subprocess.Popen(
-        ["python", src_path],           # 実行する Python スクリプト
-        stdin=subprocess.PIPE,     # 標準入力をパイプで渡す
-        stdout=subprocess.PIPE,    # 標準出力をパイプで受け取る
-        stderr=subprocess.PIPE     # 標準エラーをパイプで受け取る
+        ["python", src_path],  # 実行する Python スクリプト
+        stdin=subprocess.PIPE,  # 標準入力をパイプで渡す
+        stdout=subprocess.PIPE,  # 標準出力をパイプで受け取る
+        stderr=subprocess.PIPE,  # 標準エラーをパイプで受け取る
     )
     try:
         # 入力データを渡して実行
-        stdout, stderr = process.communicate(input=input_sample.encode(), timeout=time_limit_s)
+        stdout, stderr = process.communicate(
+            input=input_sample.encode(), timeout=time_limit_s
+        )
     except subprocess.TimeoutExpired:
         stdout, stderr = bytes(), bytes()
         process.kill()
 
-    output = stdout.decode(errors='ignore')
-    error = stderr.decode(errors='ignore')
+    output = stdout.decode(errors="ignore")
+    error = stderr.decode(errors="ignore")
     elapsed_time = time.perf_counter() - start_s
-    
-    result = judge(
-        output_sample,
-        output,
-        error,
-        time_limit_s,
-        elapsed_time
-    )
+
+    result = judge(output_sample, output, error, time_limit_s, elapsed_time)
     return result, output, error, elapsed_time
 
 
@@ -76,27 +69,27 @@ def print_result(
     elapsed_time: float,
     correct: str,
     output: str,
-    error: str
+    error: str,
 ) -> None:
     def format_diff(output: str, correct: str) -> tuple[str, str]:
         """差分に色をつける"""
         diff_color = "#00ffff"
 
         # 色つけてからだと、ターミナルの文字がずれるので、先にpadding
-        output = '\n'.join([f"{output_i:<{terminal_center}}" for output_i in output.splitlines()])
-        correct = '\n'.join([f"{correct_i}" for correct_i in correct.splitlines()])
+        output = "\n".join(
+            [f"{output_i:<{terminal_center}}" for output_i in output.splitlines()]
+        )
+        correct = "\n".join([f"{correct_i}" for correct_i in correct.splitlines()])
 
-        output_tokens = re.split(r'(\s+)', output) if output else []
-        correct_tokens = re.split(r'(\s+)', correct) if correct else []
+        output_tokens = re.split(r"(\s+)", output) if output else []
+        correct_tokens = re.split(r"(\s+)", correct) if correct else []
         sm = difflib.SequenceMatcher(None, output_tokens, correct_tokens)
 
         new_output = []
         new_correct = []
         for tag, li, ri, lj, rj in sm.get_opcodes():
             for output_token, correct_token in zip_longest(
-                output_tokens[li: ri],
-                correct_tokens[lj: rj],
-                fillvalue=""
+                output_tokens[li:ri], correct_tokens[lj:rj], fillvalue=""
             ):
                 if tag == "equal":
                     new_output.append(output_token)
@@ -108,30 +101,30 @@ def print_result(
                     new_output.append(format_text(output_token, fg=diff_color))
                 elif tag == "insert":
                     new_correct.append(format_text(correct_token, fg=diff_color))
-        
-        return ''.join(new_output), ''.join(new_correct)
-        
+
+        return "".join(new_output), "".join(new_correct)
+
     terminal_width = shutil.get_terminal_size().columns
-    terminal_center = terminal_width//2-1
+    terminal_center = terminal_width // 2 - 1
     color = RESULT_COLOR[result]
     elapsed_time_ms = int(elapsed_time * 1000)
 
     output, correct = format_diff(output, correct)
 
-    print(format_text(
-        f"Sample {sample_number} - {result} - {elapsed_time_ms}ms",
-        fg=color,
-        styles=[Style.Bold]
-    ))
-    print(f'{'output': <{terminal_center}}{format_text("|", fg=color)} correct')
-    print(format_text('-'*terminal_width, fg=color))
+    print(
+        format_text(
+            f"Sample {sample_number} - {result} - {elapsed_time_ms}ms",
+            fg=color,
+            styles=[Style.Bold],
+        )
+    )
+    print(f"{'output': <{terminal_center}}{format_text('|', fg=color)} correct")
+    print(format_text("-" * terminal_width, fg=color))
 
     for output_i, correct_i in zip_longest(
-        output.splitlines(),
-        correct.splitlines(),
-        fillvalue=" "*terminal_center
+        output.splitlines(), correct.splitlines(), fillvalue=" " * terminal_center
     ):
-        print(f'{output_i}{format_text("|", fg=color)} {correct_i}')
+        print(f"{output_i}{format_text('|', fg=color)} {correct_i}")
 
     print(format_text(error, fg=ERROR_COLOR))
 
@@ -142,18 +135,23 @@ def test(src_path: Path, problem_spec: ProblemSpec) -> None:
     output_samples = problem_spec.output_samples
     for i in sorted(set(input_samples.keys()) | set(output_samples.keys())):
         if (
-            i not in input_samples 
+            i not in input_samples
             or i not in output_samples
             or input_samples[i] is None
             or output_samples[i] is None
         ):
-            message = format_text(
-                f"Sample {i} - 入出力例の組みが存在しませんでした", 
-                fg="#000000",
-                bg="#ffff00",
-                styles=[Style.Bold]
-            ) + "\n"
-            result_list.append(format_text("SKIP", fg="#000000", bg="#ffff00", styles=[Style.Bold]))
+            message = (
+                format_text(
+                    f"Sample {i} - 入出力例の組みが存在しませんでした",
+                    fg="#000000",
+                    bg="#ffff00",
+                    styles=[Style.Bold],
+                )
+                + "\n"
+            )
+            result_list.append(
+                format_text("SKIP", fg="#000000", bg="#ffff00", styles=[Style.Bold])
+            )
             print(message)
             continue
 
@@ -161,7 +159,11 @@ def test(src_path: Path, problem_spec: ProblemSpec) -> None:
         output_sample = output_samples[i]
         assert input_sample is not None
         assert output_sample is not None
-        result, output, error, elapsed_time = test_one(src_path, problem_spec.time_limit_s, input_sample, output_sample)
+        result, output, error, elapsed_time = test_one(
+            src_path, problem_spec.time_limit_s, input_sample, output_sample
+        )
         print_result(i, result, elapsed_time, output_sample, output, error)
-        result_list.append(format_text(result, fg=RESULT_COLOR[result], styles=[Style.Bold]))
+        result_list.append(
+            format_text(result, fg=RESULT_COLOR[result], styles=[Style.Bold])
+        )
     print(*result_list)
