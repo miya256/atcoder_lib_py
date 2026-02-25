@@ -26,5 +26,5 @@ include = [
 
 [tool.ruff]
 include = [
-    "test/auto_test",
+    "test/auto_test/**/*.py",
 ]
