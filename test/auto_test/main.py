@@ -6,7 +6,11 @@ from dotenv import load_dotenv
 
 import pyperclip
 
-from terminal_formatter import format_text, SUCCESS_COLOR, ERROR_COLOR
+from terminal_formatter import (
+    format_text,
+    print_error,
+    SUCCESS_COLOR,
+)
 
 from url_getter import get_current_url
 from access import access
@@ -16,11 +20,6 @@ from tester import test
 import submit_precheck
 
 from code_refiner import refine_code
-
-
-def print_error(message: str | Exception) -> int:
-    print(format_text(message, fg=ERROR_COLOR))
-    return 1
 
 
 def main():
