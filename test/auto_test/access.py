@@ -16,9 +16,14 @@ def check_login(session: Session) -> AtcoderUser:
     
     soup = BeautifulSoup(response.text, "html.parser")
     icon = soup.find("span", class_="glyphicon glyphicon-cog")
+    if icon is None:
+        raise Exception("ユーザ名を取得できませんでした")
+    
     a = icon.find_parent("a")
-    username = a.text.strip()
+    if a is None:
+        raise Exception("ユーザ名を取得できませんでした")
 
+    username = a.text.strip()
     user = get_user(session, username)
     return user
 

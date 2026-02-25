@@ -26,6 +26,9 @@ def main():
     load_dotenv()  # .envを読む（ただし既存環境変数は上書きしない）
 
     cookie_value = os.getenv("ATCODER_REVEL_SESSION")
+    if cookie_value is None:
+        print_error("ATCODER_REVEL_SESSION の値を設定してください")
+        return 1
     browser = os.getenv("BROWSER", "Edge")
     editor = os.getenv("EDITOR", "Visual Studio Code")
     src_path = Path(os.getenv("SRC_PATH", "./test/atcoder.py"))
@@ -34,9 +37,11 @@ def main():
     try:
         url = get_current_url(browser, editor)
     except Exception as e:
-        sys.exit(print_error(e))
+        print_error(e)
+        return 1
     if "atcoder.jp" not in url:
-        sys.exit(print_error(f"AtCoder の URL を取得できませんでした\nURL: {url}"))
+        print_error(f"AtCoder の URL を取得できませんでした\nURL: {url}")
+        return 1
 
     # ページにアクセス
     try:
@@ -45,7 +50,8 @@ def main():
         print(user)
         print(f"URL: {url}\n")
     except Exception as e:
-        sys.exit(print_error(f"アクセス失敗\n{e}"))
+        print_error(f"アクセス失敗\n{e}")
+        return 1
     
     # 問題文やサンプルをパース
     problem_spec = ProblemSpec(html)
