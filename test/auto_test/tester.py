@@ -43,14 +43,13 @@ def test_one(
     output_sample: str
 ) -> tuple[str, str, str, float]:
     start_s = time.perf_counter()
+    process = subprocess.Popen(
+        ["python", src_path],           # 実行する Python スクリプト
+        stdin=subprocess.PIPE,     # 標準入力をパイプで渡す
+        stdout=subprocess.PIPE,    # 標準出力をパイプで受け取る
+        stderr=subprocess.PIPE     # 標準エラーをパイプで受け取る
+    )
     try:
-        process = subprocess.Popen(
-            ["python", src_path],           # 実行する Python スクリプト
-            stdin=subprocess.PIPE,     # 標準入力をパイプで渡す
-            stdout=subprocess.PIPE,    # 標準出力をパイプで受け取る
-            stderr=subprocess.PIPE     # 標準エラーをパイプで受け取る
-        )
-
         # 入力データを渡して実行
         stdout, stderr = process.communicate(input=input_sample.encode(), timeout=time_limit_s)
     except subprocess.TimeoutExpired:
@@ -160,6 +159,8 @@ def test(src_path: Path, problem_spec: ProblemSpec) -> None:
 
         input_sample = input_samples[i]
         output_sample = output_samples[i]
+        assert input_sample is not None
+        assert output_sample is not None
         result, output, error, elapsed_time = test_one(src_path, problem_spec.time_limit_s, input_sample, output_sample)
         print_result(i, result, elapsed_time, output_sample, output, error)
         result_list.append(format_text(result, fg=RESULT_COLOR[result], styles=[Style.Bold]))

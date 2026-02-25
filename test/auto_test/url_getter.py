@@ -6,7 +6,7 @@ import pyperclip
 
 
 def get_current_url(browser: str, editor: str) -> str:
-    windows = gw.getAllWindows()
+    windows = gw.getAllWindows() # type: ignore
 
     browser_window = None
     editor_window = None

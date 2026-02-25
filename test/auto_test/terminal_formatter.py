@@ -35,3 +35,8 @@ def format_text(
         return f"\033[{';'.join(codes)}m{text}\033[0m"
     else:
         return text
+
+
+def print_error(message: str | Exception) -> int:
+    print(format_text(message, fg=ERROR_COLOR))
+    return 1
