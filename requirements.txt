@@ -1,6 +1,0 @@
-requests
-beautifulsoup4
-pygetwindow
-pyautogui
-pyperclip
-python-dotenv
