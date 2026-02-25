@@ -25,6 +25,7 @@ include = [
 ]
 
 [tool.ruff]
+line-length = 88
 include = [
     "test/auto_test/**/*.py",
 ]
