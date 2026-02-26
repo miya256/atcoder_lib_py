@@ -16,7 +16,7 @@ def enumerate_divisors_from_factor(prime_factor: dict[int, int]) -> list[int]:
     """素因数から約数を列挙"""
     divisors = [1]
     for radix, exp in prime_factor.items():
-        for d in divisors[:]: #appendしていくのでコピーから取り出している
+        for d in divisors[:]:  # appendしていくのでコピーから取り出している
             val = 1
             for _ in range(exp):
                 val *= radix
