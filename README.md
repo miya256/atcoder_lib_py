@@ -18,16 +18,17 @@ cat test/input.txt | python test/atcoder.py
 ### 自動テスト（すべてのテストケースを試す）
 
 #### セットアップ
-1. uv をインストールしてください。
+1. uv をインストールしてください。  
+    インストール方法は [公式ドキュメント](https://docs.astral.sh/uv/#installation) を参照してください。
 2. リポジトリのルートで、以下を実行してください
-```
+```Bash
 uv sync
 ```
 3. `.env` を作成し、`.env.sample` を例に必要な値を設定してください。
 
 #### 実行
 ```Bash
-python test/auto_test/main.py
+uv run python test/auto_test/main.py
 ```
 
 ※ 本ツールは主に Windows + Edge を想定しています。  
