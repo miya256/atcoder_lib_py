@@ -19,7 +19,11 @@ class AtcoderUser:
     def __init__(self, name: str, rate: str | None, color: str | None) -> None:
         self.name = name
         self.rate = rate
-        self.color = AtcoderUser.COLOR_CODE[color] if color in AtcoderUser.COLOR_CODE else "#ffffff"
+        self.color = (
+            AtcoderUser.COLOR_CODE[color]
+            if color in AtcoderUser.COLOR_CODE
+            else "#ffffff"
+        )
 
     def __repr__(self):
         name = format_text(self.name, fg=self.color, styles=[Style.Bold])
