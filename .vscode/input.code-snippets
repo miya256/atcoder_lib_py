@@ -11,12 +11,17 @@
 
 	"map(int,input().split())" : {
 		"prefix": "map(int,input().split())",
-		"body": "map(${1|int,lambda x:int(x)-1|},input().split())"
+		"body": "map(${1|int,lambda x: int(x)-1|},input().split())"
 	},
 
 	"list(map(int,input().split()))" : {
 		"prefix": "list",
-		"body": "list(map(${1|int,lambda x:int(x)-1|},input().split()))"
+		"body": "list(map(${1|int,lambda x: int(x)-1|},input().split()))"
+	},
+
+	"set(map(int,inupt().split()))" : {
+		"prefix": "set",
+		"body": "set(map(${1|int,lambda x: int(x)-1|},input().split()))"
 	},
 
 	"list(input())" : {
@@ -31,17 +36,17 @@
 
 	"sorted(map(int,input().split()))" : {
 		"prefix": "sorted(map(int,input().split()))",
-		"body": "sorted(map(${1|int,lambda x:int(x)-1|},input().split()))"
+		"body": "sorted(map(${1|int,lambda x: int(x)-1|},input().split()))"
 	},
 
 	"[list(map(int,input().split())) for _ in range()]" : {
 		"prefix": "[list(map(int,input().split())) for _ in range()]",
-		"body": "[list(map(${1|int,lambda x:int(x)-1|},input().split())) for _ in range($2)"
+		"body": "[list(map(${1|int,lambda x: int(x)-1|},input().split())) for _ in range($2)"
 	},
 
 	"[tuple(map(int,input().split())) for _ in range()]" : {
 		"prefix": "[tuple(map(int,input().split())) for _ in range()]",
-		"body": "[tuple(map(${1|int,lambda x:int(x)-1|},input().split())) for _ in range($2)"
+		"body": "[tuple(map(${1|int,lambda x: int(x)-1|},input().split())) for _ in range($2)"
 	},
 
 	"[list(input()) for _ in range()]" : {
