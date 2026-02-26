@@ -26,6 +26,7 @@ include = [
     "library/connectivity",
     "library/containers",
     "library/number",
+    "library/persistent",
 ]
 
 [tool.ruff]
