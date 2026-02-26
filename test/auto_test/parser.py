@@ -10,12 +10,12 @@ class ProblemSpec:
     def __init__(self, html: str) -> None:
         self.soup = BeautifulSoup(html, "html.parser")
 
-        self.time_limit_s: float = self._parse_time_limit()  # 実行時間制限
-        self.memory_limit_mib: int = self._parse_memory_limit()  # メモリ制限
-        self.output_statement: Optional[str] = self._parse_output_statement()  # 出力形式の説明
-        self.input_samples: dict[int, Optional[str]] = self._parse_input_samples()  # 入力例
-        self.output_samples: dict[int, Optional[str]] = self._parse_output_samples()  # 出力例
-        self.problem_statement: Optional[str] = self._parse_problem_statement()  # 問題文
+        self.time_limit_s: float = self._parse_time_limit()
+        self.memory_limit_mib: int = self._parse_memory_limit()
+        self.output_statement: Optional[str] = self._parse_output_statement()
+        self.input_samples: dict[int, Optional[str]] = self._parse_input_samples()
+        self.output_samples: dict[int, Optional[str]] = self._parse_output_samples()
+        self.problem_statement: Optional[str] = self._parse_problem_statement()
 
     def _parse_time_limit(self) -> float:
         default_time_limit = 2.0
@@ -29,7 +29,9 @@ class ProblemSpec:
                     value /= 1000
                 return value
             else:
-                print_error(f"実行時間制限が期待した文字列と一致しませんでした: {tag.text!r}")
+                print_error(
+                    f"実行時間制限が期待した文字列と一致しませんでした: {tag.text!r}"
+                )
                 return default_time_limit
         print_error("実行時間制限を取得できませんでした")
         return default_time_limit
@@ -43,7 +45,9 @@ class ProblemSpec:
                 value = int(match.group(1))
                 return value
             else:
-                print_error(f"メモリ制限が期待した文字列と一致しませんでした: {tag.text!r}")
+                print_error(
+                    f"メモリ制限が期待した文字列と一致しませんでした: {tag.text!r}"
+                )
                 return default_memory_limit
         print_error("メモリ制限を取得できませんでした")
         return default_memory_limit
@@ -64,7 +68,9 @@ class ProblemSpec:
             if match := re.search(r"入力例 (\d+)", tag.text):
                 sample_number = int(match.group(1))
                 if sample_number in input_samples:
-                    print_error(f"入力例番号に重複が見られました: 入力例 {sample_number}")
+                    print_error(
+                        f"入力例番号に重複が見られました: 入力例 {sample_number}"
+                    )
                     input_samples[sample_number] = None
                     continue
                 pre = tag.find_next("pre")
@@ -80,7 +86,9 @@ class ProblemSpec:
             if match := re.search(r"出力例 (\d+)", tag.text):
                 sample_number = int(match.group(1))
                 if sample_number in output_samples:
-                    print_error(f"出力例番号に重複が見られました: 出力例 {sample_number}")
+                    print_error(
+                        f"出力例番号に重複が見られました: 出力例 {sample_number}"
+                    )
                     output_samples[sample_number] = None
                     continue
                 pre = tag.find_next("pre")

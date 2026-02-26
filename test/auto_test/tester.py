@@ -48,7 +48,9 @@ def test_one(
     )
     try:
         # 入力データを渡して実行
-        stdout, stderr = process.communicate(input=input_sample.encode(), timeout=time_limit_s)
+        stdout, stderr = process.communicate(
+            input=input_sample.encode(), timeout=time_limit_s
+        )
     except subprocess.TimeoutExpired:
         stdout, stderr = bytes(), bytes()
         process.kill()
@@ -74,7 +76,9 @@ def print_result(
         diff_color = "#00ffff"
 
         # 色つけてからだと、ターミナルの文字がずれるので、先にpadding
-        output = "\n".join([f"{output_i:<{terminal_center}}" for output_i in output.splitlines()])
+        output = "\n".join(
+            [f"{output_i:<{terminal_center}}" for output_i in output.splitlines()]
+        )
         correct = "\n".join([f"{correct_i}" for correct_i in correct.splitlines()])
 
         output_tokens = re.split(r"(\s+)", output) if output else []
@@ -145,7 +149,9 @@ def test(src_path: Path, problem_spec: ProblemSpec) -> None:
                 )
                 + "\n"
             )
-            result_list.append(format_text("SKIP", fg="#000000", bg="#ffff00", styles=[Style.Bold]))
+            result_list.append(
+                format_text("SKIP", fg="#000000", bg="#ffff00", styles=[Style.Bold])
+            )
             print(message)
             continue
 
@@ -153,9 +159,12 @@ def test(src_path: Path, problem_spec: ProblemSpec) -> None:
         output_sample = output_samples[i]
         assert input_sample is not None
         assert output_sample is not None
+
         result, output, error, elapsed_time = test_one(
             src_path, problem_spec.time_limit_s, input_sample, output_sample
         )
         print_result(i, result, elapsed_time, output_sample, output, error)
-        result_list.append(format_text(result, fg=RESULT_COLOR[result], styles=[Style.Bold]))
+        result_list.append(
+            format_text(result, fg=RESULT_COLOR[result], styles=[Style.Bold])
+        )
     print(*result_list)

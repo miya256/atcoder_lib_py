@@ -31,7 +31,10 @@ def check_keywords(problem_spec: ProblemSpec) -> list[Warning]:
 
     warnings: list[Warning] = []
     for keyword, message in keywords.items():
-        if keyword in problem_spec.problem_statement or keyword in problem_spec.output_statement:
+        if (
+            keyword in problem_spec.problem_statement
+            or keyword in problem_spec.output_statement
+        ):
             warnings.append(Warning(message))
     return warnings
 
