@@ -1,13 +1,13 @@
 class UnionFind:
     """
     連結を管理するデータ構造。計算量はアッカーマン関数の逆関数
-    
-    Attributes:\n
+
+    Attributes:
         element_list   : 初期化で生成した要素が入る
         element_dict   : addによって追加したもの
         component_count: 連結成分の個数
-    
-    Methods:\n
+
+    Methods:
         element(id) : idをElememt型で取得
         contains(id): idが存在するか
         add(id)     : 頂点idを追加
@@ -21,65 +21,70 @@ class UnionFind:
     """
 
     class Element:
-        """追加でデータが必要なときは、ここに直接かく"""
-        def __init__(self, id: int) -> None:
+        """
+        追加でデータが必要なときは、
+        __init__() に要素、
+        merge() にマージルールを加えましょう
+        """
+
+        def __init__(self, id: object) -> None:
             self.id = id
             self.parent = None
             self.size = 1
-        
+
         def __repr__(self) -> str:
-            return f'{self.id}'
-        
+            return f"{self.id}"
+
         def merge(self, other: "UnionFind.Element") -> None:
             """selfにotherをmerge"""
             other.parent = self
             self.size += other.size
-        
+
         def should_parent(self, other: "UnionFind.Element") -> bool:
             """selfにotherをmergeするとき、こうなっていればok"""
             return self.size > other.size
-    
+
     def __init__(self, n: int = 0) -> None:
         self._n = n
         self._component_count = n
         self._element_list = [UnionFind.Element(i) for i in range(n)]
         self._element_dict = {}
-    
+
     def __getitem__(self, id: object) -> Element:
         """頂点idをElement型で取得"""
         return self.element(id)
-    
+
     def __contains__(self, id: object) -> bool:
         """idが存在するか"""
         return self.contains(id)
-    
+
     def __repr__(self) -> str:
         string = ["UnionFind (\n"]
         for leader, members in self.groups.items():
-            string.append(f'  leader={leader}, members={members}\n')
+            string.append(f"  leader={leader}, members={members}\n")
         string.append(")")
-        return ''.join(string)
-    
+        return "".join(string)
+
     def element(self, id: object) -> Element:
         """頂点idをElement型で取得"""
         assert id in self, f"id={id} does not exist"
-        if self._in_element_list(id):
+        if isinstance(id, int) and self._in_element_list(id):
             return self._element_list[id]
         return self._element_dict[id]
-    
+
     def contains(self, id: object) -> bool:
         """idが存在するか"""
         if self._in_element_list(id):
             return True
         return id in self._element_dict
-    
+
     def add(self, id: object) -> None:
         """頂点idを追加。int型でもdictのほうに追加される"""
         assert id not in self, f"id={id} already exists"
         self._element_dict[id] = UnionFind.Element(id)
         self._n += 1
         self._component_count += 1
-    
+
     def leader(self, id: object) -> object:
         """vの属する連結成分の根"""
         v = self.element(id)
@@ -91,52 +96,58 @@ class UnionFind:
             while stack:
                 stack.pop().parent = v
         return v.id
-    
+
     def merge(self, u: object, v: object) -> bool:
         """u, vを連結"""
         ru = self.element(self.leader(u))
         rv = self.element(self.leader(v))
-        if ru == rv: #すでに連結なら
+        if ru == rv:  # すでに連結なら
             return False
         self._component_count -= 1
         if not ru.should_parent(rv):
             ru, rv = rv, ru
-        ru.merge(rv) #ruにrvをmerge
+        ru.merge(rv)  # ruにrvをmerge
         return True
-    
+
     def same(self, u: object, v: object) -> bool:
         """u, vが連結か"""
         return self.leader(u) == self.leader(v)
-    
+
     def size(self, v: object) -> int:
         """vの連結成分の要素数"""
         return self.element(self.leader(v)).size
-    
+
     def members(self, v: object) -> list[object]:
         """vの連結成分の要素を列挙"""
         rv = self.leader(v)
         members = []
-        members.extend([i for i, v in enumerate(self._element_list) if self.leader(i) ==  rv])
-        members.extend([i for i, v in self._element_dict.items() if self.leader(i) == rv])
+        members.extend(
+            [i for i, v in enumerate(self._element_list) if self.leader(i) == rv]
+        )
+        members.extend(
+            [i for i, v in self._element_dict.items() if self.leader(i) == rv]
+        )
         return members
-    
+
     def _in_element_list(self, id: object) -> bool:
         """idが初期のやつか"""
         return isinstance(id, int) and 0 <= id < len(self._element_list)
-    
+
     @property
     def component_count(self) -> int:
         """連結成分の個数"""
         return self._component_count
-    
+
     @property
     def leaders(self) -> list[object]:
         """leaderを列挙"""
         leaders = []
-        leaders.extend([i for i, v in enumerate(self._element_list) if v.parent is None])
+        leaders.extend(
+            [i for i, v in enumerate(self._element_list) if v.parent is None]
+        )
         leaders.extend([i for i, v in self._element_dict.items() if v.parent is None])
         return leaders
-    
+
     @property
     def groups(self) -> dict[object, list[object]]:
         """すべてのleaderとmembersを列挙"""
