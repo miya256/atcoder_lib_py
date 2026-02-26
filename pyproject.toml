@@ -27,6 +27,7 @@ include = [
     "library/containers",
     "library/number",
     "library/persistent",
+    "library/range_query",
 ]
 
 [tool.ruff]
