@@ -22,10 +22,12 @@ dev = [
 [tool.pyright]
 include = [
     "test/auto_test",
+    "library"
 ]
 
 [tool.ruff]
 line-length = 100
 include = [
     "test/auto_test/**/*.py",
+    "library/**/*.py",
 ]
