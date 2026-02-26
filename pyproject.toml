@@ -22,7 +22,9 @@ dev = [
 [tool.pyright]
 include = [
     "test/auto_test",
-    "library"
+    "library/compression",
+    "library/connectivity",
+    "library/containers",
 ]
 
 [tool.ruff]
