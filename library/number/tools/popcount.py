@@ -1,21 +1,21 @@
-#int型(4byte)
-def popcount(x: int) -> int:
+# int型(4byte)
+def popcount32(x: int) -> int:
     x = (x & 0x55555555) + ((x >> 1) & 0x55555555)
     x = (x & 0x33333333) + ((x >> 2) & 0x33333333)
-    x = (x & 0x0f0f0f0f) + ((x >> 4) & 0x0f0f0f0f)
-    x = (x & 0x00ff00ff) + ((x >> 8) & 0x00ff00ff)
-    x = (x & 0x0000ffff) + ((x >> 16) & 0x0000ffff)
+    x = (x & 0x0F0F0F0F) + ((x >> 4) & 0x0F0F0F0F)
+    x = (x & 0x00FF00FF) + ((x >> 8) & 0x00FF00FF)
+    x = (x & 0x0000FFFF) + ((x >> 16) & 0x0000FFFF)
     return x
 
 
-#long型(8byte)
-def popcount(x: int) -> int:
+# long型(8byte)
+def popcount64(x: int) -> int:
     x = (x & 0x5555555555555555) + ((x >> 1) & 0x5555555555555555)
     x = (x & 0x3333333333333333) + ((x >> 2) & 0x3333333333333333)
-    x = (x & 0x0f0f0f0f0f0f0f0f) + ((x >> 4) & 0x0f0f0f0f0f0f0f0f)
-    x = (x & 0x00ff00ff00ff00ff) + ((x >> 8) & 0x00ff00ff00ff00ff)
-    x = (x & 0x0000ffff0000ffff) + ((x >> 16) & 0x0000ffff0000ffff)
-    x = (x & 0x00000000ffffffff) + ((x >> 32) & 0x00000000ffffffff)
+    x = (x & 0x0F0F0F0F0F0F0F0F) + ((x >> 4) & 0x0F0F0F0F0F0F0F0F)
+    x = (x & 0x00FF00FF00FF00FF) + ((x >> 8) & 0x00FF00FF00FF00FF)
+    x = (x & 0x0000FFFF0000FFFF) + ((x >> 16) & 0x0000FFFF0000FFFF)
+    x = (x & 0x00000000FFFFFFFF) + ((x >> 32) & 0x00000000FFFFFFFF)
     return x
 
 
