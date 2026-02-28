@@ -12,7 +12,7 @@
 ### 1つのテストケースを試す
 test/input.txtに入力をコピペしましょう。
 ```Bash
-cat test/input.txt | python test/atcoder.py
+cat test/input.txt | python test/solve.py
 ```
 
 ### 自動テスト（すべてのテストケースを試す）
