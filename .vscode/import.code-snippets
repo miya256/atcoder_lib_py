@@ -89,7 +89,7 @@
 
 	"atcoder.floor_sum" : {
 		"prefix": "from atcoder.math",
-		"body": "from atcoder.math import floor_sum\n"
+		"body": "from atcoder.math import crt, floor_sum\n"
 	},
 
 	"atcoder.maxflow" : {
