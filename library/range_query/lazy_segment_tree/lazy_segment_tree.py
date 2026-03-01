@@ -218,3 +218,18 @@ class LazySegmentTree(Generic[Monoid, Operator]):
         self._all_apply(2 * i, self._lazy[i])
         self._all_apply(2 * i + 1, self._lazy[i])
         self._lazy[i] = self._id
+
+
+def op(x, y):
+    return
+
+
+def mapping(f, x):
+    return
+
+
+def composition(f, g):
+    return
+
+
+# 区間加算・区間和取得 の場合長さを持たせるのを忘れないようにしよう

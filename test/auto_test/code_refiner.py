@@ -1,13 +1,15 @@
-import re
+import ast
 
 
-def remove_assert(src_lines: list[str]) -> list[str]:
-    """assert文を取り除く"""
-    # 行の先頭に、空白やタブが0個以上、assert がくる正規表現
-    pattern = re.compile(r"^[ \t]*assert\b")
-    return [line for line in src_lines if not pattern.match(line)]
+class CodeRefiner(ast.NodeTransformer):
+    def visit_Assert(self, node):
+        """assert文除去"""
+        return None
 
 
-def refine_code(src_lines: list[str]) -> list[str]:
-    src_lines = remove_assert(src_lines)
-    return src_lines
+def refine_code(code: str) -> str:
+    tree = ast.parse(code)
+    tree = CodeRefiner().visit(tree)
+    ast.fix_missing_locations(tree)
+    new_code = ast.unparse(tree)
+    return new_code

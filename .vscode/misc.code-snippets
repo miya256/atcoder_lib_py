@@ -11,7 +11,7 @@
 			"\tni, nj = i+di, j+dj",
 			"\tif not(0 <= ni < $1 and 0 <= nj < $2):",
 			"\t\tcontinue",
-			"\t${3:#「visited」や「壁」も}"
+			"\t$0",
 		]
 	},
 
@@ -27,27 +27,27 @@
 
 	"for _ in range" : {
 		"prefix": "for _ in range",
-		"body": "for ${1|_,i,j,k|} in range($2)"
+		"body": "for ${1|_,i,j,k|} in range($2):\n\t"
 	},
 
 	"for i, v in enumerate" : {
 		"prefix": "for i, v in enumerate",
-		"body": "for i, $1 in enumerate($2)"
+		"body": "for i, $1 in enumerate($2):\n\t"
 	},
 
 	"abcdefghijklmnopqrstuvwxyz" : {
-		"prefix": "\"abcde",
-		"body": "\"abcdefghijklmnopqrstuvwxyz\""
+		"prefix": "\"abcde\"",
+		"body": "\"abcdefghijklmnopqrstuvwxyz\"\n"
 	},
 
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZ" : {
-		"prefix": "\"ABCDE",
-		"body": "\"ABCDEFGHIJKLMNOPQRSTUVWXYZ\""
+		"prefix": "\"ABCDE\"",
+		"body": "\"ABCDEFGHIJKLMNOPQRSTUVWXYZ\"\n"
 	},
 
 	"mod=998244353" : {
 		"prefix": "mod",
-		"body": "mod = 998244353"
+		"body": "mod = 998244353\n"
 	},
 
 	"float('inf')" : {
@@ -57,12 +57,12 @@
 
 	"inf" : {
 		"prefix": "inf",
-		"body": "inf = ${1|1<<61,float('inf')|}"
+		"body": "inf = ${1|1<<61,float('inf')|}\n"
 	},
 
 	"INF" : {
 		"prefix": "INF",
-		"body": "INF = ${1|1<<61,float('inf')|}"
+		"body": "INF = ${1|1<<61,float('inf')|}\n"
 	},
 
 	"lambda x: int(x)-1" : {
@@ -102,7 +102,7 @@
 
 	"exit(print())" : {
 		"prefix": "exit(print())",
-		"body": "exit(print(\"${1|-1,Yes,No|}\"))"
+		"body": "exit(print(\"${1|Yes,No,-1|}\"))\n"
 	},
 
     "chmax" : {

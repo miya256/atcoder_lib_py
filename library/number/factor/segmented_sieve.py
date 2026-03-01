@@ -1,7 +1,7 @@
 class SegmentedSieve:
     """
     区間篩 遅いかも
-    範囲が1からならlpfのほう使う
+    **範囲が1からならlpfのほう使う**
 
     Method:
         prime_factorize   : 素因数分解

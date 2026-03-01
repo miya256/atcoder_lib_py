@@ -1,6 +1,6 @@
 from collections import deque
 
-def bfs(graph: Graph, starts: list[int]) -> None:
+def bfs01(graph: Graph, starts: list[int]) -> None:
     """重みが01のとき"""
     dq = deque([(v, 0) for v in starts])
     visited = [False] * graph.n
