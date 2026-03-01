@@ -22,6 +22,14 @@ class CodeRefiner(ast.NodeTransformer):
 
         self.generic_visit(node)
         return node
+    
+    def visit_Assign(self, node):
+        """TypeVar除去"""
+        if isinstance(node.value, ast.Call):
+            if isinstance(node.value.func, ast.Name):
+                if node.value.func.id == "TypeVar":
+                    return None
+        return node
 
     def visit_AnnAssign(self, node):
         """変数のアノテーション除去"""
@@ -33,6 +41,27 @@ class CodeRefiner(ast.NodeTransformer):
         """typing import除去"""
         if node.module == "typing":
             return None
+        return node
+    
+    def visit_ClassDef(self, node):
+        """Generic除去"""
+        new_bases = []
+
+        for base in node.bases:
+            # Generic[T] の形を検出
+            if isinstance(base, ast.Subscript):
+                if isinstance(base.value, ast.Name):
+                    if base.value.id == "Generic":
+                        continue  # 消す
+
+            # Generic だけのケース
+            if isinstance(base, ast.Name) and base.id == "Generic":
+                continue
+
+            new_bases.append(base)
+
+        node.bases = new_bases
+        self.generic_visit(node)
         return node
 
     def visit_Assert(self, node):
