@@ -1,3 +1,4 @@
+from typing import Literal
 from sortedcontainers import SortedSet
 from collections import deque
 
@@ -24,13 +25,16 @@ class ConvexHullTrick:
         def __call__(self, x: int) -> int:
             return self.m * x + self.b
 
-    def __init__(self, op, slope_type: int = 0, query_type: int = 0) -> None:
+    def __init__(
+        self, op, slope_type: Literal[-1, 0, 1] = 0, query_type: Literal[-1, 0, 1] = 0
+    ) -> None:
         self._op = op
         self._slope_type = slope_type
         self._query_type = query_type
-        self._lines = (
-            SortedSet(key=lambda line: -line.m) if slope_type == 0 else deque()
-        )
+        if slope_type == 0:
+            self._lines = SortedSet(key=lambda line: -line.m)
+        else:
+            self._lines: deque[ConvexHullTrick.Line] = deque()
 
     def add(self, m: int, b: int) -> None:
         """y=mx+bを追加"""
@@ -50,8 +54,10 @@ class ConvexHullTrick:
             return self._query_from_left(x)
         if self._query_type == -1:
             return self._query_from_right(x)
+        raise
 
     def _add(self, line: "ConvexHullTrick.Line") -> None:
+        assert isinstance(self._lines, SortedSet)
         position = self._lines.bisect_left(line)
         # 追加する直線が不要なら追加しない
         if 0 < position < len(self._lines) and self._is_bad(
@@ -115,6 +121,7 @@ class ConvexHullTrick:
             return a >= b
         if self._op == max:
             return a <= b
+        raise
 
     def _is_bad(
         self,
