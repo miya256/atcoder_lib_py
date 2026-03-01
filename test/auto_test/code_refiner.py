@@ -1,23 +1,48 @@
-import re
+import ast
 
 
-def remove_assert(src_lines: list[str]) -> list[str]:
-    """assert文を取り除く"""
-    # 行の先頭に、空白やタブが0個以上、assert がくる正規表現
-    pattern = re.compile(r"^[ \t]*assert\b")
-    return [line for line in src_lines if not pattern.match(line)]
+class CodeRefiner(ast.NodeTransformer):
+    def visit_FunctionDef(self, node):
+        """関数のアノテーション除去"""
+        # 引数の型削除
+        for arg in node.args.args:
+            arg.annotation = None
+
+        for arg in node.args.kwonlyargs:
+            arg.annotation = None
+
+        if node.args.vararg:
+            node.args.vararg.annotation = None
+
+        if node.args.kwarg:
+            node.args.kwarg.annotation = None
+
+        # 戻り値削除
+        node.returns = None
+
+        self.generic_visit(node)
+        return node
+
+    def visit_AnnAssign(self, node):
+        """変数のアノテーション除去"""
+        if node.value is None:
+            return None
+        return ast.Assign(targets=[node.target], value=node.value)
+
+    def visit_ImportFrom(self, node):
+        """typing import除去"""
+        if node.module == "typing":
+            return None
+        return node
+
+    def visit_Assert(self, node):
+        """assert文除去"""
+        return None
 
 
-def remove_type_hints(src_lines: list[str]) -> list[str]:
-    """型ヒントを取り除く"""
-    return src_lines
-
-
-def remove_unused_imports(src_lines: list[str]) -> list[str]:
-    """不要なimportを取り除く"""
-    return src_lines
-
-
-def refine_code(src_lines: list[str]) -> list[str]:
-    src_lines = remove_assert(src_lines)
-    return src_lines
+def refine_code(code: str) -> str:
+    tree = ast.parse(code)
+    tree = CodeRefiner().visit(tree)
+    ast.fix_missing_locations(tree)
+    new_code = ast.unparse(tree)
+    return new_code
