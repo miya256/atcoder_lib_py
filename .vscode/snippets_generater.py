@@ -39,7 +39,7 @@ def extract_definitions(lines: list[str]) -> tuple[str, str]:
 def main():
     snippets = {}
     root = BASE_DIR / "library"
-    for path in root.rglob("*"):
+    for path in sorted(root.rglob("*")):
         if not path.is_file():
             continue
         if path.suffix != ".py":
