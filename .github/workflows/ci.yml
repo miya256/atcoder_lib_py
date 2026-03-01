@@ -23,3 +23,9 @@ jobs:
         run: |
           uv run ruff check .
           uv run ruff format --check .
+
+      - name: Generate snippets
+        run: uv run python .vscode/snippets_generater.py
+
+      - name: Check snippets diff
+        run: git diff --exit-code --ignore-cr-at-eol

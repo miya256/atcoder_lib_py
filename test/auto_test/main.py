@@ -60,16 +60,17 @@ def main():
 
     # ソースコードを読み込む
     with open(src_path, "r", encoding="utf-8") as f:
-        src_lines: list[str] = f.readlines()
+        code: str = f.read()
+    src_lines: list[str] = code.splitlines()
 
     # 提出前チェック
     submit_precheck.check_all(problem_spec, src_lines)
 
     # コードを整える（assert文除去など）
-    submit_lines = refine_code(src_lines)
+    submit_code = refine_code(code)
 
     # クリップボードに提出用コードをコピー
-    pyperclip.copy("".join(submit_lines))
+    pyperclip.copy(submit_code)
 
 
 if __name__ == "__main__":
