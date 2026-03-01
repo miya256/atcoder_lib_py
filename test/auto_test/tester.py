@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 import time
 import re
@@ -41,7 +42,7 @@ def test_one(
 ) -> tuple[str, str, str, float]:
     start_s = time.perf_counter()
     process = subprocess.Popen(
-        ["python", src_path],  # 実行する Python スクリプト
+        [sys.executable, src_path],  # 実行中のPythonをつかう
         stdin=subprocess.PIPE,  # 標準入力をパイプで渡す
         stdout=subprocess.PIPE,  # 標準出力をパイプで受け取る
         stderr=subprocess.PIPE,  # 標準エラーをパイプで受け取る
