@@ -1,4 +1,4 @@
-import re
+import ast
 
 from terminal_formatter import format_text
 from parser import ProblemSpec
@@ -39,39 +39,51 @@ def check_keywords(problem_spec: ProblemSpec) -> list[Warning]:
     return warnings
 
 
-def check_recursion(src_lines: list[str]) -> list[Warning]:
-    """ソースコードに再帰構造があるか確認する"""
+def check_recursion(code: str) -> list[Warning]:
+    tree = ast.parse(code)
     warnings: list[Warning] = []
-    INDENT = 4
-    func_pattern = re.compile(r"^\s*def\s+(\w+)\s*\(")
-    func_stack: list[tuple[str, int]] = [("DUMMY_FUNC", -1)]  # (関数名, ネストの深さ)
-    for line in src_lines:
-        if line.strip() == "":
-            continue
 
-        nests = (len(line) - len(line.lstrip(" "))) // INDENT
-        while func_stack and func_stack[-1][1] >= nests:
-            func_stack.pop()
+    class Detector(ast.NodeVisitor):
+        def __init__(self):
+            self.current_function = None
 
-        call_pattern = re.compile(rf"\b{func_stack[-1][0]}\s*\(")
-        if call_pattern.search(line):
-            warnings.append(
-                Warning(
-                    f"再帰関数 {func_stack[-1][0]} が検出されました。再帰上限を調整しましたか？"
-                )
-            )
-        if match := func_pattern.match(line):
-            func_name = match.group(1)
-            func_stack.append((func_name, nests))
+        def visit_FunctionDef(self, node):
+            self.current_function = node.name
+            self.generic_visit(node)
+            self.current_function = None
 
+        def visit_Call(self, node):
+            if isinstance(node.func, ast.Name):
+                if node.func.id == self.current_function:
+                    warnings.append(
+                        Warning(
+                            f"再帰関数 {self.current_function} が検出されました。再帰上限を調整しましたか？"
+                        )
+                    )
+
+            elif isinstance(node.func, ast.Attribute):
+                if (
+                    isinstance(node.func.value, ast.Name)
+                    and node.func.value.id == "self"
+                    and node.func.attr == self.current_function
+                ):
+                    warnings.append(
+                        Warning(
+                            f"再帰関数 {self.current_function} が検出されました。再帰上限を調整しましたか？"
+                        )
+                    )
+
+            self.generic_visit(node)
+
+    Detector().visit(tree)
     return warnings
 
 
-def check_all(problem_spec: ProblemSpec, src_lines: list[str]) -> list[Warning]:
+def check_all(problem_spec: ProblemSpec, code: str) -> list[Warning]:
     warnings = []
 
     warnings.extend(check_keywords(problem_spec))
-    warnings.extend(check_recursion(src_lines))
+    warnings.extend(check_recursion(code))
 
     if warnings:
         print(format_text("\n===== 提出前チェック =====", bg=Warning.Color))
