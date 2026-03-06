@@ -2,6 +2,9 @@ from sortedcontainers import SortedSet
 
 class IntervalSet:
     """
+    ※ 整数前提
+    ※ 実数の場合[0,1]と[2,3]を塗っても(1,2)が塗られない
+
     区間を管理する[l, r)
     偶数番目が l, 奇数番目が r
 
