@@ -34,8 +34,8 @@ uv run python test/auto_test/main.py
 
 ## プロジェクト構成
 
-### `algorithm/`  
-旧ライブラリ。libraryに移植中。
+### `legacy/`  
+旧ライブラリ。
 
 ### `library/`  
 新しいライブラリ。ファイルが増えてごちゃついてきたり、型ヒントやdocstringなどをちゃんとつけたくなったため。
