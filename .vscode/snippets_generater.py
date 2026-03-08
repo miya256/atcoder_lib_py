@@ -9,14 +9,15 @@ exclude = set([
     "graph/directed/scc_tarjan.py",
     "graph/search/bipartite.py",
     "graph/search/dfs.py",
-    "number/factor/linear_sieve.py",
-    "number/fps/fps.py",
-    "number/linear_algebra/matrix_multiple_strassen.py",
-    "number/mod/mod_pow.py",
-    "number/tools/bit_reverse.py",
-    "number/tools/bit_tricks.py",
-    "number/tools/popcount.py",
+    "math/factor/linear_sieve.py",
+    "math/fps/fps.py",
+    "math/linear_algebra/matrix_multiple_strassen.py",
+    "math/mod/mod_pow.py",
+    "math/tools/bit_reverse.py",
+    "math/tools/bit_tricks.py",
+    "math/tools/popcount.py",
     "range_query/sparse_table.py",
+    "range_query/fenwick_tree/fenwick_tree_generic.py",
     "split_search/bisect.py",
     "string/aho_corasick.py",
     "string/suffix_array.py",
@@ -45,6 +46,7 @@ def main():
         if path.suffix != ".py":
             continue
         if path.relative_to(root) in exclude:
+            print(f"\033[33mSkip\033[0m {path.relative_to(root)}")
             continue
 
         with open(path, "r", encoding="utf-8") as f:

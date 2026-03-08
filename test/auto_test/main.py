@@ -61,10 +61,9 @@ def main():
     # ソースコードを読み込む
     with open(src_path, "r", encoding="utf-8") as f:
         code: str = f.read()
-    src_lines: list[str] = code.splitlines()
 
     # 提出前チェック
-    submit_precheck.check_all(problem_spec, src_lines)
+    submit_precheck.check_all(problem_spec, code)
 
     # コードを整える（assert文除去など）
     submit_code = refine_code(code)

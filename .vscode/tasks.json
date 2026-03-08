@@ -1,0 +1,18 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "run-test",
+      "type": "shell",
+      "command": "uv",
+      "args": ["run", "python", "test/auto_test/main.py"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+      }
+    }
+  ]
+}
