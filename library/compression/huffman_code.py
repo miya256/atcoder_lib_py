@@ -11,12 +11,13 @@ class HuffmanCode:
         get_code(char): アルファベットの符号を返す
         get_char(code): 符号をアルファベットに復元
     """
+
     class Node:
         def __init__(self, cnt: int, char: str | None = None) -> None:
             self.cnt = cnt
             self.char = char  # 葉のみ文字を保持
-            self.left = None
-            self.right = None
+            self.left: HuffmanCode.Node | None = None
+            self.right: HuffmanCode.Node | None = None
 
     def __init__(self, string: str) -> None:
         self._root = self._make_tree(string.lower())
@@ -25,7 +26,10 @@ class HuffmanCode:
 
     def _make_tree(self, string: str) -> "HuffmanCode.Node":
         counter = Counter(c for c in string if c.islower())
-        hq = [(cnt, id(node := HuffmanCode.Node(cnt, char)), node) for char, cnt in counter.items()]
+        hq = [
+            (cnt, id(node := HuffmanCode.Node(cnt, char)), node)
+            for char, cnt in counter.items()
+        ]
         heapify(hq)
 
         while len(hq) > 1:
@@ -42,6 +46,8 @@ class HuffmanCode:
         if node.char is not None:
             self._code[node.char] = path or "0"  # 1文字専用対策
             return
+
+        assert node.left and node.right
         self._build_code(node.left, path + "0")
         self._build_code(node.right, path + "1")
 
@@ -55,7 +61,9 @@ class HuffmanCode:
         node = self._root
         out = []
         for bit in code:
+            assert node
             node = node.left if bit == "0" else node.right
+            assert node
             if node.char is not None:
                 out.append(node.char)
                 node = self._root

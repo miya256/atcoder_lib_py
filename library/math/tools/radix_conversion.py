@@ -7,7 +7,7 @@ def convert_radix(n: int, radix: int) -> list[int]:
     assert abs(radix) > 1
     if n == 0:
         return [0]
-    is_neg_radix = (radix < 0)
+    is_neg_radix = radix < 0
     radix = abs(radix)
     res = []
     while n:

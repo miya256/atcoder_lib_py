@@ -13,15 +13,15 @@ def is_prime(n: int) -> bool:
         return True
     if n % 2 == 0:
         return False
-    
+
     # p-1 = t * 2^s
-    s, t = 0, n-1
+    s, t = 0, n - 1
     while t % 2 == 0:
         s += 1
         t >>= 1
 
     for a in (2, 7, 61, 325, 9375, 28178, 450775, 9780504, 1795265022):
-        if a > n-2:
+        if a > n - 2:
             break
 
         x = pow(a, t, n)
@@ -34,10 +34,10 @@ def is_prime(n: int) -> bool:
         # (a^(t * 2^i) + 1) の確認
         # これが0 つまり a^(t * 2^i) = -1 なら素数の可能性あり
         for _ in range(s):
-            if x == n-1:
+            if x == n - 1:
                 break
             x = x * x % n
         else:
             return False
-        
+
     return True

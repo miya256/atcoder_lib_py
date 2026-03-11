@@ -5,6 +5,6 @@ def run_length_encode(a: str | list) -> list[tuple[object, int]]:
     while l < len(a):
         while r < len(a) and a[l] == a[r]:
             r += 1
-        rle.append((a[l], r-l))
+        rle.append((a[l], r - l))
         l = r
     return rle

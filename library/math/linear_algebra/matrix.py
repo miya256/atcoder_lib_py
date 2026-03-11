@@ -118,14 +118,14 @@ class Matrix:
         self._a = res._a
         return self
     
-    def __eq__(self, other: "Matrix") -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, Matrix):
             return False
         if self.n != other.n or self.m != other.m:
             return False
         return all(self._a[i] == other._a[i] for i in range(self.n * self.m))
     
-    def __ne__(self, other: "Matrix") -> bool:
+    def __ne__(self, other: object) -> bool:
         return not self.__eq__(other)
     
     def __repr__(self):

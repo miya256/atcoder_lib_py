@@ -1,4 +1,5 @@
-from bisect import bisect_left, bisect_right
+from bisect import bisect_left
+
 
 def lis(a: list[int]) -> int:
     """aの最長増加部分列"""

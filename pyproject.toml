@@ -24,12 +24,19 @@ dev = [
 [tool.pyright]
 include = [
     "test/auto_test",
+    "library",
 ]
 
 [tool.ruff]
 line-length = 88
+
+# 無効化するチェック
+ignore = [
+    "E741" # あいまいな変数（l, 1, I が紛らわしいってやつ）
+]
 include = [
     "test/auto_test/**/*.py",
+    "library/**/*.py",
 ]
 
 [tool.uv.sources]

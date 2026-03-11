@@ -1,5 +1,6 @@
 from bisect import bisect_left
 
+
 class Compressor:
     """
     座標圧縮
@@ -8,13 +9,14 @@ class Compressor:
         original(compressed): 圧縮後の値 -> 元の値
         compress(original)  : 元の値 -> 圧縮後の値
     """
+
     def __init__(self, numbers: set) -> None:
         self._numbers = sorted(set(numbers))
         self._compressed = {v: i for i, v in enumerate(self._numbers)}
-    
+
     def __call__(self, original: int) -> int:
         return self.compress(original)
-    
+
     def __repr__(self) -> str:
         return f"{self._compressed}"
 

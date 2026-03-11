@@ -14,48 +14,53 @@ class Ring:
         on_backward_path : backwardのstartからendまでの間にpointが存在するか
         mid_point        : a,bの中点(2つ)を返す。(n,a,b)=(3,1,2) -> 1.5, 0
     """
+
     def __init__(self, n: int) -> None:
         self.n = n
-    
+
     def forward_cost(self, start: int, end: int) -> int:
         """forwardに進んだ場合の道のり"""
         return (end - start) % self.n
-    
+
     def backward_cost(self, start: int, end: int) -> int:
         """backwardに進んだ場合の道のり"""
         return (start - end) % self.n
-    
+
     def via_cost(self, start: int, end: int, point: int) -> int:
         """startからendまで、pointを通るほうのコスト"""
         if self.on_forward_path(start, end, point):
             return self.forward_cost(start, end)
         return self.backward_cost(start, end)
-    
+
     def avoid_cost(self, start: int, end: int, point: int) -> int:
         """startからendまで、pointを避けるほうのコスト"""
         if self.on_backward_path(start, end, point):
             return self.forward_cost(start, end)
         return self.backward_cost(start, end)
-    
-    def on_forward_path(self, start: int, end: int, point: int, inclusive: bool = False) -> bool:
+
+    def on_forward_path(
+        self, start: int, end: int, point: int, inclusive: bool = False
+    ) -> bool:
         """forwardのstartからendまでの間にpointが存在するか"""
         start, end, point = self._mod(start, end, point)
-        if inclusive: #start と end も含めるなら
+        if inclusive:  # start と end も含めるなら
             return (point - start) * (start - end) * (end - point) <= 0
         return (point - start) * (start - end) * (end - point) < 0
-    
-    def on_backward_path(self, start: int, end: int, point: int, inclusive: bool = False) -> bool:
+
+    def on_backward_path(
+        self, start: int, end: int, point: int, inclusive: bool = False
+    ) -> bool:
         """backwardのstartからendまでの間にpointが存在するか"""
         start, end, point = self._mod(start, end, point)
-        if inclusive: #start と end も含めるなら
+        if inclusive:  # start と end も含めるなら
             return (point - start) * (start - end) * (end - point) >= 0
         return (point - start) * (start - end) * (end - point) > 0
-    
-    def mid_point(self, a: int, b: int) -> float:
+
+    def mid_point(self, a: int, b: int) -> tuple[float, float]:
         """a,bの中点(2つ)を返す。(n,a,b)=(3,1,2) -> 1.5, 0"""
         p1 = ((a + b) / 2) % self.n
         p2 = ((a + b + self.n) / 2) % self.n
         return p1, p2
-    
+
     def _mod(self, *val):
         return map(lambda x: int(x) % self.n, val)

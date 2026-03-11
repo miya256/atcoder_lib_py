@@ -1,9 +1,10 @@
 def binary_search(ok: int, ng: int, *args) -> int:
     """二分探索"""
-    def satisfies(x: int) -> bool:
-        """xのとき条件を満たすか"""
-        return
-    
+
+    def satisfies(mid: int) -> bool:
+        """midのとき条件を満たすか"""
+        return  # type: ignore
+
     ng += 1 if ok < ng else -1
     while abs(ok - ng) > 1:
         mid = (ok + ng) // 2
