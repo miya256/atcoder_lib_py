@@ -21,12 +21,12 @@ uv sync
 ### 1つのテストケースを試す
 test/input.txtに入力をコピペしましょう。
 ```Bash
-cat test/input.txt | uv run python test/solve.py
+cat solve/input.txt | uv run python solve/solve.py
 ```
 
 ### 自動テスト（すべてのテストケースを試す）
 ```Bash
-uv run python test/auto_test/main.py
+uv run python tools/auto_test/main.py
 ```
 
 ※ 本ツールは主に Windows + Edge を想定しています。  
@@ -40,11 +40,11 @@ uv run python test/auto_test/main.py
 ### `library/`  
 新しいライブラリ。ファイルが増えてごちゃついてきたり、型ヒントやdocstringなどをちゃんとつけたくなったため。
 
-### `test/`  
-コンテスト中にコードを書くファイルなどがあります。自動テストもあります。
+### `solve/`  
+コンテスト中にコードを書くファイル。
 
-### `.vscode/`
-スニペットファイルとそれを生成するスクリプトがあります。
+### `tools/`
+自動テストやスニペット生成ツール。
 
 ## 自動テスト
 
