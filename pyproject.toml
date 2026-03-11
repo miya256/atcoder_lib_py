@@ -23,7 +23,7 @@ dev = [
 
 [tool.pyright]
 include = [
-    "test/auto_test",
+    "tools",
     "library",
 ]
 
@@ -35,7 +35,7 @@ ignore = [
     "E741" # あいまいな変数（l, 1, I が紛らわしいってやつ）
 ]
 include = [
-    "test/auto_test/**/*.py",
+    "tools/**/*.py",
     "library/**/*.py",
 ]
 
