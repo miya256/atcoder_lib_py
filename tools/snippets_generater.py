@@ -2,7 +2,7 @@ import re
 import json
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent
 
 exclude = set([
     "dp/bounded_knapsack.py",
@@ -35,7 +35,7 @@ def extract_definitions(lines: list[str]) -> tuple[str, str]:
 
 def main():
     snippets = {}
-    root = BASE_DIR / "library"
+    root = ROOT / "library"
     for path in sorted(root.rglob("*")):
         if not path.is_file():
             continue
@@ -57,7 +57,7 @@ def main():
         except Exception as e:
             print(f"\033[33mSkip\033[0m {path.relative_to(root)}: {e}")
     
-    snippets_dir = BASE_DIR / ".vscode/lib.code-snippets"
+    snippets_dir = ROOT / ".vscode/lib.code-snippets"
     with open(snippets_dir, "w", encoding="utf-8") as f:
         json.dump(snippets, f, indent=2, ensure_ascii=False)
 
