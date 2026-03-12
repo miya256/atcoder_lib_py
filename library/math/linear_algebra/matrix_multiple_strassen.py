@@ -1,7 +1,8 @@
-import numpy as np
+import numpy as np # type: ignore
+
 
 def strassen(A: np.ndarray, B: np.ndarray) -> np.ndarray:
-    #2冪の大きさのみ
+    # 2冪の大きさのみ
     n = len(A) // 2
     if n == 0:
         return A * B
@@ -16,7 +17,4 @@ def strassen(A: np.ndarray, B: np.ndarray) -> np.ndarray:
     P5 = strassen(a11 + a12, b22)
     P6 = strassen(a21 - a11, b11 + b12)
     P7 = strassen(a12 - a22, b21 + b22)
-    return np.block([
-        [P1 + P4 - P5 + P7, P3 + P5          ],
-        [P2 + P4,           P1 - P2 + P3 + P6]
-    ])
+    return np.block([[P1 + P4 - P5 + P7, P3 + P5], [P2 + P4, P1 - P2 + P3 + P6]])

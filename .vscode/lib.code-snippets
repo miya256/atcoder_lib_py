@@ -1732,7 +1732,7 @@
       "    Attributes:",
       "        n: 行数",
       "        m: 列数",
-      "    ",
+      "",
       "    Methods:",
       "        getitem[i,j]: i,j成分",
       "        setitem[i,j]: i,jに代入",

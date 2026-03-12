@@ -5,10 +5,10 @@ class FPS:
         self.a = a
 
     def __mul__(self, other):
-        self.a = convolution(self.a, other.a)
+        self.a = convolution(self.a, other.a) # type: ignore
         #みたいな
     
     def mul_(self, c, k):
         """1+cx^kをかける"""
-        self.a[i] += c * self.a[i-k]
+        self.a[i] += c * self.a[i-k] # type: ignore
         #みたいな

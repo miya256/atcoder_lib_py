@@ -8,15 +8,16 @@ def solve_integer_linear(a: int, b: int, c: int) -> tuple[int, int, int] | None:
 
     n の mod を法とする逆元は、eq(n, mod, 1) の x
     """
+
     def extgcd(m: int, n: int) -> tuple[int, int, int]:
         if n == 0:
-            return m , 1, 0
+            return m, 1, 0
         gcd, s, t = extgcd(n, m % n)
         return gcd, t, s - (m // n) * t
-    
-    gcd, x, y = extgcd(a,b) # c=gcd(a,b)の場合の解を求めて
+
+    gcd, x, y = extgcd(a, b)  # c=gcd(a,b)の場合の解を求めて
     if c % gcd != 0:
-        return None # 解なし
+        return None  # 解なし
     x *= c // gcd
     y *= c // gcd
     return x, y, gcd
