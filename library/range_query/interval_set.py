@@ -1,3 +1,7 @@
+# pyright: reportReturnType=false
+# pyright: reportOperatorIssue=false
+# pyright: reportArgumentType=false
+
 from sortedcontainers import SortedSet
 
 
