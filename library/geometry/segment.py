@@ -1,3 +1,5 @@
+from point import Point
+
 class Segment:
     """線分"""
     def __init__(self, p: Point, q: Point) -> None:

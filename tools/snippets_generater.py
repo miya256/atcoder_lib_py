@@ -4,29 +4,30 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
-exclude = set([
+exclude = {
     "dp/bounded_knapsack.py",
     "graph/directed/scc_tarjan.py",
-    "graph/search/bipartite.py",
     "graph/search/dfs.py",
     "math/factor/linear_sieve.py",
     "math/fps/fps.py",
     "math/linear_algebra/matrix_multiple_strassen.py",
     "math/mod/mod_pow.py",
     "math/tools/bit_tricks.py",
-    "range_query/sparse_table.py",
     "range_query/fenwick_tree/fenwick_tree_generic.py",
-    "split_search/bisect.py",
-])
+}
+
+exclude_imports = {
+    "graph",
+    "matrix",
+    "connectivity.union_find",
+    "point",
+}
 
 exclude = [Path(path) for path in exclude]
 
 class CodeRefiner(ast.NodeTransformer):
-    def __init__(self, exclude_imports: set[str]) -> None:
-        self.exclude_imports: set[str] = exclude_imports
-    
     def visit_ImportFrom(self, node):
-        if node.module in self.exclude_imports:
+        if node.module in exclude_imports:
             return None
         return node
 
@@ -49,7 +50,7 @@ def add_snippets(snippets: dict, path: Path) -> None:
     else:
         raise Exception("no function or class definitions found")
 
-    refiner = CodeRefiner({"graph", "matrix"})
+    refiner = CodeRefiner()
     tree = refiner.visit(tree)
     ast.fix_missing_locations(tree)
     new_code = ast.unparse(tree)
