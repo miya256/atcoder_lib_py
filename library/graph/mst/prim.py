@@ -1,4 +1,6 @@
+from ..graph import Graph
 from heapq import heappush, heappop
+
 
 def prim(graph: Graph) -> int:
     """最小全域木"""
@@ -16,5 +18,5 @@ def prim(graph: Graph) -> int:
         for v, w in graph(u):
             if visited[v]:
                 continue
-            heappush(hq, (w ,v))
+            heappush(hq, (w, v))
     return weight
