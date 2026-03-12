@@ -5,13 +5,16 @@ class FenwickTree:
     """
     区間の和を O(log n) で計算
 
-    Methods:\n
-        get(i)         : i番目を取得
-        set(i, x)      : i番目をxにする
-        add(i, x)      : i番目にxを加算
-        sum(l, r)      : 区間[l, r)の和
-        bisect_left(x) : 累積和配列とみなし、二分探索
-        bisect_right(x): 累積和配列とみなし、二分探索
+    Attributes:
+        all_sum: 区間[0, n)の和
+
+    Methods:
+        get(i)            : i番目を取得
+        set(i, x)         : i番目をxにする
+        add(i, x)         : i番目にxを加算
+        sum(l, r)         : 区間[l, r)の和
+        bisect_left(l, x) : 先頭に0いれた累積和配列とみなし、二分探索
+        bisect_right(l, x): 先頭に0いれた累積和配列とみなし、二分探索
     """
 
     def __init__(self, data: list | int) -> None:
@@ -82,26 +85,26 @@ class FenwickTree:
         assert 0 <= l <= r <= self._n, f"index error [l,r)=[{l},{r})"
         return self._sum(r) - self._sum(l)
 
-    def bisect_left(self, x: int) -> int:
-        """区間[0, index)の和がx以上になる最小のindex"""
+    def bisect_left(self, l: int, x: int) -> int:
+        """区間[l, i)の和がx以上になる最小のi"""
         i = 1 << self._n.bit_length() - 1
-        value = 0
+        value = self._sum(l) + x
         while not i & 1:
-            if i - 1 < self._n and value + self._tree[i] < x:
-                value += self._tree[i]
+            if i - 1 < self._n and self._tree[i] < value:
+                value -= self._tree[i]
                 i += (-i & i) >> 1
             else:
                 i -= (-i & i) >> 1
-        return i - 1 + (value + self._tree[i] < x)
+        return i + (self._tree[i] < value)
 
-    def bisect_right(self, x: int) -> int:
-        """区間[0, index)の和がx超過になる最小のindex"""
+    def bisect_right(self, l: int, x: int) -> int:
+        """区間[l, i)の和がx超過になる最小のi"""
         i = 1 << self._n.bit_length() - 1
-        value = 0
+        value = self._sum(l) + x
         while not i & 1:
-            if i - 1 < self._n and value + self._tree[i] <= x:
-                value += self._tree[i]
+            if i - 1 < self._n and self._tree[i] <= value:
+                value -= self._tree[i]
                 i += (-i & i) >> 1
             else:
                 i -= (-i & i) >> 1
-        return i - 1 + (value + self._tree[i] <= x)
+        return i + (self._tree[i] <= value)
