@@ -798,7 +798,7 @@
       "        super().__init__(n, m)",
       "        self._rev_graph = Graph(n, m)",
       "",
-      "    def add_edge(self, u: int, v: int) -> int:",
+      "    def add_edge(self, u: int, v: int, w: int=1) -> int:",
       "        self._rev_graph.add_edge(v, u)",
       "        return super().add_edge(u, v)",
       "",

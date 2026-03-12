@@ -1,19 +1,23 @@
+from ..graph import Graph
+
+
 class SCC(Graph):
     """
     強連結成分分解
-    
+
     Methods:
         scc(): 強連結成分をトポロジカル順に返す O(n+m)
         build_contracted_graph(scc): 縮約グラフをつくる O(n+m)
     """
+
     def __init__(self, n: int, m: int) -> None:
         super().__init__(n, m)
         self._rev_graph = Graph(n, m)
-    
-    def add_edge(self, u: int, v: int) -> int:
+
+    def add_edge(self, u: int, v: int, w: int = 1) -> int:
         self._rev_graph.add_edge(v, u)
-        return super().add_edge(u, v)
-    
+        return super().add_edge(u, v, w)
+
     def scc(self) -> list[list[int]]:
         def dfs_postorder(v: int) -> list[int]:
             """帰りがけ順に番号をふる"""
@@ -32,7 +36,7 @@ class SCC(Graph):
                     if not visited[v]:
                         stack.append(v)
             return postorder
-        
+
         def dfs_scc(v: int) -> list[int]:
             """強連結成分の列挙"""
             scc = []
@@ -46,7 +50,7 @@ class SCC(Graph):
                 for v in self._rev_graph[u]:
                     if not visited[v]:
                         stack.append(v)
-            scc.reverse() #サイクルの逆向きに入るので戻す
+            scc.reverse()  # サイクルの逆向きに入るので戻す
             return scc
 
         self.build()
@@ -64,15 +68,17 @@ class SCC(Graph):
             if not visited[v]:
                 scc.append(dfs_scc(v))
         return scc
-    
-    def build_contracted_graph(self, scc: list[list[int]]) -> tuple[list[int], list[tuple[int, int]]]:
+
+    def build_contracted_graph(
+        self, scc: list[list[int]]
+    ) -> tuple[list[int], list[tuple[int, int]]]:
         """
         縮約グラフ
         縮約グラフの頂点vの元の頂点の集合は、scc[v]
         つまりトポロジカル順に番号が振られる
         縮約グラフはDAG
         """
-        scc_id = [0] * self.n #頂点vの縮約グラフでの番号
+        scc_id = [0] * self.n  # 頂点vの縮約グラフでの番号
         for i in range(len(scc)):
             for v in scc[i]:
                 scc_id[v] = i

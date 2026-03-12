@@ -10,14 +10,13 @@ class SampleTester:
     
     def run(self, src, sample):
         """プログラムを実行"""
+        process = subprocess.Popen(
+            ["python", src],  # 実行する Python スクリプト
+            stdin=subprocess.PIPE,     # 標準入力をパイプで渡す
+            stdout=subprocess.PIPE,    # 標準出力をパイプで受け取る
+            stderr=subprocess.PIPE     # 標準エラーをパイプで受け取る
+        )
         try:
-            process = subprocess.Popen(
-                ["python", src],  # 実行する Python スクリプト
-                stdin=subprocess.PIPE,     # 標準入力をパイプで渡す
-                stdout=subprocess.PIPE,    # 標準出力をパイプで受け取る
-                stderr=subprocess.PIPE     # 標準エラーをパイプで受け取る
-            )
-
             # 入力データを渡して実行
             stdout, stderr = process.communicate(input=sample.encode(),timeout=5)
         except subprocess.TimeoutExpired:

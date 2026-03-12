@@ -1,8 +1,11 @@
-#非再帰で書くのムズイ。なんかちがう
+from ..graph import Graph
+
+
+# 非再帰で書くのムズイ。なんかちがう
 class SCC(Graph):
     def __init__(self, n: int, m: int) -> None:
         super().__init__(n, m)
-    
+
     def scc(self) -> None:
         self.build()
         low = [0] * self.n
@@ -41,10 +44,10 @@ class SCC(Graph):
                             groups[-1].append(v)
                             if u == v:
                                 break
-            return k
-        
+            return k  # type: ignore
+
         for v in range(self.n):
             if not visited[v]:
-                k = dfs(v, k)
-        
-        return groups[::-1], list(map(lambda x: len(groups) - x, ids))
+                k = dfs(v, k)  # type: ignore
+
+        return groups[::-1], list(map(lambda x: len(groups) - x, ids))  # type: ignore
