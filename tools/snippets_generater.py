@@ -25,6 +25,7 @@ exclude_imports = {
 
 exclude = [Path(path) for path in exclude]
 
+
 class CodeRefiner(ast.NodeTransformer):
     def visit_ImportFrom(self, node):
         if node.module in exclude_imports:
@@ -35,14 +36,16 @@ class CodeRefiner(ast.NodeTransformer):
 def add_snippets(snippets: dict, path: Path) -> None:
     if path.relative_to(ROOT / "library") in exclude:
         raise Exception("listed in exclude")
-    
+
     with open(path, "r", encoding="utf-8") as f:
         code: str = f.read()
 
     tree = ast.parse(code)
 
     top_classes = [node.name for node in tree.body if isinstance(node, ast.ClassDef)]
-    top_functions = [node.name for node in tree.body if isinstance(node, ast.FunctionDef)]
+    top_functions = [
+        node.name for node in tree.body if isinstance(node, ast.FunctionDef)
+    ]
     if top_classes:
         def_type, name = "class", top_classes[0]
     elif top_functions:
@@ -58,7 +61,7 @@ def add_snippets(snippets: dict, path: Path) -> None:
     snippets[name] = {
         "prefix": f"{def_type} {name}",
         "body": [line.rstrip("\n") for line in new_code.splitlines()] + ["$0"],
-        "description": f"Auto snippet for {name}"
+        "description": f"Auto snippet for {name}",
     }
 
 
@@ -75,7 +78,7 @@ def main():
             add_snippets(snippets, path)
         except Exception as e:
             print(f"\033[33mSkip\033[0m {path.relative_to(library_path)}: {e}")
-    
+
     snippets_dir = ROOT / ".vscode/lib.code-snippets"
     with open(snippets_dir, "w", encoding="utf-8") as f:
         json.dump(snippets, f, indent=2, ensure_ascii=False)

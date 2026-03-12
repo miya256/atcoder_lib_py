@@ -1,4 +1,5 @@
 from ..graph import Graph
+from ...connectivity.union_find import UnionFind
 
 
 def is_bipartite(graph: Graph) -> bool:
@@ -25,9 +26,6 @@ def is_bipartite(graph: Graph) -> bool:
 
 # u-vについて、(u_a,v_b)を、(u_b,v_a)をmerge
 # v_aと_v_bが同じ連結成分にあったら二部グラフでない
-from ...connectivity.union_find import UnionFind
-
-
 def is_bipartite2(n: int, edges: list[tuple]) -> bool:
     uf = UnionFind(n * 2)
     for u, v in edges:

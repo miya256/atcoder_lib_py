@@ -1,3 +1,5 @@
+# ruff: noqa
+
 from collections import deque
 
 n, W = map(int, input().split())

@@ -1,4 +1,4 @@
-import numpy as np # type: ignore
+import numpy as np  # type: ignore
 
 
 def strassen(A: np.ndarray, B: np.ndarray) -> np.ndarray:

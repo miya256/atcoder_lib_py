@@ -41,6 +41,7 @@ class Diameter(Graph):
 
     def dist(self, v: int) -> list[int]:
         """vからの距離"""
-        dist = [inf := 1 << 61] * self.n
+        inf = 1 << 61
+        dist = [inf] * self.n
         self._dfs(v, dist)
         return dist
