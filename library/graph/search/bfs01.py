@@ -1,4 +1,6 @@
+from ..graph import Graph
 from collections import deque
+
 
 def bfs01(graph: Graph, starts: list[int]) -> None:
     """重みが01のとき"""
@@ -15,4 +17,4 @@ def bfs01(graph: Graph, starts: list[int]) -> None:
             if w == 0:
                 dq.appendleft((v, d))
             else:
-                dq.append((v, d+w))
+                dq.append((v, d + w))

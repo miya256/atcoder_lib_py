@@ -1,4 +1,6 @@
+from ..graph import Graph
 from collections import deque
+
 
 def bfs(graph: Graph, starts: list[int]) -> None:
     dq = deque([(v, 0) for v in starts])
@@ -10,4 +12,4 @@ def bfs(graph: Graph, starts: list[int]) -> None:
         visited[u] = True
         for v in graph[u]:
             if not visited[v]:
-                dq.append((v, d+1))
+                dq.append((v, d + 1))
