@@ -29,14 +29,15 @@ include = [
 
 [tool.ruff]
 line-length = 88
-
-# 無効化するチェック
-ignore = [
-    "E741" # あいまいな変数（l, 1, I が紛らわしいってやつ）
-]
 include = [
     "tools/**/*.py",
     "library/**/*.py",
+]
+
+[tool.ruff.lint]
+# 無効化するチェック
+ignore = [
+    "E741" # あいまいな変数（l, 1, I が紛らわしいってやつ）
 ]
 
 [tool.uv.sources]

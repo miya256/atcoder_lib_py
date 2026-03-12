@@ -1,4 +1,6 @@
+from ..graph import Graph
 from heapq import heappush, heappop
+
 
 def dijkstra(graph: Graph, starts: list[int]) -> list[int]:
     inf = 1 << 61

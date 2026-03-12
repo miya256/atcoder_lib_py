@@ -1,3 +1,5 @@
+# pyright: reportArgumentType=false
+
 from typing import Literal
 from sortedcontainers import SortedSet
 from collections import deque
