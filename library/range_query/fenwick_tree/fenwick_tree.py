@@ -13,8 +13,9 @@ class FenwickTree:
         set(i, x)         : i番目をxにする
         add(i, x)         : i番目にxを加算
         sum(l, r)         : 区間[l, r)の和
-        bisect_left(l, x) : 先頭に0いれた累積和配列とみなし、二分探索
-        bisect_right(l, x): 先頭に0いれた累積和配列とみなし、二分探索
+        bisect_left(l, x) : 区間[l, i)の和がx以上になる最小のi
+        bisect_right(l, x): 区間[l, i)の和がx超過になる最小のi
+        ※ 先頭に0を付けた累積和を二分探索ではない
     """
 
     def __init__(self, data: list | int) -> None:
@@ -87,24 +88,28 @@ class FenwickTree:
 
     def bisect_left(self, l: int, x: int) -> int:
         """区間[l, i)の和がx以上になる最小のi"""
-        i = 1 << self._n.bit_length() - 1
+        i = 0
+        span = 1 << self._n.bit_length() - 1
         value = self._sum(l) + x
-        while not i & 1:
-            if i - 1 < self._n and self._tree[i] < value:
+        while span:
+            i += span
+            if i < self._n and self._tree[i] < value:
                 value -= self._tree[i]
-                i += (-i & i) >> 1
             else:
-                i -= (-i & i) >> 1
-        return i + (self._tree[i] < value)
+                i -= span
+            span >>= 1
+        return i + 1
 
     def bisect_right(self, l: int, x: int) -> int:
         """区間[l, i)の和がx超過になる最小のi"""
-        i = 1 << self._n.bit_length() - 1
+        i = 0
+        span = 1 << self._n.bit_length() - 1
         value = self._sum(l) + x
-        while not i & 1:
-            if i - 1 < self._n and self._tree[i] <= value:
+        while span:
+            i += span
+            if i < self._n and self._tree[i] <= value:
                 value -= self._tree[i]
-                i += (-i & i) >> 1
             else:
-                i -= (-i & i) >> 1
-        return i + (self._tree[i] <= value)
+                i -= span
+            span >>= 1
+        return i + 1
