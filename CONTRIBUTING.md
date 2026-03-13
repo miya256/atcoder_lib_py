@@ -45,6 +45,7 @@ Conventional Commits
 - docstring を書く 
 - private変数には `_` をつける
 - `@property` を適切に使う
+- `inf` は小文字。値は2^61。グローバルに定義する
 
 ### Method Order
 
