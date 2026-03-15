@@ -1,7 +1,9 @@
-from typing import Callable
+from typing import TypeVar, Generic, Callable
+
+T = TypeVar("T")
 
 
-class Heap:
+class Heap(Generic[T]):
     """
     優先度付きキュー（ヒープ）
 
@@ -10,25 +12,20 @@ class Heap:
         pop()     : 削除
     """
 
-    def __init__(self, compare: Callable[[object, object], bool]) -> None:
-        self._heap: list[object] = [None]
+    def __init__(self, compare: Callable[[T, T], bool]) -> None:
+        self._heap: list[T] = [None]  # type: ignore
         self._compare = compare
 
     def __len__(self) -> int:
         """長さ"""
         return len(self._heap) - 1
 
-    def __getitem__(self, i: int) -> object:
-        """i番目の要素"""
-        assert 0 <= i < len(self), f"index out of range: i={i}"
-        return self._heap[i + 1]
-
-    def add(self, value: object) -> None:
+    def push(self, value: T) -> None:
         """valueを追加"""
         self._heap.append(value)
         self._sift_up(len(self))
 
-    def pop(self) -> object:
+    def pop(self) -> T:
         """0番目を取り出す"""
         assert len(self) > 0, "heap is empty"
         res = self._heap[1]
@@ -62,6 +59,6 @@ class Heap:
             i = smallest
 
 
-def compare(parent: object, child: object) -> bool:
+def compare(parent, child) -> bool:
     """parent が child より優先されるなら True"""
-    return parent < child  # type: ignore
+    return parent < child
