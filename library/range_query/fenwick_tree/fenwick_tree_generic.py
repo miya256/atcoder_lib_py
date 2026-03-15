@@ -1,4 +1,4 @@
-from typing import Generic, TypeVar, Callable
+from typing import Iterator, Generic, TypeVar, Callable
 
 T = TypeVar("T")
 
@@ -55,17 +55,27 @@ class FenwickTree(Generic[T]):
         """i番目をxにする"""
         self.set(i, x)
 
+    def __iter__(self) -> Iterator[T]:
+        for i in range(self._n):
+            yield self.get(i)
+
     def __repr__(self) -> str:
         return f"FenwickTree {self._data}"
 
     def get(self, i: int) -> T:
         """i番目を取得"""
-        assert 0 <= i < self._n, f"index error i={i}"
+        orig_i = i
+        i += self._n if i < 0 else 0
+        assert 0 <= i < self._n, f"index out of range: i={orig_i}->{i}"
+
         return self._data[i]
 
     def apply(self, i: int, x: T) -> None:
         """i番目にxを作用。写像はop"""
-        assert 0 <= i < self._n, f"index error i={i}"
+        orig_i = i
+        i += self._n if i < 0 else 0
+        assert 0 <= i < self._n, f"index out of range: i={orig_i}->{i}"
+
         self._data[i] = self._op(self._data[i], x)
         self.all_prod = self._op(self.all_prod, x)
         i += 1
@@ -75,7 +85,10 @@ class FenwickTree(Generic[T]):
 
     def set(self, i: int, x: T) -> None:
         """加えるではなく、更新"""
-        assert 0 <= i < self._n, f"index error i={i}"
+        orig_i = i
+        i += self._n if i < 0 else 0
+        assert 0 <= i < self._n, f"index out of range: i={orig_i}->{i}"
+
         self.apply(i, self._op_inv(x, self._data[i]))
 
     def _prod(self, i: int) -> T:
@@ -88,5 +101,11 @@ class FenwickTree(Generic[T]):
 
     def prod(self, l: int, r: int) -> T:
         """区間[l,r)の総積"""
-        assert 0 <= l <= r <= self._n, f"index error [l,r)=[{l},{r})"
+        orig_l = l
+        orig_r = r
+        l += self._n if l < 0 else 0
+        r += self._n if r < 0 else 0
+        assert 0 <= l <= r <= self._n, (
+            f"invalid range: [l,r)=[{orig_l},{orig_r})->[{l},{r})"
+        )
         return self._op_inv(self._prod(r), self._prod(l))

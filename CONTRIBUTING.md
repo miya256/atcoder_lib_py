@@ -56,13 +56,13 @@ Conventional Commits
 ```python
 orig_i = i
 i += n if i < 0 else 0
-assert 0 <= i < n, f"index out of range: {orig_i} -> {i}"
+assert 0 <= i < n, f"index out of range: i={orig_i}->{i}"
 
 orig_l = l
 orig_r = r
 l += n if l < 0 else 0
 r += n if r < 0 else 0
-assert 0 <= l <= r <= n, f"invalid range: [{orig_l},{orig_r}) -> [{l},{r})"
+assert 0 <= l <= r <= n, f"invalid range: [l,r)=[{orig_l},{orig_r})->[{l},{r})"
 ```
 
 

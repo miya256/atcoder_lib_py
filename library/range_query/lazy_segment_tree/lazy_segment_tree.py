@@ -1,10 +1,10 @@
 from typing import Generic, TypeVar, Callable, Iterator
 
-Monoid = TypeVar("Monoid")
-Operator = TypeVar("Operator")
+M = TypeVar("MonoidElement")  # type: ignore
+O = TypeVar("Operator")  # type: ignore
 
 
-class LazySegmentTree(Generic[Monoid, Operator]):
+class LazySegmentTree(Generic[M, O]):
     """
     区間作用、区間取得を O(log n) で計算
 
@@ -27,12 +27,12 @@ class LazySegmentTree(Generic[Monoid, Operator]):
 
     def __init__(
         self,
-        op: Callable[[Monoid, Monoid], Monoid],
-        e: Monoid,
-        mapping: Callable[[Operator, Monoid], Monoid],
-        composition: Callable[[Operator, Operator], Operator],
-        id: Operator,
-        data: list[Monoid] | int,
+        op: Callable[[M, M], M],
+        e: M,
+        mapping: Callable[[O, M], M],
+        composition: Callable[[O, O], O],
+        id: O,
+        data: list[M] | int,
     ) -> None:
         if isinstance(data, int):
             data = [e for _ in range(data)]
@@ -48,7 +48,7 @@ class LazySegmentTree(Generic[Monoid, Operator]):
         self._lazy = [id for _ in range(self._size * 2)]
         self._build(data)
 
-    def _build(self, data: list[Monoid]) -> None:
+    def _build(self, data: list[M]) -> None:
         for i, val in enumerate(data):
             self._tree[i + self._size] = val
         for i in range(self._size - 1, 0, -1):
@@ -57,39 +57,56 @@ class LazySegmentTree(Generic[Monoid, Operator]):
     def __len__(self) -> int:
         return self._n
 
-    def __getitem__(self, i: int) -> Monoid:
+    def __getitem__(self, i: int) -> M:
+        """i番目を取得"""
         return self.get(i)
 
-    def __setitem__(self, i: int, x: Monoid) -> None:
+    def __setitem__(self, i: int, x: M) -> None:
+        """i番目にxを代入"""
         self.set(i, x)
 
-    def __iter__(self) -> Iterator[Monoid]:
+    def __iter__(self) -> Iterator[M]:
         for i in range(self._n):
             yield self.get(i)
 
     def __repr__(self) -> str:
         return f"LazySegmentTree {list(self)}"
 
-    def get(self, p: int) -> Monoid:
-        assert 0 <= p < self._n, f"index error p={p}"
-        p += self._size
-        for i in range(self._log, 0, -1):  # lazyを上から伝播させて
-            self._push(p >> i)
-        return self._tree[p]
+    def get(self, i: int) -> M:
+        """i番目を取得"""
+        orig_i = i
+        i += self._n if i < 0 else 0
+        assert 0 <= i < self._n, f"index out of range: i={orig_i}->{i}"
 
-    def set(self, p: int, x: Monoid) -> None:
-        assert 0 <= p < self._n, f"index error p={p}"
-        p += self._size
-        for i in range(self._log, 0, -1):  # lazyを上から伝播させて
-            self._push(p >> i)
-        self._tree[p] = x
-        while p:  # 普通のセグ木と同じように更新
-            p >>= 1
-            self._update(p)
+        i += self._size
+        for j in range(self._log, 0, -1):  # lazyを上から伝播させて
+            self._push(i >> j)
+        return self._tree[i]
 
-    def prod(self, l: int, r: int) -> Monoid:
+    def set(self, i: int, x: M) -> None:
+        """i番目にxを代入"""
+        orig_i = i
+        i += self._n if i < 0 else 0
+        assert 0 <= i < self._n, f"index out of range: i={orig_i}->{i}"
+
+        i += self._size
+        for j in range(self._log, 0, -1):  # lazyを上から伝播させて
+            self._push(i >> j)
+        self._tree[i] = x
+        while i:  # 普通のセグ木と同じように更新
+            i >>= 1
+            self._update(i)
+
+    def prod(self, l: int, r: int) -> M:
         """区間[l, r)の積"""
-        assert 0 <= l <= r <= self._n, f"index error [l,r)=[{l},{r})"
+        orig_l = l
+        orig_r = r
+        l += self._n if l < 0 else 0
+        r += self._n if r < 0 else 0
+        assert 0 <= l <= r <= self._n, (
+            f"invalid range: [l,r)=[{orig_l},{orig_r})->[{l},{r})"
+        )
+
         if l == r:
             return self._e
         l += self._size
@@ -112,12 +129,19 @@ class LazySegmentTree(Generic[Monoid, Operator]):
             r >>= 1
         return self._op(lt, rt)
 
-    def all_prod(self) -> Monoid:
+    def all_prod(self) -> M:
         return self._tree[1]
 
-    def apply(self, l: int, r: int, f: Operator) -> None:
+    def apply(self, l: int, r: int, f: O) -> None:
         """区間[l, r)にfを作用"""
-        assert 0 <= l <= r <= self._n, f"index error [l,r)=[{l},{r})"
+        orig_l = l
+        orig_r = r
+        l += self._n if l < 0 else 0
+        r += self._n if r < 0 else 0
+        assert 0 <= l <= r <= self._n, (
+            f"invalid range: [l,r)=[{orig_l},{orig_r})->[{l},{r})"
+        )
+
         if l == r:
             return
         l += self._size
@@ -148,9 +172,12 @@ class LazySegmentTree(Generic[Monoid, Operator]):
             if ((r >> i) << i) != r:
                 self._update(r - 1 >> i)
 
-    def max_right(self, l: int, condition: Callable[[Monoid], bool]) -> int:
+    def max_right(self, l: int, condition: Callable[[M], bool]) -> int:
         """condition(prod[l,j))が真になる最大のjを返す"""
-        assert 0 <= l <= self._n, f"index error l={l}"
+        orig_l = l
+        l += self._n if l < 0 else 0
+        assert 0 <= l <= self._n, f"index out of range: l={orig_l}->{l}"
+
         if l == self._n:
             return self._n
 
@@ -176,9 +203,12 @@ class LazySegmentTree(Generic[Monoid, Operator]):
             if l & -l == l:
                 return self._n
 
-    def min_left(self, r: int, condition: Callable[[Monoid], bool]) -> int:
+    def min_left(self, r: int, condition: Callable[[M], bool]) -> int:
         """condition(prod[j,r))が真になる最小のjを返す"""
-        assert 0 <= r <= self._n, f"index error r={r}"
+        orig_r = r
+        r += self._n if r < 0 else 0
+        assert 0 <= r <= self._n, f"index out of range: r={orig_r}->{r}"
+
         if r == 0:
             return 0
 
@@ -207,7 +237,7 @@ class LazySegmentTree(Generic[Monoid, Operator]):
         """tree[i]を更新"""
         self._tree[i] = self._op(self._tree[2 * i], self._tree[2 * i + 1])
 
-    def _all_apply(self, i: int, f: Operator) -> None:
+    def _all_apply(self, i: int, f: O) -> None:
         """tree[i],lazy[i]にfを作用"""
         self._tree[i] = self._mapping(f, self._tree[i])
         if i < self._size:
