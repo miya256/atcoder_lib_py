@@ -11,7 +11,7 @@
     インストール方法は [公式ドキュメント](https://docs.astral.sh/uv/#installation) を参照してください。
 2. リポジトリのルートで、以下を実行してください
 ```Bash
-uv sync
+uv sync --all-groups
 ```
 3. `.env` を作成し、`.env.sample` を例に必要な値を設定してください。
 
