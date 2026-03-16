@@ -6,9 +6,10 @@ on:
     branches:
       - main
 
-jobs:
+jobs: # job は別マシンで並列に実行される
   quality-check:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - uses: actions/checkout@v4
@@ -17,18 +18,37 @@ jobs:
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
       - name: Sync
-        run: uv sync
+        run: uv sync --group dev --group auto_test
 
       - name: Run pyright
         run: uv run pyright
       
-      - name: Run Ruff
-        run: |
-          uv run ruff check .
-          uv run ruff format --check .
+      - name: Ruff check
+        run: uv run ruff check .
+
+      - name: Ruff format
+        run: uv run ruff format --check .
 
       - name: Generate snippets
         run: uv run python tools/snippets_generater.py
 
       - name: Check snippets diff
         run: git diff --exit-code --ignore-cr-at-eol
+  
+  library-checker:
+    if: github.event_name == 'pull_request'
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Sync
+        run: uv sync --group library_checker
+
+      - name: Run library_checker tests
+        run: uv run oj-verify run

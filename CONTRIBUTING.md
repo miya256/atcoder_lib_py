@@ -14,6 +14,7 @@
 - fix/<不具合名>
 - refactor/<内容>
 - docs/<対象>-<内容>
+- test/<内容>
 - chore/<内容>
 ```
 
@@ -32,7 +33,7 @@ Conventional Commits
 | refactor | リファクタリング           |
 | style    | CSSや見た目の変更         |
 | docs     | ドキュメント変更（READMEとか） |
-| test     | テストコードの追加・修正       |
+| test     | 検証       |
 | chore    | 細かい修正              |
 
 
