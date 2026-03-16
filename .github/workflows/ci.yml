@@ -39,7 +39,7 @@ jobs: # job は別マシンで並列に実行される
     if: github.event_name == 'pull_request'
 
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v4

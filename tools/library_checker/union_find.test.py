@@ -4,6 +4,7 @@ from library.connectivity.union_find import UnionFind
 
 n, q = map(int, input().split())
 uf = UnionFind(n)
+
 for _ in range(q):
     t, u, v = map(int, input().split())
     if t == 0:

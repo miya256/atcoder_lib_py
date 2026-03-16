@@ -24,6 +24,7 @@ class Graph:
         self._ptr = [0] * (n + 1)
         self._adj: list[int] | None = None
         self._weight: list[int] | None = None
+        self._built = False
 
     def __len__(self) -> int:
         """頂点数"""
@@ -39,6 +40,9 @@ class Graph:
 
     def build(self) -> None:
         """グラフを作成"""
+        if self._built:
+            return
+        self._built = True
         self._adj = [0] * len(self.edges)
         self._weight = [0] * len(self.edges)
         for i in range(self.n):
@@ -50,6 +54,7 @@ class Graph:
 
     def add_edge(self, u: int, v: int, w: int = 1) -> int:
         """u -> v に重み w の 有向辺 を張る"""
+        assert not self._built, "graph is already built"
         assert 0 <= u < self.n, f"u={u} is out of range"
         assert 0 <= v < self.n, f"v={v} is out of range"
         self.edges.append((u, v, w))
@@ -63,12 +68,14 @@ class Graph:
 
     def neighbors(self, v: int) -> list[int]:
         """vに隣接する頂点のリスト"""
-        assert self._adj, "build() is not called"
+        assert self._built, "build() is not called"
+        assert self._adj
         return self._adj[self._ptr[v] : self._ptr[v + 1]]
 
     def neighbors_with_weight(self, v: int) -> list[tuple[int, int]]:
         """v に隣接する頂点のリスト（重み付き）"""
-        assert self._adj and self._weight, "build() is not called"
+        assert self._built, "build() is not called"
+        assert self._adj and self._weight
         return list(
             zip(
                 self._adj[self._ptr[v] : self._ptr[v + 1]],
