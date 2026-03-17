@@ -51,4 +51,17 @@ jobs: # job は別マシンで並列に実行される
         run: uv sync --group library_checker
 
       - name: Run library_checker tests
-        run: uv run oj-verify run
+        run: |
+          set -o pipefail
+          uv run oj-verify run --timeout 1800 --jobs 2 2>&1 \
+          | sed 's/\x1b\[[0-9;]*m//g' \
+          | tee result.log \
+          | grep --line-buffered -E "INFO:onlinejudge_verify.verify:(verify|problem):|\[SUCCESS\] test success:|\[FAILURE\] (test failed:|WA|TLE|RE|PE)" \
+          || test ${PIPESTATUS[0]} -eq 0
+      
+      - name: Upload log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: result-log
+          path: result.log
