@@ -13,14 +13,14 @@ class Diameter(Graph):
     def __init__(self, n: int) -> None:
         super().__init__(n, n - 1)
 
-    def _dfs(self, v: int, dist: list[int] | None = None) -> tuple[int, int]:
+    def _dfs(self, v: int, dist: list[int]) -> tuple[int, int]:
         """distを指定すればvからの距離、そうでなければ直径と端点"""
         stack = [(v, -1, 0)]
         end, diameter = -1, 0
         while stack:
             u, par, d = stack.pop()
 
-            if dist is not None:
+            if dist:
                 dist[u] = d
 
             if diameter < d:
@@ -35,8 +35,8 @@ class Diameter(Graph):
 
     def diameter(self) -> tuple[int, int, int]:
         """直径、端点1、端点2"""
-        _, end1 = self._dfs(0)
-        diameter, end2 = self._dfs(end1)
+        _, end1 = self._dfs(0, [])
+        diameter, end2 = self._dfs(end1, [])
         return diameter, end1, end2
 
     def dist(self, v: int) -> list[int]:

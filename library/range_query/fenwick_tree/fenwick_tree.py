@@ -55,12 +55,18 @@ class FenwickTree:
 
     def get(self, i: int) -> int:
         """i番目を取得"""
-        assert 0 <= i < self._n, f"index error i={i}"
+        orig_i = i
+        i += self._n if i < 0 else 0
+        assert 0 <= i < self._n, f"index out of range: i={orig_i}->{i}"
+
         return self._data[i]
 
     def add(self, i: int, x: int) -> None:
         """i番目にxを加える"""
-        assert 0 <= i < self._n, f"index error i={i}"
+        orig_i = i
+        i += self._n if i < 0 else 0
+        assert 0 <= i < self._n, f"index out of range: i={orig_i}->{i}"
+
         self._data[i] += x
         self.all_sum += x
         i += 1
@@ -70,7 +76,10 @@ class FenwickTree:
 
     def set(self, i: int, x: int) -> None:
         """i番目をxにする"""
-        assert 0 <= i < self._n, f"index error i={i}"
+        orig_i = i
+        i += self._n if i < 0 else 0
+        assert 0 <= i < self._n, f"index out of range: i={orig_i}->{i}"
+
         self.add(i, x - self._data[i])
 
     def _sum(self, i: int) -> int:
@@ -83,11 +92,21 @@ class FenwickTree:
 
     def sum(self, l: int, r: int) -> int:
         """区間[l, r)の和"""
-        assert 0 <= l <= r <= self._n, f"index error [l,r)=[{l},{r})"
+        orig_l = l
+        orig_r = r
+        l += self._n if l < 0 else 0
+        r += self._n if r < 0 else 0
+        assert 0 <= l <= r <= self._n, (
+            f"invalid range: [l,r)=[{orig_l},{orig_r})->[{l},{r})"
+        )
         return self._sum(r) - self._sum(l)
 
     def bisect_left(self, l: int, x: int) -> int:
         """区間[l, i)の和がx以上になる最小のi"""
+        orig_l = l
+        l += self._n if l < 0 else 0
+        assert 0 <= l < self._n, f"index out of range: l={orig_l}->{l}"
+
         i = 0
         span = 1 << self._n.bit_length() - 1
         value = self._sum(l) + x
@@ -102,6 +121,10 @@ class FenwickTree:
 
     def bisect_right(self, l: int, x: int) -> int:
         """区間[l, i)の和がx超過になる最小のi"""
+        orig_l = l
+        l += self._n if l < 0 else 0
+        assert 0 <= l < self._n, f"index out of range: l={orig_l}->{l}"
+
         i = 0
         span = 1 << self._n.bit_length() - 1
         value = self._sum(l) + x

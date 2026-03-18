@@ -1,9 +1,9 @@
 from typing import Generic, TypeVar, Callable, Iterator
 
-Monoid = TypeVar("Monoid")
+M = TypeVar("MonoidElement")  # type: ignore
 
 
-class SegmentTree(Generic[Monoid]):
+class SegmentTree(Generic[M]):
     """
     一点更新、区間取得を O(log n) で計算
 
@@ -22,9 +22,9 @@ class SegmentTree(Generic[Monoid]):
 
     def __init__(
         self,
-        op: Callable[[Monoid, Monoid], Monoid],
-        e: Monoid,
-        data: list[Monoid] | int,
+        op: Callable[[M, M], M],
+        e: M,
+        data: list[M] | int,
     ) -> None:
         if isinstance(data, int):
             data = [e for _ in range(data)]
@@ -35,7 +35,7 @@ class SegmentTree(Generic[Monoid]):
         self._tree = [e for _ in range(self._size * 2)]
         self._build(data)
 
-    def _build(self, data: list[Monoid]) -> None:
+    def _build(self, data: list[M]) -> None:
         for i, val in enumerate(data):
             self._tree[i + self._size] = val
         for i in range(self._size - 1, 0, -1):
@@ -44,38 +44,51 @@ class SegmentTree(Generic[Monoid]):
     def __len__(self) -> int:
         return self._n
 
-    def __getitem__(self, i: int) -> Monoid:
+    def __getitem__(self, i: int) -> M:
         """i番目を取得"""
         return self.get(i)
 
-    def __setitem__(self, i: int, x: Monoid) -> None:
+    def __setitem__(self, i: int, x: M) -> None:
         """i番目にxを代入"""
         self.set(i, x)
 
-    def __iter__(self) -> Iterator[Monoid]:
+    def __iter__(self) -> Iterator[M]:
         for i in range(self._n):
             yield self.get(i)
 
     def __repr__(self) -> str:
         return f"SegmentTree {list(self)}"
 
-    def get(self, i: int) -> Monoid:
+    def get(self, i: int) -> M:
         """i番目を取得"""
-        assert 0 <= i < self._n, f"index error i={i}"
+        orig_i = i
+        i += self._n if i < 0 else 0
+        assert 0 <= i < self._n, f"index out of range: i={orig_i}->{i}"
+
         return self._tree[i + self._size]
 
-    def set(self, i: int, x: Monoid) -> None:
+    def set(self, i: int, x: M) -> None:
         """i番目にxを代入"""
-        assert 0 <= i < self._n, f"index error i={i}"
+        orig_i = i
+        i += self._n if i < 0 else 0
+        assert 0 <= i < self._n, f"index out of range: i={orig_i}->{i}"
+
         i += self._size
         self._tree[i] = x
         while i:
             i >>= 1
             self._update(i)
 
-    def prod(self, l: int, r: int) -> Monoid:
+    def prod(self, l: int, r: int) -> M:
         """区間[l, r)の積"""
-        assert 0 <= l <= r <= self._n, f"index error [l,r)=[{l},{r})"
+        orig_l = l
+        orig_r = r
+        l += self._n if l < 0 else 0
+        r += self._n if r < 0 else 0
+        assert 0 <= l <= r <= self._n, (
+            f"invalid range: [l,r)=[{orig_l},{orig_r})->[{l},{r})"
+        )
+
         lt, rt = self._e, self._e
         l += self._size
         r += self._size
@@ -90,13 +103,16 @@ class SegmentTree(Generic[Monoid]):
             r >>= 1
         return self._op(lt, rt)
 
-    def all_prod(self) -> Monoid:
+    def all_prod(self) -> M:
         """全体の積"""
         return self._tree[1]
 
-    def max_right(self, l: int, condition: Callable[[Monoid], bool]) -> int:
+    def max_right(self, l: int, condition: Callable[[M], bool]) -> int:
         """condition(prod[l,j))が真になる最大のjを返す"""
-        assert 0 <= l <= self._n, f"index error l={l}"
+        orig_l = l
+        l += self._n if l < 0 else 0
+        assert 0 <= l <= self._n, f"index out of range: l={orig_l}->{l}"
+
         if l == self._n:
             return self._n
 
@@ -117,9 +133,12 @@ class SegmentTree(Generic[Monoid]):
             if l & -l == l:  # condition(prod(l,n)) = Trueなら(lが2の累乗)
                 return self._n  # 一番右を返す
 
-    def min_left(self, r: int, condition: Callable[[Monoid], bool]) -> int:
+    def min_left(self, r: int, condition: Callable[[M], bool]) -> int:
         """condition(prod[j,r))が真になる最小のjを返す"""
-        assert 0 <= r <= self._n, f"index error r={r}"
+        orig_r = r
+        r += self._n if r < 0 else 0
+        assert 0 <= r <= self._n, f"index out of range: r={orig_r}->{r}"
+
         if r == 0:
             return 0
 

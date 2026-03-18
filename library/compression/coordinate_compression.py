@@ -10,15 +10,20 @@ class Compressor:
         compress(original)  : 元の値 -> 圧縮後の値
     """
 
-    def __init__(self, numbers: set) -> None:
+    def __init__(self, numbers: set | list) -> None:
         self._numbers = sorted(set(numbers))
-        self._compressed = {v: i for i, v in enumerate(self._numbers)}
+        self._compressed = {
+            original: compress for compress, original in enumerate(self._numbers)
+        }
+
+    def __len__(self) -> int:
+        return len(self._numbers)
 
     def __call__(self, original: int) -> int:
         return self.compress(original)
 
     def __repr__(self) -> str:
-        return f"{self._compressed}"
+        return f"Compressor({list(self._compressed.keys())})"
 
     def original(self, compressed: int) -> int:
         """圧縮後の値から元の値を返す"""

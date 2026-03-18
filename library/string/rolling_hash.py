@@ -43,13 +43,27 @@ class RollingHash:
 
     def hash(self, l: int, r: int) -> int:
         """[l,r)のhash"""
-        assert 0 <= l <= r <= len(self), f"index error [l,r)=[{l},{r})"
+        orig_l = l
+        orig_r = r
+        l += len(self) if l < 0 else 0
+        r += len(self) if r < 0 else 0
+        assert 0 <= l <= r <= len(self), (
+            f"invalid range: [l,r)=[{orig_l},{orig_r})->[{l},{r})"
+        )
+
         res = self._hash[r] - self._mul(self._hash[l], RollingHash.base_pow[r - l])
         return res if res >= 0 else res + RollingHash.MOD
 
     def is_palindrome(self, l: int, r: int) -> bool:
         """[l, r)が回文か"""
-        assert 0 <= l <= r <= len(self), f"index error [l,r)=[{l},{r})"
+        orig_l = l
+        orig_r = r
+        l += len(self) if l < 0 else 0
+        r += len(self) if r < 0 else 0
+        assert 0 <= l <= r <= len(self), (
+            f"invalid range: [l,r)=[{orig_l},{orig_r})->[{l},{r})"
+        )
+
         self.make_reverse()
         return self(l, r) == self._rev_hash(len(self) - r, len(self) - l)
 
