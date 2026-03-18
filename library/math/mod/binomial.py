@@ -14,6 +14,7 @@ class Binomial:
 
     def __init__(self, n: int, mod: int) -> None:
         """n: n!まで計算できる"""
+        assert n < mod, f"n must be less than mod: n={n}, mod={mod}"
         fact = [1 for _ in range(n + 1)]
         ifact = [1 for _ in range(n + 1)]
         for i in range(1, n + 1):

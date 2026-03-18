@@ -18,7 +18,7 @@ exclude = {
 
 exclude_imports = {
     "graph",
-    "matrix",
+    "library.math.linear_algebra.matrix",
     "connectivity.union_find",
     "point",
 }
