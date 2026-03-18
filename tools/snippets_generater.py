@@ -17,10 +17,10 @@ exclude = {
 }
 
 exclude_imports = {
-    "graph",
+    "library.graph.graph",
     "library.math.linear_algebra.matrix",
-    "connectivity.union_find",
-    "point",
+    "library.connectivity.union_find",
+    "library.geometry.point",
 }
 
 exclude = [Path(path) for path in exclude]

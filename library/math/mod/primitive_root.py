@@ -3,6 +3,11 @@ import random
 
 def primitive_root(p: int) -> int:
     """素数pの原子根"""
+    if p == 2:
+        return 1
+    if p == 3:
+        return 2
+
     # p-1の素因数を抽出
     prime_factor = [2]
     tmp = p - 1

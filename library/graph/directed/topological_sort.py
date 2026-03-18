@@ -1,4 +1,4 @@
-from ..graph import Graph
+from library.graph.graph import Graph
 
 from heapq import heapify, heappush, heappop
 

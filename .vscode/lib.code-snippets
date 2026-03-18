@@ -1667,8 +1667,6 @@
   "gaussian_eliminate": {
     "prefix": "def gaussian_eliminate",
     "body": [
-      "from library.math.linear_algebra.matrix import Matrix",
-      "",
       "def gaussian_eliminate(a: Matrix, column_limit: int | None=None) -> int:",
       "    \"\"\"",
       "    掃き出し法",
@@ -2048,6 +2046,10 @@
       "",
       "def primitive_root(p: int) -> int:",
       "    \"\"\"素数pの原子根\"\"\"",
+      "    if p == 2:",
+      "        return 1",
+      "    if p == 3:",
+      "        return 2",
       "    prime_factor = [2]",
       "    tmp = p - 1",
       "    while tmp % 2 == 0:",

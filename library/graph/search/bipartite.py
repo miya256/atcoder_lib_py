@@ -1,5 +1,5 @@
-from ..graph import Graph
-from ...connectivity.union_find import UnionFind
+from library.graph.graph import Graph
+from library.connectivity.union_find import UnionFind
 
 
 def is_bipartite(graph: Graph) -> bool:

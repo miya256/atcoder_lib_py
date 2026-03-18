@@ -1,4 +1,4 @@
-# verification-helper: PROBLEM https://judge.yosupo.jp/problem/system_of_linear_equations
+# verification-helper: PROBLEM https://judge.yosupo.jp/problem/binomial_coefficient_prime_mod
 
 from library.math.mod.binomial import Binomial
 
