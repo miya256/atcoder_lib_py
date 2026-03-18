@@ -12,7 +12,7 @@ class FenwickTree(Generic[T]):
         op_inv: opの逆演算
         e     : opの単位元
 
-    Methods:\n
+    Methods:
         get(i)         : i番目を取得
         set(i, x)      : i番目をxにする
         apply(i, x)      : i番目にxを作用
