@@ -1,4 +1,4 @@
-from point import Point
+from library.geometry.point import Point
 
 
 class Segment:

@@ -1,4 +1,4 @@
-from ..graph import Graph
+from library.graph.graph import Graph
 
 
 # 非再帰で書くのムズイ。なんかちがう

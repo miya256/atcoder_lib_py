@@ -1,4 +1,4 @@
-from ..graph import Graph
+from library.graph.graph import Graph
 
 
 def bellman_ford(graph: Graph, starts: list[int]) -> list[int]:

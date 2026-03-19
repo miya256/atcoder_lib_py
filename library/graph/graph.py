@@ -22,8 +22,8 @@ class Graph:
         self.m = m
         self.edges: list[tuple[int, int, int]] = []
         self._ptr = [0] * (n + 1)
-        self._adj: list[int] | None = None
-        self._weight: list[int] | None = None
+        self._adj: list[int] = []
+        self._weight: list[int] = []
         self._built = False
 
     def __len__(self) -> int:
@@ -69,13 +69,11 @@ class Graph:
     def neighbors(self, v: int) -> list[int]:
         """vに隣接する頂点のリスト"""
         assert self._built, "build() is not called"
-        assert self._adj
         return self._adj[self._ptr[v] : self._ptr[v + 1]]
 
     def neighbors_with_weight(self, v: int) -> list[tuple[int, int]]:
         """v に隣接する頂点のリスト（重み付き）"""
         assert self._built, "build() is not called"
-        assert self._adj and self._weight
         return list(
             zip(
                 self._adj[self._ptr[v] : self._ptr[v + 1]],

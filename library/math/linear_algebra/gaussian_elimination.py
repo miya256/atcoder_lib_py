@@ -1,10 +1,20 @@
-from matrix import Matrix
+from library.math.linear_algebra.matrix import Matrix
 
 
-def gaussian_eliminate(a: Matrix) -> int:
-    """掃き出し法"""
+def gaussian_eliminate(a: Matrix, column_limit: int | None = None) -> int:
+    """
+    掃き出し法
+    colmun_limit: 何列目まで操作をするか
+    """
+    if column_limit is None:
+        column_limit = a.m
+    assert 0 <= column_limit <= a.m
+
     rank = 0
-    for j in range(a.m):
+    for j in range(column_limit):
+        if rank >= a.n:
+            break
+
         if a[rank, j] == 0:
             for i in range(rank + 1, a.n):
                 if a[i, j]:
@@ -23,7 +33,7 @@ def gaussian_eliminate(a: Matrix) -> int:
 def solve_linear_eq(a: Matrix, b: Matrix) -> list[list[int]] | None:
     """連立方程式の解"""
     c = a.join_columns(b)
-    rank = gaussian_eliminate(c)
+    rank = gaussian_eliminate(c, a.m)
 
     # rank以降の行はすべて0になるはずなので、そうでなかったら解なし
     if any(c[i, a.m] for i in range(rank, a.n)):
@@ -36,7 +46,7 @@ def solve_linear_eq(a: Matrix, b: Matrix) -> list[list[int]] | None:
     # 定数項、未定定数とそうでないものを決める
     i = 0
     for j in range(a.m):
-        if c[i, j] == 1:
+        if i < a.n and c[i, j] == 1:
             res[0][j] = c[i, a.m]
             var.append(j)
             i += 1
