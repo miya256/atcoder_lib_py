@@ -47,9 +47,8 @@ Conventional Commits
 - docstring を書く 
 - private変数には `_` をつける
 - `@property` を適切に使う
-
-#### Constants
 - `inf` は小文字。値は2^61。グローバルに定義する
+- importは絶対パス
 
 #### Index
 - 負も対応させる
