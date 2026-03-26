@@ -33,27 +33,25 @@ class Matrix:
         assert isinstance(indices, tuple) and len(indices) == 2, (
             f"shape error: indices={indices}"
         )
-        assert 0 <= indices[0] < self.n and 0 <= indices[1] < self.m, (
-            f"index error: (i,j)={indices}"
-        )
-        return self._a[indices[0] * self.m + indices[1]]
+        i, j = indices
+        assert 0 <= i < self.n and 0 <= j < self.m, f"index error: (i,j)={indices}"
+        return self._a[i * self.m + j]
 
     def __setitem__(self, indices: tuple[int, int], value: int):
         """(i,j)成分"""
         assert isinstance(indices, tuple) and len(indices) == 2, (
             f"shape error: indices={indices}"
         )
-        assert 0 <= indices[0] < self.n and 0 <= indices[1] < self.m, (
-            f"index error: (i,j)={indices}"
-        )
-        self._a[indices[0] * self.m + indices[1]] = value
+        i, j = indices
+        assert 0 <= i < self.n and 0 <= j < self.m, f"index error: (i,j)={indices}"
+        self._a[i * self.m + j] = value
 
     def __add__(self, other: "Matrix") -> "Matrix":
         """加算"""
         assert self.n == other.n and self.m == other.m, (
             f"shape is not same: ({self.n},{self.m}) and ({other.n},{other.m})"
         )
-        data = [(self._a[i] + other._a[i]) % Matrix.Mod for i in range(self.n * self.m)]
+        data = [(a + b) % Matrix.Mod for a, b in zip(self._a, other._a)]
         return Matrix._from_vector(data, self.n, self.m)
 
     def __sub__(self, other: "Matrix") -> "Matrix":
@@ -61,7 +59,7 @@ class Matrix:
         assert self.n == other.n and self.m == other.m, (
             f"shape is not same: ({self.n},{self.m}) and ({other.n},{other.m})"
         )
-        data = [(self._a[i] - other._a[i]) % Matrix.Mod for i in range(self.n * self.m)]
+        data = [(a - b) % Matrix.Mod for a, b in zip(self._a, other._a)]
         return Matrix._from_vector(data, self.n, self.m)
 
     def __mul__(self, other: "Matrix") -> "Matrix":
@@ -70,11 +68,12 @@ class Matrix:
             f"shape error: ({self.n},{self.m}) and ({other.n},{other.m})"
         )
         n, m, l = self.n, other.m, self.m
-        data = [
-            sum(self[i, k] * other[k, j] for k in range(l)) % Matrix.Mod
-            for i in range(n)
-            for j in range(m)
-        ]
+        data = [0] * (n * m)
+        for i in range(n):
+            for j in range(m):
+                for k in range(l):
+                    data[i * m + j] += self[i, k] * other[k, j]
+                    data[i * m + j] %= Matrix.Mod
         return Matrix._from_vector(data, n, m)
 
     def __pow__(self, exp: int) -> "Matrix":
@@ -114,11 +113,12 @@ class Matrix:
             f"shape error: ({self.n},{self.m}) and ({other.n},{other.m})"
         )
         n, m, l = self.n, other.m, self.m
-        data = [
-            sum(self[i, k] * other[k, j] % Matrix.Mod for k in range(l)) % Matrix.Mod
-            for i in range(n)
-            for j in range(m)
-        ]
+        data = [0] * (n * m)
+        for i in range(n):
+            for j in range(m):
+                for k in range(l):
+                    data[i * m + j] += self[i, k] * other[k, j]
+                    data[i * m + j] %= Matrix.Mod
         self.n = n
         self.m = m
         self._a = data
@@ -146,16 +146,26 @@ class Matrix:
             return False
         if self.n != other.n or self.m != other.m:
             return False
-        return all(self._a[i] == other._a[i] for i in range(self.n * self.m))
+        return all(a == b for a, b in zip(self._a, other._a))
 
     def __ne__(self, other: object) -> bool:
         return not self.__eq__(other)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         string = []
         for i in range(self.n):
             string.append(f"{self._a[i * self.m : (i + 1) * self.m]}")
         return "[" + "\n ".join(string) + "]"
+
+    def __str__(self) -> str:
+        string = []
+        for i in range(self.n):
+            for j in range(self.m):
+                string.append(f"{self[i, j]}")
+                string.append(" ")
+            string[-1] = "\n"
+        string.pop()
+        return "".join(string)
 
     def inverse(self) -> "Matrix":
         """逆行列"""
