@@ -632,9 +632,10 @@
   "edit_distance": {
     "prefix": "def edit_distance",
     "body": [
+      "inf = 1 << 61",
+      "",
       "def edit_distance(s: str, t: str) -> int:",
       "    \"\"\"s, tの編集距離(挿入、削除、変更)\"\"\"",
-      "    inf = 1 << 61",
       "    dp = [[inf for _ in range(len(t) + 1)] for _ in range(len(s) + 1)]",
       "    for i in range(len(s) + 1):",
       "        dp[i][0] = i",
@@ -1273,9 +1274,10 @@
   "bellman_ford": {
     "prefix": "def bellman_ford",
     "body": [
+      "inf = 1 << 61",
+      "",
       "def bellman_ford(graph: Graph, starts: list[int]) -> list[int]:",
       "    \"\"\"始点からの距離のリスト\"\"\"",
-      "    inf = 1 << 61",
       "    d = [inf] * graph.n",
       "    for start in starts:",
       "        d[start] = 0",
@@ -1300,9 +1302,9 @@
     "prefix": "def dijkstra",
     "body": [
       "from heapq import heappush, heappop",
+      "inf = 1 << 61",
       "",
       "def dijkstra(graph: Graph, starts: list[int]) -> list[int]:",
-      "    inf = 1 << 61",
       "    dist = [inf] * graph.n",
       "    hq = []",
       "    for s in starts:",
@@ -1324,6 +1326,8 @@
   "WarshallFloyd": {
     "prefix": "class WarshallFloyd",
     "body": [
+      "inf = 1 << 61",
+      "",
       "class WarshallFloyd(Graph):",
       "    \"\"\"",
       "    全頂点間の距離",
@@ -1331,7 +1335,6 @@
       "",
       "    def __init__(self, n: int, m: int) -> None:",
       "        super().__init__(n, m)",
-      "        inf = 1 << 61",
       "        self._dist = [[inf] * n for _ in range(n)]",
       "",
       "    def add_edge(self, u: int, v: int, w: int=1) -> int:",
