@@ -23,7 +23,7 @@ exclude_imports = {
     "library.geometry.point",
 }
 
-exclude = [Path(path) for path in exclude]
+exclude = {Path(path) for path in exclude}
 
 
 class CodeRefiner(ast.NodeTransformer):
@@ -42,27 +42,32 @@ def add_snippets(snippets: dict, path: Path) -> None:
 
     tree = ast.parse(code)
 
-    top_classes = [node.name for node in tree.body if isinstance(node, ast.ClassDef)]
-    top_functions = [
-        node.name for node in tree.body if isinstance(node, ast.FunctionDef)
+    global_nodes = [
+        node
+        for node in tree.body
+        if not (isinstance(node, ast.ClassDef) or isinstance(node, ast.FunctionDef))
     ]
-    if top_classes:
-        def_type, name = "class", top_classes[0]
-    elif top_functions:
-        def_type, name = "def", top_functions[0]
-    else:
-        raise Exception("no function or class definitions found")
 
     refiner = CodeRefiner()
-    tree = refiner.visit(tree)
-    ast.fix_missing_locations(tree)
-    new_code = ast.unparse(tree)
 
-    snippets[name] = {
-        "prefix": f"{def_type} {name}",
-        "body": [line.rstrip("\n") for line in new_code.splitlines()] + ["$0"],
-        "description": f"Auto snippet for {name}",
-    }
+    for node in tree.body:
+        if isinstance(node, ast.ClassDef):
+            def_type, name = "class", node.name
+        elif isinstance(node, ast.FunctionDef):
+            def_type, name = "def", node.name
+        else:
+            continue
+
+        single = ast.Module(body=global_nodes + [node], type_ignores=[])
+        single = refiner.visit(single)
+        ast.fix_missing_locations(single)
+        new_code = ast.unparse(single)
+
+        snippets[name] = {
+            "prefix": f"{def_type} {name}",
+            "body": [line.rstrip("\n") for line in new_code.splitlines()] + ["$0"],
+            "description": f"Auto snippet for {name}",
+        }
 
 
 def main():
