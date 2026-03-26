@@ -1,5 +1,7 @@
 from library.graph.graph import Graph
 
+inf = 1 << 61
+
 
 class WarshallFloyd(Graph):
     """
@@ -8,7 +10,6 @@ class WarshallFloyd(Graph):
 
     def __init__(self, n: int, m: int) -> None:
         super().__init__(n, m)
-        inf = 1 << 61
         self._dist = [[inf] * n for _ in range(n)]
 
     def add_edge(self, u: int, v: int, w: int = 1) -> int:

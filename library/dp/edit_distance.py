@@ -1,6 +1,8 @@
+inf = 1 << 61
+
+
 def edit_distance(s: str, t: str) -> int:
     """s, tの編集距離(挿入、削除、変更)"""
-    inf = 1 << 61
     # sの先頭i文字、tの先頭j文字の編集距離
     dp = [[inf for _ in range(len(t) + 1)] for _ in range(len(s) + 1)]
     for i in range(len(s) + 1):

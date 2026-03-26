@@ -1,9 +1,10 @@
 from library.graph.graph import Graph
 from heapq import heappush, heappop
 
+inf = 1 << 61
+
 
 def dijkstra(graph: Graph, starts: list[int]) -> list[int]:
-    inf = 1 << 61
     dist = [inf] * graph.n
     hq = []
     for s in starts:
