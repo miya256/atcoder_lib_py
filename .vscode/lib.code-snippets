@@ -2843,6 +2843,8 @@
       "    \"\"\"",
       "    区間作用、区間取得を O(log n) で計算",
       "",
+      "    ※ 区間加算・区間和取得 の場合長さを持たせる",
+      "",
       "    Attributes:",
       "        op(x,y)         : 二項演算",
       "        e               : 単位元",
@@ -3061,45 +3063,6 @@
       "$0"
     ],
     "description": "Auto snippet for LazySegmentTree"
-  },
-  "op": {
-    "prefix": "def op",
-    "body": [
-      "from typing import Generic, TypeVar, Callable, Iterator",
-      "M = TypeVar('MonoidElement')",
-      "O = TypeVar('Operator')",
-      "",
-      "def op(x, y):",
-      "    return",
-      "$0"
-    ],
-    "description": "Auto snippet for op"
-  },
-  "mapping": {
-    "prefix": "def mapping",
-    "body": [
-      "from typing import Generic, TypeVar, Callable, Iterator",
-      "M = TypeVar('MonoidElement')",
-      "O = TypeVar('Operator')",
-      "",
-      "def mapping(f, x):",
-      "    return",
-      "$0"
-    ],
-    "description": "Auto snippet for mapping"
-  },
-  "composition": {
-    "prefix": "def composition",
-    "body": [
-      "from typing import Generic, TypeVar, Callable, Iterator",
-      "M = TypeVar('MonoidElement')",
-      "O = TypeVar('Operator')",
-      "",
-      "def composition(f, g):",
-      "    return",
-      "$0"
-    ],
-    "description": "Auto snippet for composition"
   },
   "SegmentTree": {
     "prefix": "class SegmentTree",

@@ -69,6 +69,8 @@ def add_snippets(snippets: dict, path: Path) -> None:
             "description": f"Auto snippet for {name}",
         }
 
+        print(f"\033[32mCreated\033[0m {def_type} {name}")
+
 
 def main():
     snippets = {}
@@ -82,7 +84,7 @@ def main():
         try:
             add_snippets(snippets, path)
         except Exception as e:
-            print(f"\033[33mSkip\033[0m {path.relative_to(library_path)}: {e}")
+            print(f"\033[33mSkipped\033[0m {path.relative_to(library_path)}: {e}")
 
     snippets_dir = ROOT / ".vscode/lib.code-snippets"
     with open(snippets_dir, "w", encoding="utf-8") as f:
