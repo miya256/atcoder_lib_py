@@ -456,13 +456,22 @@
       "                break",
       "            self._heap[i], self._heap[smallest] = (self._heap[smallest], self._heap[i])",
       "            i = smallest",
+      "$0"
+    ],
+    "description": "Auto snippet for Heap"
+  },
+  "compare": {
+    "prefix": "def compare",
+    "body": [
+      "from typing import TypeVar, Generic, Callable",
+      "T = TypeVar('T')",
       "",
       "def compare(parent, child) -> bool:",
       "    \"\"\"parent が child より優先されるなら True\"\"\"",
       "    return parent < child",
       "$0"
     ],
-    "description": "Auto snippet for Heap"
+    "description": "Auto snippet for compare"
   },
   "ConvexHullTrick": {
     "prefix": "class ConvexHullTrick",
@@ -623,9 +632,10 @@
   "edit_distance": {
     "prefix": "def edit_distance",
     "body": [
+      "inf = 1 << 61",
+      "",
       "def edit_distance(s: str, t: str) -> int:",
       "    \"\"\"s, tの編集距離(挿入、削除、変更)\"\"\"",
-      "    inf = 1 << 61",
       "    dp = [[inf for _ in range(len(t) + 1)] for _ in range(len(s) + 1)]",
       "    for i in range(len(s) + 1):",
       "        dp[i][0] = i",
@@ -744,7 +754,13 @@
       "    dx = p.x - q.x",
       "    dy = p.y - q.y",
       "    return dx * dx + dy * dy",
-      "",
+      "$0"
+    ],
+    "description": "Auto snippet for dist2"
+  },
+  "manhattan": {
+    "prefix": "def manhattan",
+    "body": [
       "def manhattan(p: Point, q: Point) -> int:",
       "    \"\"\"マンハッタン距離\"\"\"",
       "    dx = p.x - q.x",
@@ -752,7 +768,7 @@
       "    return abs(dx) + abs(dy)",
       "$0"
     ],
-    "description": "Auto snippet for dist2"
+    "description": "Auto snippet for manhattan"
   },
   "Point": {
     "prefix": "class Point",
@@ -1235,7 +1251,13 @@
       "            if not dfs(v):",
       "                return False",
       "    return True",
-      "",
+      "$0"
+    ],
+    "description": "Auto snippet for is_bipartite"
+  },
+  "is_bipartite2": {
+    "prefix": "def is_bipartite2",
+    "body": [
       "def is_bipartite2(n: int, edges: list[tuple]) -> bool:",
       "    uf = UnionFind(n * 2)",
       "    for u, v in edges:",
@@ -1247,14 +1269,15 @@
       "    return True",
       "$0"
     ],
-    "description": "Auto snippet for is_bipartite"
+    "description": "Auto snippet for is_bipartite2"
   },
   "bellman_ford": {
     "prefix": "def bellman_ford",
     "body": [
+      "inf = 1 << 61",
+      "",
       "def bellman_ford(graph: Graph, starts: list[int]) -> list[int]:",
       "    \"\"\"始点からの距離のリスト\"\"\"",
-      "    inf = 1 << 61",
       "    d = [inf] * graph.n",
       "    for start in starts:",
       "        d[start] = 0",
@@ -1279,9 +1302,9 @@
     "prefix": "def dijkstra",
     "body": [
       "from heapq import heappush, heappop",
+      "inf = 1 << 61",
       "",
       "def dijkstra(graph: Graph, starts: list[int]) -> list[int]:",
-      "    inf = 1 << 61",
       "    dist = [inf] * graph.n",
       "    hq = []",
       "    for s in starts:",
@@ -1303,6 +1326,8 @@
   "WarshallFloyd": {
     "prefix": "class WarshallFloyd",
     "body": [
+      "inf = 1 << 61",
+      "",
       "class WarshallFloyd(Graph):",
       "    \"\"\"",
       "    全頂点間の距離",
@@ -1310,7 +1335,6 @@
       "",
       "    def __init__(self, n: int, m: int) -> None:",
       "        super().__init__(n, m)",
-      "        inf = 1 << 61",
       "        self._dist = [[inf] * n for _ in range(n)]",
       "",
       "    def add_edge(self, u: int, v: int, w: int=1) -> int:",
@@ -1465,7 +1489,13 @@
       "                upper_divisors.append(n // i)",
       "        i += 1",
       "    return lower_divisors + upper_divisors[::-1]",
-      "",
+      "$0"
+    ],
+    "description": "Auto snippet for enumerate_divisors"
+  },
+  "enumerate_divisors_from_factor": {
+    "prefix": "def enumerate_divisors_from_factor",
+    "body": [
       "def enumerate_divisors_from_factor(prime_factor: dict[int, int]) -> list[int]:",
       "    \"\"\"素因数から約数を列挙\"\"\"",
       "    divisors = [1]",
@@ -1478,7 +1508,7 @@
       "    return sorted(divisors)",
       "$0"
     ],
-    "description": "Auto snippet for enumerate_divisors"
+    "description": "Auto snippet for enumerate_divisors_from_factor"
   },
   "enumerate_primes": {
     "prefix": "def enumerate_primes",
@@ -1708,7 +1738,13 @@
       "                a.add_row_multiple(i, rank, -a[i, j])",
       "        rank += 1",
       "    return rank",
-      "",
+      "$0"
+    ],
+    "description": "Auto snippet for gaussian_eliminate"
+  },
+  "solve_linear_eq": {
+    "prefix": "def solve_linear_eq",
+    "body": [
       "def solve_linear_eq(a: Matrix, b: Matrix) -> list[list[int]] | None:",
       "    \"\"\"連立方程式の解\"\"\"",
       "    c = a.join_columns(b)",
@@ -1735,7 +1771,7 @@
       "    return res",
       "$0"
     ],
-    "description": "Auto snippet for gaussian_eliminate"
+    "description": "Auto snippet for solve_linear_eq"
   },
   "solve_integer_linear": {
     "prefix": "def solve_integer_linear",
@@ -2123,6 +2159,14 @@
       "            if j & bit:",
       "                f[j] = op(f[j], f[j ^ bit])",
       "    return f",
+      "$0"
+    ],
+    "description": "Auto snippet for subset_zeta_transform"
+  },
+  "subset_mobius_transform": {
+    "prefix": "def subset_mobius_transform",
+    "body": [
+      "from typing import Callable",
       "",
       "def subset_mobius_transform(f: list[int], invop: Callable[[int, int], int]=lambda x, y: x - y) -> list[int]:",
       "    \"\"\"部分集合の総積を戻す(長さは2^n)\"\"\"",
@@ -2133,6 +2177,14 @@
       "            if j & bit:",
       "                f[j] = invop(f[j], f[j ^ bit])",
       "    return f",
+      "$0"
+    ],
+    "description": "Auto snippet for subset_mobius_transform"
+  },
+  "superset_zeta_transform": {
+    "prefix": "def superset_zeta_transform",
+    "body": [
+      "from typing import Callable",
       "",
       "def superset_zeta_transform(f: list[int], op: Callable[[int, int], int]=lambda x, y: x + y) -> list[int]:",
       "    \"\"\"その要素をもつ集合の総積をとる(長さは2^n)\"\"\"",
@@ -2143,6 +2195,14 @@
       "            if j & bit == 0:",
       "                f[j] = op(f[j], f[j | bit])",
       "    return f",
+      "$0"
+    ],
+    "description": "Auto snippet for superset_zeta_transform"
+  },
+  "superset_mobius_transform": {
+    "prefix": "def superset_mobius_transform",
+    "body": [
+      "from typing import Callable",
       "",
       "def superset_mobius_transform(f: list[int], invop: Callable[[int, int], int]=lambda x, y: x - y) -> list[int]:",
       "    \"\"\"その要素をもつ集合の総積を戻す(長さは2^n)\"\"\"",
@@ -2155,7 +2215,7 @@
       "    return f",
       "$0"
     ],
-    "description": "Auto snippet for subset_zeta_transform"
+    "description": "Auto snippet for superset_mobius_transform"
   },
   "ZobristHash": {
     "prefix": "class ZobristHash",
@@ -2204,7 +2264,13 @@
       "    x = (x & 858993459) << 2 | (x & 3435973836) >> 2",
       "    x = (x & 1431655765) << 1 | (x & 2863311530) >> 1",
       "    return x",
-      "",
+      "$0"
+    ],
+    "description": "Auto snippet for bit_reverse_32"
+  },
+  "bit_reverse_64": {
+    "prefix": "def bit_reverse_64",
+    "body": [
       "def bit_reverse_64(x: int) -> int:",
       "    x = (x & 4294967295) << 32 | (x & 18446744069414584320) >> 32",
       "    x = (x & 281470681808895) << 16 | (x & 18446462603027742720) >> 16",
@@ -2213,10 +2279,9 @@
       "    x = (x & 3689348814741910323) << 2 | (x & 14757395258967641292) >> 2",
       "    x = (x & 6148914691236517205) << 1 | (x & 12297829382473034410) >> 1",
       "    return x",
-      "'\\n16bitずつに区切り入れ替えている\\n8bitずつに区切り、隣合うかたまりをいれかえている\\n4bitずつに\\n2\\n1\\n'",
       "$0"
     ],
-    "description": "Auto snippet for bit_reverse_32"
+    "description": "Auto snippet for bit_reverse_64"
   },
   "popcount32": {
     "prefix": "def popcount32",
@@ -2228,7 +2293,13 @@
       "    x = (x & 16711935) + (x >> 8 & 16711935)",
       "    x = (x & 65535) + (x >> 16 & 65535)",
       "    return x",
-      "",
+      "$0"
+    ],
+    "description": "Auto snippet for popcount32"
+  },
+  "popcount64": {
+    "prefix": "def popcount64",
+    "body": [
       "def popcount64(x: int) -> int:",
       "    x = (x & 6148914691236517205) + (x >> 1 & 6148914691236517205)",
       "    x = (x & 3689348814741910323) + (x >> 2 & 3689348814741910323)",
@@ -2237,10 +2308,9 @@
       "    x = (x & 281470681808895) + (x >> 16 & 281470681808895)",
       "    x = (x & 4294967295) + (x >> 32 & 4294967295)",
       "    return x",
-      "'例\\n0b11001011 -> 0b 11 00 10 11\\u30002bitに分けて、それぞれ1の個数にする\\n0x55555555との&で右側にある1、シフトして&で左にある1を取り出し、足すことで1の個数になる\\n\\n0b 11 00 10 11\\n0b 1+1 0+0 0+1 1+1\\n0b 10 00 01 10 1行目でxはこう変換される\\n\\n\\n0b 1000 0110 4bitにわけて、1の個数にする\\n右2つを取り出すには0x33333333と&する。左2つは2回シフトしてから&する\\n\\n0b 1000 0110\\n0b 00+10 10+01\\n0b 0010 0011\\n\\n\\n0b 00100011 8bitにわける。\\n4つ取り出すには0x0f0f0f0fと&\\n\\n0b 0011+0010\\n0b 00000101\\nつまり1の数は5\\n'",
       "$0"
     ],
-    "description": "Auto snippet for popcount32"
+    "description": "Auto snippet for popcount64"
   },
   "convert_radix": {
     "prefix": "def convert_radix",
@@ -2263,7 +2333,13 @@
       "        if is_neg_radix:",
       "            n = -n",
       "    return res",
-      "",
+      "$0"
+    ],
+    "description": "Auto snippet for convert_radix"
+  },
+  "to_decimal": {
+    "prefix": "def to_decimal",
+    "body": [
       "def to_decimal(digits: list[int], radix: int) -> int:",
       "    \"\"\"convert radixしたやつを戻す\"\"\"",
       "    res = 0",
@@ -2274,7 +2350,7 @@
       "    return res",
       "$0"
     ],
-    "description": "Auto snippet for convert_radix"
+    "description": "Auto snippet for to_decimal"
   },
   "Ring": {
     "prefix": "class Ring",
@@ -2770,6 +2846,8 @@
       "    \"\"\"",
       "    区間作用、区間取得を O(log n) で計算",
       "",
+      "    ※ 区間加算・区間和取得 の場合長さを持たせる",
+      "",
       "    Attributes:",
       "        op(x,y)         : 二項演算",
       "        e               : 単位元",
@@ -2985,15 +3063,6 @@
       "        self._all_apply(2 * i, self._lazy[i])",
       "        self._all_apply(2 * i + 1, self._lazy[i])",
       "        self._lazy[i] = self._id",
-      "",
-      "def op(x, y):",
-      "    return",
-      "",
-      "def mapping(f, x):",
-      "    return",
-      "",
-      "def composition(f, g):",
-      "    return",
       "$0"
     ],
     "description": "Auto snippet for LazySegmentTree"
@@ -3222,6 +3291,14 @@
       "        else:",
       "            r = mid",
       "    return r",
+      "$0"
+    ],
+    "description": "Auto snippet for bisect_left"
+  },
+  "bisect_right": {
+    "prefix": "def bisect_right",
+    "body": [
+      "from typing import Callable",
       "",
       "def bisect_right(a: list, x, key=None) -> int:",
       "    l, r = (-1, len(a))",
@@ -3234,7 +3311,7 @@
       "    return r",
       "$0"
     ],
-    "description": "Auto snippet for bisect_left"
+    "description": "Auto snippet for bisect_right"
   },
   "parallel_binary_search": {
     "prefix": "def parallel_binary_search",
