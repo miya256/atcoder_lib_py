@@ -62,6 +62,9 @@ class FenwickTree(Generic[T]):
     def __repr__(self) -> str:
         return f"FenwickTree {self._data}"
 
+    def __str__(self) -> str:
+        return " ".join(map(str, self._data))
+
     def get(self, i: int) -> T:
         """i番目を取得"""
         orig_i = i

@@ -74,6 +74,9 @@ class LazySegmentTree(Generic[M, O]):
     def __repr__(self) -> str:
         return f"LazySegmentTree {list(self)}"
 
+    def __str__(self) -> str:
+        return "".join(map(str, list(self)))
+
     def get(self, i: int) -> M:
         """i番目を取得"""
         orig_i = i
