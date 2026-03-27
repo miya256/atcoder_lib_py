@@ -1,9 +1,10 @@
 from library.graph.graph import Graph
 
+inf = 1 << 61
+
 
 def bellman_ford(graph: Graph, starts: list[int]) -> list[int]:
     """始点からの距離のリスト"""
-    inf = 1 << 61
     d = [inf] * graph.n
     for start in starts:
         d[start] = 0

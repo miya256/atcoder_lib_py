@@ -8,6 +8,8 @@ class LazySegmentTree(Generic[M, O]):
     """
     区間作用、区間取得を O(log n) で計算
 
+    ※ 区間加算・区間和取得 の場合長さを持たせる
+
     Attributes:
         op(x,y)         : 二項演算
         e               : 単位元
@@ -251,18 +253,3 @@ class LazySegmentTree(Generic[M, O]):
         self._all_apply(2 * i, self._lazy[i])
         self._all_apply(2 * i + 1, self._lazy[i])
         self._lazy[i] = self._id
-
-
-def op(x, y):
-    return
-
-
-def mapping(f, x):
-    return
-
-
-def composition(f, g):
-    return
-
-
-# 区間加算・区間和取得 の場合長さを持たせるのを忘れないようにしよう
