@@ -17,36 +17,36 @@ class PersistentStack:
             self.parent: PersistentStack.Node | None = None
 
     def __init__(self) -> None:
-        self._tail: PersistentStack.Node | None = None
-        self._version = dict()
+        self._tails: list[PersistentStack.Node | None] = [None]
 
-    def get(self) -> object:
-        """末尾の要素を取得"""
-        assert self._tail, "stack is empty"
-        return self._tail.value
+    def get(self, t: int) -> object:
+        """時刻tの末尾の要素を取得"""
+        assert t <= self.latest_t, f"invalid time: t={t}, latest_t={self.latest_t}"
+        tail = self._tails[t]
+        assert tail is not None, f"stack is empty: t={t}"
+        return tail.value
 
-    def push(self, value: object) -> None:
-        """追加"""
+    def push(self, t: int, value: object) -> int:
+        """時刻tの末尾に追加"""
+        assert t <= self.latest_t, f"invalid time: t={t}, latest_t={self.latest_t}"
         new = PersistentStack.Node(value)
-        new.parent = self._tail
-        self._tail = new
+        new.parent = self._tails[t]
+        self._tails.append(new)
+        return self.latest_t
 
-    def pop(self) -> object:
+    def pop(self, t: int) -> int:
         """末尾の要素を取り出す"""
-        assert self._tail, "stack is empty"
-        value = self._tail.value
-        self._tail = self._tail.parent
-        return value
+        assert t <= self.latest_t, f"invalid time: t={t}, latest_t={self.latest_t}"
+        tail = self._tails[t]
+        assert tail is not None, f"stack is empty: t={t}"
+        self._tails.append(tail.parent)
+        return self.latest_t
 
-    def save(self, key: object) -> None:
-        """keyに今の状態を保存"""
-        self._version[key] = self._tail
-
-    def load(self, key: object) -> None:
-        """stackをkeyの状態にする"""
-        assert key in self._version, f"version {key} does not exist"
-        self._tail = self._version[key]
-
-    def is_empty(self) -> bool:
+    def is_empty(self, t: int) -> bool:
         """stackが空か"""
-        return self._tail is None
+        assert t <= self.latest_t, f"invalid time: t={t}, latest_t={self.latest_t}"
+        return self._tails[t] is None
+
+    @property
+    def latest_t(self) -> int:
+        return len(self._tails) - 1
