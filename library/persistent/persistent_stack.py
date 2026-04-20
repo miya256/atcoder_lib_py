@@ -21,14 +21,14 @@ class PersistentStack:
 
     def get(self, t: int) -> object:
         """時刻tの末尾の要素を取得"""
-        assert t <= self.latest_t, f"invalid time: t={t}, latest_t={self.latest_t}"
+        assert 0 <= t <= self.latest_t, f"invalid time: t={t}, latest_t={self.latest_t}"
         tail = self._tails[t]
         assert tail is not None, f"stack is empty: t={t}"
         return tail.value
 
     def push(self, t: int, value: object) -> int:
         """時刻tの末尾に追加"""
-        assert t <= self.latest_t, f"invalid time: t={t}, latest_t={self.latest_t}"
+        assert 0 <= t <= self.latest_t, f"invalid time: t={t}, latest_t={self.latest_t}"
         new = PersistentStack.Node(value)
         new.parent = self._tails[t]
         self._tails.append(new)
@@ -36,7 +36,7 @@ class PersistentStack:
 
     def pop(self, t: int) -> int:
         """末尾の要素を取り出す"""
-        assert t <= self.latest_t, f"invalid time: t={t}, latest_t={self.latest_t}"
+        assert 0 <= t <= self.latest_t, f"invalid time: t={t}, latest_t={self.latest_t}"
         tail = self._tails[t]
         assert tail is not None, f"stack is empty: t={t}"
         self._tails.append(tail.parent)
@@ -44,7 +44,7 @@ class PersistentStack:
 
     def is_empty(self, t: int) -> bool:
         """stackが空か"""
-        assert t <= self.latest_t, f"invalid time: t={t}, latest_t={self.latest_t}"
+        assert 0 <= t <= self.latest_t, f"invalid time: t={t}, latest_t={self.latest_t}"
         return self._tails[t] is None
 
     @property
