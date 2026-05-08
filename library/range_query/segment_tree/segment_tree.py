@@ -14,7 +14,7 @@ class SegmentTree(Generic[M]):
     Methods:
         get(i)    : i番目を取得
         set(i, x) : i番目をxにする
-        prod(i, x): 区間[l, r)の積
+        prod(l, r): 区間[l, r)の積
         all_prod(): 全体の積
         max_right(l, condition): condition(prod[l,j))が真になる最大のjを返す
         min_left(r, condition) : condition(prod[j,r))が真になる最小のjを返す
