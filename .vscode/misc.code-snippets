@@ -27,7 +27,7 @@
 
 	"for _ in range" : {
 		"prefix": "for _ in range",
-		"body": "for ${1|_,i,j,k|} in range($2):\n\t"
+		"body": "for ${1|_,i,j,k|} in range(${2|int(input()),q,n,m|}):\n\t"
 	},
 
 	"for i, v in enumerate" : {
@@ -113,5 +113,18 @@
 	"chmin" : {
 		"prefix": "chmin",
 		"body": "$1 = min($1, $2)"
+	},
+
+	"solve" : {
+		"prefix": "def solve",
+		"body": [
+			"def solve():",
+			"\treturn",
+			"\n",
+			"ans = []",
+			"for _ in range(int(input())):",
+			"\tans.append(solve())",
+			"print(*ans, sep=\"\\n\")",
+		]
 	},
 }
