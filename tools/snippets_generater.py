@@ -1,6 +1,7 @@
 import ast
 import json
 from pathlib import Path
+import subprocess
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -33,6 +34,21 @@ class CodeRefiner(ast.NodeTransformer):
         return node
 
 
+def format_code(code: str) -> str:
+    try:
+        result = subprocess.run(
+            ["uv", "run", "ruff", "format", "-"],
+            input=code,
+            text=True,
+            capture_output=True,
+            check=True,
+            encoding="utf-8",
+        )
+        return result.stdout
+    except subprocess.CalledProcessError as e:
+        raise Exception(e.stderr)
+
+
 def add_snippets(snippets: dict, path: Path) -> None:
     if path.relative_to(ROOT / "library") in exclude:
         raise Exception("listed in exclude")
@@ -63,6 +79,12 @@ def add_snippets(snippets: dict, path: Path) -> None:
         ast.fix_missing_locations(single)
         new_code = ast.unparse(single)
 
+        try:
+            new_code = format_code(new_code)
+        except Exception as e:
+            print(f"\033[31mFailed\033[0m {def_type} {name}: \033[31m{e}\033[0m")
+            continue
+
         snippets[name] = {
             "prefix": f"{def_type} {name}",
             "body": [line.rstrip("\n") for line in new_code.splitlines()] + ["$0"],
@@ -84,7 +106,9 @@ def main():
         try:
             add_snippets(snippets, path)
         except Exception as e:
-            print(f"\033[33mSkipped\033[0m {path.relative_to(library_path)}: {e}")
+            print(
+                f"\033[33mSkipped\033[0m {path.relative_to(library_path)}: \033[33m{e}\033[0m"
+            )
 
     snippets_dir = ROOT / ".vscode/lib.code-snippets"
     with open(snippets_dir, "w", encoding="utf-8") as f:
