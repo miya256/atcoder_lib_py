@@ -19,6 +19,7 @@ from tester import test
 import submit_precheck
 
 from code_refiner import refine_code
+from code_refiner_v2 import refine_code_v2
 
 
 def main():
@@ -66,7 +67,8 @@ def main():
     submit_precheck.check_all(problem_spec, code)
 
     # コードを整える（assert文除去など）
-    submit_code = refine_code(code)
+    # submit_code = refine_code(code)
+    submit_code = refine_code_v2(code)
 
     # クリップボードに提出用コードをコピー
     pyperclip.copy(submit_code)

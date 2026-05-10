@@ -12,6 +12,7 @@ dependencies = [
 [dependency-groups]
 auto_test = [
     "beautifulsoup4>=4.14.3",
+    "libcst>=1.8.6",
     "pyautogui>=0.9.54",
     "pygetwindow>=0.0.9",
     "pyperclip>=1.11.0",
