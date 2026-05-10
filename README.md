@@ -23,10 +23,18 @@ test/input.txtに入力をコピペしましょう。
 ```Bash
 cat solve/input.txt | uv run python solve/solve.py
 ```
+- activate済みの場合
+```Bash
+cat solve/input.txt | python solve/solve.py
+```
 
 ### 自動テスト（すべてのテストケースを試す）
 ```Bash
 uv run python tools/auto_test/main.py
+```
+- activate済みの場合
+```Bash
+python tools/auto_test/main.py
 ```
 
 ※ 本ツールは主に Windows + Edge を想定しています。  
