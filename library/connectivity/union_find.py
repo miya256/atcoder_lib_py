@@ -42,7 +42,7 @@ class UnionFind:
 
         def should_parent(self, other: "UnionFind.Element") -> bool:
             """selfにotherをmergeするとき、こうなっていればok"""
-            return self.size > other.size
+            return self.size >= other.size
 
     def __init__(self, n: int = 0) -> None:
         self._n = n

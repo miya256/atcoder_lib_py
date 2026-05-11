@@ -1,13 +1,9 @@
 {
-    "di dj" : {
-		"prefix": "di, dj =",
-		"body": "di, dj = {'U':-1, 'D':1, 'L':0, 'R':0}, {'U':0, 'D':0, 'L':-1, 'R':1}"
-	},
-
-	"for di, dj in (-1,0), (1,0), (0,-1), (0,1)" : {
+	"for di, dj in (-1,0), (0,1), (1,0), (0,-1)" : {
 		"prefix": "for di, dj in",
 		"body": [
-			"for di, dj in (-1,0), (1,0), (0,-1), (0,1):",
+			"# URDL 上右下左",
+			"for di, dj in (-1,0), (0,1), (1,0), (0,-1):",
 			"\tni, nj = i+di, j+dj",
 			"\tif not(0 <= ni < $1 and 0 <= nj < $2):",
 			"\t\tcontinue",
@@ -15,10 +11,12 @@
 		]
 	},
 
-	"for di, dj,dir in (-1,0,U), (1,0,D), (0,-1,L), (0,1,R)" : {
+	"for di, dj,dir in (-1,0,0), (0,1,1), (1,0,2), (0,-1,3)" : {
 		"prefix": "for di, dj, dir in",
 		"body": [
-			"for di, dj, dir in (-1,0,'U'), (1,0,'D'), (0,-1,'L'), (0,1,'R'):",
+			"# URDL 上右下左",
+			"# 右回転: (dir + k) % 4",
+			"for di, dj, dir in (-1,0,0), (0,1,1), (1,0,2), (0,-1,3):",
 			"\tni, nj = i+di, j+dj",
 			"\tif not(0 <= ni < $1 and 0 <= nj < $2):",
 			"\t\tcontinue"
