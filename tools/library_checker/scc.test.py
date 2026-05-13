@@ -8,7 +8,7 @@ for _ in range(m):
     a, b = map(int, input().split())
     g.add_edge(a, b)
 
-g.build()
+g.build_csr()
 
 scc = g.scc()
 

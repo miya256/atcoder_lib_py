@@ -9,7 +9,7 @@ for _ in range(n - 1):
     g.add_edge(a, b, c)
     g.add_edge(b, a, c)
 
-g.build()
+g.build_csr()
 
 r, s, t = g.diameter()
 

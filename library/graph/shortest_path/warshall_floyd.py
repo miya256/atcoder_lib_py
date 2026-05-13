@@ -24,7 +24,7 @@ class WarshallFloyd(Graph):
 
     def build(self) -> None:
         """行列を作成"""
-        super().build()
+        self.build_csr()
         for i in range(self.n):
             self._dist[i][i] = 0
 

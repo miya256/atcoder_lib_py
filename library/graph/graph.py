@@ -38,7 +38,7 @@ class Graph:
         """vに隣接する頂点のリスト（重み付き）"""
         return self.neighbors_with_weight(v)
 
-    def build(self) -> None:
+    def build_csr(self) -> None:
         """グラフを作成"""
         if self._built:
             return
