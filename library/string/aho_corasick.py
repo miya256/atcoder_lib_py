@@ -19,6 +19,7 @@ class AhoCorasick:
         self._root = AhoCorasick.Node(0)
         self._root.fail = self._root
         self._patterns: set[str] = set()
+        self.nodes: list[AhoCorasick.Node] = [self._root]
         self._next_id = 1
         self._built = False
 
@@ -39,7 +40,9 @@ class AhoCorasick:
         current = self._root
         for char in string:
             if char not in current.children:
-                current.children[char] = AhoCorasick.Node(self._next_id)
+                node = AhoCorasick.Node(self._next_id)
+                current.children[char] = node
+                self.nodes.append(node)
                 self._next_id += 1
             current = current.children[char]
         current.ends.add(string)
