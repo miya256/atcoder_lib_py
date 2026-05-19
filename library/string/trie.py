@@ -1,6 +1,14 @@
 class Trie:
     """
-    多重集合
+    Trie
+    ├a─b─c┬d
+    │     └e
+    ├b┬a─c
+    │ ├b─b─a─b─c
+    │ └c─d
+    └c─c┬a─b┬c
+        │   └d─e
+        └c
 
     Methods:
         add(string)                    : 文字列を追加。O(|S|)
@@ -31,8 +39,8 @@ class Trie:
             self.char = char
             # 長さ26の配列も試したが、あまり変わらず
             self.children: dict[str, Trie.Node] = {}
-            self.prefix_count = 0
-            self.word_count = 0
+            self.prefix_count = 0  # この文字列始まる文字列の個数
+            self.word_count = 0  # この文字列の個数
 
         def is_end(self) -> bool:
             """ある文字列の最後の文字であるか"""
@@ -58,6 +66,35 @@ class Trie:
 
     def __repr__(self) -> str:
         return f"Trie {self.get_all_words()}"
+
+    def __str__(self) -> str:
+        """tree表示"""
+
+        def dfs(node: Trie.Node, edge_char: str):
+            if edge_char in ("─", "┬"):
+                res[-1] += f"{edge_char}{node.char}"
+                indent.append("│ " if edge_char == "┬" else "  ")
+            else:
+                res.append("".join(indent[:-1]) + f"{edge_char}{node.char}")
+
+            for i, (_, next) in enumerate(sorted(node.children.items())):
+                if len(node.children) == 1:
+                    dfs(next, "─")
+                elif i == 0:
+                    dfs(next, "┬")
+                elif i == len(node.children) - 1:
+                    dfs(next, "└")
+                else:
+                    dfs(next, "├")
+
+            if edge_char in ("─", "└"):
+                indent.pop()
+
+        res = ["Trie"]
+        for i, (_, next) in enumerate(sorted(self._root.children.items())):
+            indent = ["  " if i == len(self._root.children) - 1 else "│ "]
+            dfs(next, "└" if i == len(self._root.children) - 1 else "├")
+        return "\n".join(res)
 
     def add(self, string: str) -> None:
         """stringを追加"""
