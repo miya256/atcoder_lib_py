@@ -17,19 +17,12 @@ exclude = {
     "range_query/fenwick_tree/fenwick_tree_generic.py",
 }
 
-exclude_imports = {
-    "library.graph.graph",
-    "library.math.linear_algebra.matrix",
-    "library.connectivity.union_find",
-    "library.geometry.point",
-}
-
 exclude = {Path(path) for path in exclude}
 
 
 class CodeRefiner(ast.NodeTransformer):
     def visit_ImportFrom(self, node):
-        if node.module in exclude_imports:
+        if node.module and node.module.startswith("library"):
             return None
         return node
 

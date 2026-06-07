@@ -1,13 +1,14 @@
-from library.graph.graph import Graph
+from library.graph.tree.tree import Tree
 
 
-class LCA(Graph):
-    def __init__(self, n: int, m: int) -> None:
-        super().__init__(n, m)
+class LCA(Tree):
+    def __init__(self, n: int) -> None:
+        super().__init__(n)
         self._logn = n.bit_length()
         self._ancestor = [[-1] * n for _ in range(self._logn)]
         self._depth = [0] * n
         self._dist = [0] * n
+        self._built = False
 
     def _dfs(self, root: int) -> None:
         stack = [root]
@@ -22,7 +23,7 @@ class LCA(Graph):
                 stack.append(v)
 
     def build(self, root: int) -> None:
-        self.build_csr()
+        self._built = True
         self._dfs(root)
         for i in range(1, self._logn):
             for s in range(self.n):
