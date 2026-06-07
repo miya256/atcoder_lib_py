@@ -18,7 +18,6 @@ from parser import ProblemSpec
 from tester import test
 import submit_precheck
 
-from code_refiner import refine_code
 from code_refiner_v2 import refine_code_v2
 
 
