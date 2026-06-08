@@ -1,11 +1,10 @@
-class Graph:
+class Tree:
     """
     CSR形式
-    buildを手動で呼び出す必要がある
+    n-1辺張ったら自動build
 
     Attributes:
         n    : 頂点数
-        m    : 辺数
         edges: 辺(u,v,w)
         子クラスからも参照するからpublic
 
@@ -17,14 +16,13 @@ class Graph:
         neighbors_with_weight(v): 重み付き隣接頂点 __call__ に割り当て
     """
 
-    def __init__(self, n: int, m: int) -> None:
+    def __init__(self, n: int):
         self.n = n
-        self.m = m
         self.edges: list[tuple[int, int, int]] = []
+        self.parent = [-1] * n
         self._ptr = [0] * (n + 1)
         self._adj: list[int] = []
         self._weight: list[int] = []
-        self._built = False
 
     def __len__(self) -> int:
         """頂点数"""
@@ -38,10 +36,8 @@ class Graph:
         """vに隣接する頂点のリスト（重み付き）"""
         return self.neighbors_with_weight(v)
 
-    def build_csr(self) -> None:
-        """グラフを作成"""
-        if self._built:
-            return
+    def _build_csr(self) -> None:
+        """木を作成"""
         self._built = True
         self._adj = [0] * len(self.edges)
         self._weight = [0] * len(self.edges)
@@ -52,28 +48,24 @@ class Graph:
             self._adj[self._ptr[u]] = v
             self._weight[self._ptr[u]] = w
 
-    def add_edge(self, u: int, v: int, w: int = 1) -> int:
-        """u -> v に重み w の 有向辺 を張る"""
-        assert not self._built, "graph is already built"
+    def add_edge(self, u: int, v: int, w: int = 1) -> None:
+        """u -> v に重み w の 無向辺 を張る"""
         assert 0 <= u < self.n, f"u={u} is out of range"
         assert 0 <= v < self.n, f"v={v} is out of range"
         self.edges.append((u, v, w))
+        self.edges.append((v, u, w))
         self._ptr[u] += 1
-        return len(self.edges) - 1
+        self._ptr[v] += 1
 
-    def edge(self, i: int) -> tuple[int, int, int]:
-        """辺i"""
-        assert 0 <= i < len(self.edges), f"i={i} is out of range"
-        return self.edges[i]
+        if len(self.edges) >= 2 * (self.n - 1):
+            self._build_csr()
 
     def neighbors(self, v: int) -> list[int]:
         """vに隣接する頂点のリスト"""
-        assert self._built, "build() is not called"
         return self._adj[self._ptr[v] : self._ptr[v + 1]]
 
     def neighbors_with_weight(self, v: int) -> list[tuple[int, int]]:
         """v に隣接する頂点のリスト（重み付き）"""
-        assert self._built, "build() is not called"
         return list(
             zip(
                 self._adj[self._ptr[v] : self._ptr[v + 1]],

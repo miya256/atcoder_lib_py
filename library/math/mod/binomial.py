@@ -63,7 +63,7 @@ class Binomial:
         assert n + r - 1 <= self._n, f"Value error: n+r-1={n + r - 1}"
         return self.combination(n + r - 1, r)
 
-    def multiset_permutation(self, frequencies: list[int]) -> int:
+    def multiset_permutation(self, frequencies: tuple[int]) -> int:
         """aabbbccccのような順列"""
         assert sum(frequencies) <= self._n, (
             f"Value error: sum(frequencies)={sum(frequencies)}"

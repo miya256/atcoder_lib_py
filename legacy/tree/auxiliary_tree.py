@@ -69,22 +69,25 @@ class AuxiliaryTree:
         if not self.called:
             self._prepare(0)
         vertices.sort(key=lambda x: self.inTime[x])
-        parent = {}
-        stack = [vertices[0]]
-        # depthがいま通った順に入ってるから、頂点vのdepthという配列にする
         for i in range(len(vertices)-1):
-            u, v = vertices[i], vertices[i+1]
-            lca = self._lca(u, v)
-            tmp = []
-            while stack and self.depth[self.inTime[lca]] < self.depth[self.inTime[stack[-1]]]:
-                tmp.append(stack.pop())
-            tmp.append(lca)
-            for j in range(len(tmp)-1):
-                parent[tmp[j]] = tmp[j+1]
-            stack.append(lca)
-            stack.append(v)
-        for i in range(len(stack)-1):
-            parent[stack[i+1]] = stack[i]
+            lca = self._lca(vertices[i], vertices[i+1])
+            vertices.append(lca)
+        
+        vertices.sort(key=lambda x: self.inTime[x])
+
+        stk = []
+        parent = {}
+        pv = -1
+        for v in vertices:
+            if pv == v:
+                continue
+            while stk and self.outTime[stk[-1]] < self.inTime[v]:
+                stk.pop()
+            if stk:
+                parent[v] = stk[-1]
+            stk.append(v)
+            pv = v
+        parent[stk[0]] = -1
         return parent
 
 t = AuxiliaryTree(13)

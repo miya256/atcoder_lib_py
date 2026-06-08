@@ -1,5 +1,8 @@
 import ast
 import re
+import subprocess
+
+from terminal_formatter import print_error
 
 
 class CodeRefiner(ast.NodeTransformer):
@@ -61,6 +64,22 @@ class CodeRefiner(ast.NodeTransformer):
         return None
 
 
+def format_code(code: str) -> str:
+    try:
+        result = subprocess.run(
+            ["uv", "run", "ruff", "format", "-"],
+            input=code,
+            text=True,
+            capture_output=True,
+            check=True,
+            encoding="utf-8",
+        )
+        return result.stdout
+    except subprocess.CalledProcessError as e:
+        print_error(f"コードのフォーマット中に問題が発生しました:\n{e.stderr}")
+        return ""
+
+
 def refine_code(code: str) -> str:
     refiner = CodeRefiner()
     tree = ast.parse(code)
@@ -89,4 +108,5 @@ def refine_code(code: str) -> str:
     tree.body = imports + from_imports + consts + tree.body
     ast.fix_missing_locations(tree)
     new_code = ast.unparse(tree)
+    new_code = format_code(new_code)
     return new_code

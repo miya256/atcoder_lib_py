@@ -19,12 +19,12 @@ class WarshallFloyd(Graph):
 
     def dist(self, u: int, v: int) -> int:
         """u -> v の距離"""
-        assert self._adj, "build() is not called"
+        assert self._built, "build() is not called"
         return self._dist[u][v]
 
     def build(self) -> None:
         """行列を作成"""
-        super().build()
+        self.build_csr()
         for i in range(self.n):
             self._dist[i][i] = 0
 
@@ -40,7 +40,7 @@ class WarshallFloyd(Graph):
         辺uvの重みをwにする。辺の重みが小さくなる場合だけ
         ※無向の場合は、v->uも 呼ぶ必要がある
         """
-        assert self._adj, "build() is not called"
+        assert self._built, "build() is not called"
         for i in range(self.n):
             for j in range(self.n):
                 self._dist[i][j] = min(

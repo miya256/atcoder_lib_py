@@ -42,7 +42,7 @@ class UnionFind:
 
         def should_parent(self, other: "UnionFind.Element") -> bool:
             """selfにotherをmergeするとき、こうなっていればok"""
-            return self.size > other.size
+            return self.size >= other.size
 
     def __init__(self, n: int = 0) -> None:
         self._n = n
@@ -85,7 +85,7 @@ class UnionFind:
         self._n += 1
         self._component_count += 1
 
-    def leader(self, id: object) -> object:
+    def leader(self, id: object) -> Element:
         """vの属する連結成分の根"""
         v = self.element(id)
         if v.parent:
@@ -95,12 +95,12 @@ class UnionFind:
                 v = v.parent
             while stack:
                 stack.pop().parent = v
-        return v.id
+        return v
 
     def merge(self, u: object, v: object) -> bool:
         """u, vを連結"""
-        ru = self.element(self.leader(u))
-        rv = self.element(self.leader(v))
+        ru = self.leader(u)
+        rv = self.leader(v)
         if ru == rv:  # すでに連結なら
             return False
         self._component_count -= 1
@@ -115,17 +115,17 @@ class UnionFind:
 
     def size(self, v: object) -> int:
         """vの連結成分の要素数"""
-        return self.element(self.leader(v)).size
+        return self.leader(v).size
 
-    def members(self, v: object) -> list[object]:
+    def members(self, v: object) -> list[Element]:
         """vの連結成分の要素を列挙"""
         rv = self.leader(v)
         members = []
         members.extend(
-            [i for i, v in enumerate(self._element_list) if self.leader(i) == rv]
+            [v for i, v in enumerate(self._element_list) if self.leader(i) == rv]
         )
         members.extend(
-            [i for i, v in self._element_dict.items() if self.leader(i) == rv]
+            [v for i, v in self._element_dict.items() if self.leader(i) == rv]
         )
         return members
 
@@ -139,21 +139,19 @@ class UnionFind:
         return self._component_count
 
     @property
-    def leaders(self) -> list[object]:
+    def leaders(self) -> list[Element]:
         """leaderを列挙"""
         leaders = []
-        leaders.extend(
-            [i for i, v in enumerate(self._element_list) if v.parent is None]
-        )
-        leaders.extend([i for i, v in self._element_dict.items() if v.parent is None])
+        leaders.extend([v for v in self._element_list if v.parent is None])
+        leaders.extend([v for v in self._element_dict.values() if v.parent is None])
         return leaders
 
     @property
-    def groups(self) -> dict[object, list[object]]:
+    def groups(self) -> dict[object, list[Element]]:
         """すべてのleaderとmembersを列挙"""
         group = {}
         for i, v in enumerate(self._element_list):
-            group.setdefault(self.leader(i), []).append(i)
+            group.setdefault(self.leader(i).id, []).append(v)
         for i, v in self._element_dict.items():
-            group.setdefault(self.leader(i), []).append(i)
+            group.setdefault(self.leader(i).id, []).append(v)
         return group

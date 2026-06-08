@@ -53,8 +53,8 @@ class SCC(Graph):
             scc.reverse()  # サイクルの逆向きに入るので戻す
             return scc
 
-        self.build()
-        self._rev_graph.build()
+        self.build_csr()
+        self._rev_graph.build_csr()
         visited = [False] * self.n
         postorder = []
         for v in range(self.n):

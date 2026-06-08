@@ -1,17 +1,15 @@
 # verification-helper: PROBLEM https://judge.yosupo.jp/problem/tree_diameter
 
-from library.graph.tree.diameter import Diameter
+from library.graph.tree.tree import Tree
+from library.graph.tree.diameter import diameter
 
 n = int(input())
-g = Diameter(n)
+tree = Tree(n)
 for _ in range(n - 1):
     a, b, c = map(int, input().split())
-    g.add_edge(a, b, c)
-    g.add_edge(b, a, c)
+    tree.add_edge(a, b, c)
 
-g.build()
-
-r, s, t = g.diameter()
+r, s, t = diameter(tree)
 
 # s -> t のパス
 path = []
@@ -25,7 +23,7 @@ while stack:
     if u == t:
         break
     stack.append((~u, -1))
-    for v in g[u]:
+    for v in tree[u]:
         if v == par:
             continue
         stack.append((v, u))

@@ -20,13 +20,18 @@ uv sync --all-groups
 
 ### 1つのテストケースを試す
 test/input.txtに入力をコピペしましょう。
-```Bash
-cat solve/input.txt | uv run python solve/solve.py
+```bash
+cat solve/input.txt | python solve/solve.py
 ```
 
 ### 自動テスト（すべてのテストケースを試す）
-```Bash
-uv run python tools/auto_test/main.py
+```bash
+python tools/auto_test/main.py
+```
+
+### スニペット生成
+```bash
+python tools/snippets_generater.py
 ```
 
 ※ 本ツールは主に Windows + Edge を想定しています。  

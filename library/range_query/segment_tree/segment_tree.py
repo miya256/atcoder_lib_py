@@ -60,7 +60,7 @@ class SegmentTree(Generic[M]):
         return f"SegmentTree {list(self)}"
 
     def __str__(self) -> str:
-        return "".join(map(str, list(self)))
+        return " ".join(map(str, list(self)))
 
     def get(self, i: int) -> M:
         """i番目を取得"""

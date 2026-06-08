@@ -1,6 +1,14 @@
 class Trie:
     """
-    多重集合
+    Trie
+    ├a─b─c┬d
+    │     └e
+    ├b┬a─c
+    │ ├b─b─a─b─c
+    │ └c─d
+    └c─c┬a─b┬c
+        │   └d─e
+        └c
 
     Methods:
         add(string)                    : 文字列を追加。O(|S|)
@@ -27,11 +35,12 @@ class Trie:
             word_count  : この文字列の個数
         """
 
-        def __init__(self, char: str = "") -> None:
+        def __init__(self, char: str) -> None:
             self.char = char
-            self.children = {}  # 長さ26の配列も試したが、あまり変わらず
-            self.prefix_count = 0
-            self.word_count = 0
+            # 長さ26の配列も試したが、あまり変わらず
+            self.children: dict[str, Trie.Node] = {}
+            self.prefix_count = 0  # この文字列始まる文字列の個数
+            self.word_count = 0  # この文字列の個数
 
         def is_end(self) -> bool:
             """ある文字列の最後の文字であるか"""
@@ -41,7 +50,7 @@ class Trie:
             return self.char
 
     def __init__(self) -> None:
-        self.root = Trie.Node()
+        self._root = Trie.Node("")
 
     def __len__(self) -> int:
         """文字列の個数"""
@@ -58,10 +67,39 @@ class Trie:
     def __repr__(self) -> str:
         return f"Trie {self.get_all_words()}"
 
+    def __str__(self) -> str:
+        """tree表示"""
+
+        def dfs(node: Trie.Node, edge_char: str):
+            if edge_char in ("─", "┬"):
+                res[-1] += f"{edge_char}{node.char}"
+                indent.append("│ " if edge_char == "┬" else "  ")
+            else:
+                res.append("".join(indent[:-1]) + f"{edge_char}{node.char}")
+
+            for i, (_, next) in enumerate(sorted(node.children.items())):
+                if len(node.children) == 1:
+                    dfs(next, "─")
+                elif i == 0:
+                    dfs(next, "┬")
+                elif i == len(node.children) - 1:
+                    dfs(next, "└")
+                else:
+                    dfs(next, "├")
+
+            if edge_char in ("─", "└"):
+                indent.pop()
+
+        res = ["Trie"]
+        for i, (_, next) in enumerate(sorted(self._root.children.items())):
+            indent = ["  " if i == len(self._root.children) - 1 else "│ "]
+            dfs(next, "└" if i == len(self._root.children) - 1 else "├")
+        return "\n".join(res)
+
     def add(self, string: str) -> None:
         """stringを追加"""
-        self.root.prefix_count += 1
-        current = self.root
+        self._root.prefix_count += 1
+        current = self._root
         for char in string:
             if char not in current.children:
                 current.children[char] = Trie.Node(char)
@@ -73,8 +111,8 @@ class Trie:
         """stringを削除"""
         if not self.contains(string):
             return
-        self.root.prefix_count -= 1
-        current = self.root
+        self._root.prefix_count -= 1
+        current = self._root
         for char in string:
             current.children[char].prefix_count -= 1
             if current.children[char].prefix_count == 0:
@@ -92,7 +130,7 @@ class Trie:
 
     def contains_prefix(self, string: str) -> bool:
         """stringの接頭辞である文字列が存在するか"""
-        current = self.root
+        current = self._root
         for char in string:
             if char not in current.children:
                 return False
@@ -102,8 +140,8 @@ class Trie:
         return False
 
     def count_lcp(self, string: str) -> list[int]:
-        """stringとのLCPの長さが i である文字列の個数"""
-        current = self.root
+        """stringとのLCPの長さが ちょうどi である文字列の個数"""
+        current = self._root
         # 先頭i文字が等しい文字列の個数を数えてから
         lcp_count = [self.count_all_words()] + [0] * len(string)
         for i, char in enumerate(string, 1):
@@ -156,7 +194,7 @@ class Trie:
     def get_kth_word(self, k: int) -> str:
         """辞書順でk番目の要素を取得(0-indexed)"""
         assert k < self.count_all_words(), f"{k}th string is not found"
-        current = self.root
+        current = self._root
         string = []
         while k >= 0:
             for char, node in sorted(current.children.items()):
@@ -170,7 +208,7 @@ class Trie:
 
     def _traverse(self, string: str) -> Node | None:
         """stringに基づいてノードをたどる"""
-        current = self.root
+        current = self._root
         for char in string:
             if char not in current.children:
                 return None

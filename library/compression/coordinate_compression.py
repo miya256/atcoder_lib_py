@@ -32,7 +32,7 @@ class CoordinateCompressor:
         return self.compress(original)
 
     def __repr__(self) -> str:
-        return f"Compressor({list(self._compressed.keys())})"
+        return f"Compressor({list(self._unique)})"
 
     def original(self, compressed: int) -> int:
         """圧縮後の値から元の値を返す"""

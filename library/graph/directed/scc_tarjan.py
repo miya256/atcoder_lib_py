@@ -7,7 +7,7 @@ class SCC(Graph):
         super().__init__(n, m)
 
     def scc(self) -> None:
-        self.build()
+        self.build_csr()
         low = [0] * self.n
         ord = [-1] * self.n
         k = 0
