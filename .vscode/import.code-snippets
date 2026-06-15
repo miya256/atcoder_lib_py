@@ -1,5 +1,6 @@
 {
     "import sys" : {
+		"scope": "python",
 		"prefix": "import sys メモ化しろ",
 		"body": [
 			"import sys",
@@ -10,26 +11,31 @@
 	},
 
 	"from math import" : {
+		"scope": "python",
 		"prefix": "from math",
 		"body": "from math import gcd, lcm, dist"
 	},
 
 	"from decimal import" : {
+		"scope": "python",
 		"prefix": "from decimal",
 		"body": "from decimal import Decimal, ROUND_HALF_UP"
 	},
 
 	"round" : {
+		"scope": "python",
 		"prefix": "Decimal.quantize(Decimal(),ROUND_HALF_UP)",
 		"body": "Decimal(str($1)).quantize(Decimal('${2|0,0.1,0.01,1E1,1E2|}'),ROUND_HALF_UP)"
 	},
 
 	"from functools import cmp_to_key" : {
+		"scope": "python",
 		"prefix": "from functools cmp_to_key",
 		"body": "from functools import cmp_to_key"
 	},
 
 	"from functools import cache" : {
+		"scope": "python",
 		"prefix": "from functools cache",
 		"body": [
 			"from functools import cache",
@@ -38,96 +44,115 @@
 	},
 
 	"from collections import" : {
+		"scope": "python",
 		"prefix": "from collections",
 		"body": "from collections import deque, defaultdict, Counter\n"
 	},
 
 	"from heapq import" : {
+		"scope": "python",
 		"prefix": "from heapq",
 		"body": "from heapq import heapify, heappush, heappop\n"
 	},
 
 	"heappush" : {
+		"scope": "python",
 		"prefix": "heappush(hq, )",
 		"body": "heappush(hq, $1)"
 	},
 
 	"heappop" : {
+		"scope": "python",
 		"prefix": "heappop(hq)",
 		"body": "heappop(hq)"
 	},
 
 	"from itertools import" : {
+		"scope": "python",
 		"prefix": "from itertools",
 		"body": "from itertools import permutations, combinations, groupby\n"
 	},
 
 	"from bisect import" : {
+		"scope": "python",
 		"prefix": "from bisect",
 		"body": "from bisect import bisect_left, bisect_right"
 	},
 
 	"from copy import" : {
+		"scope": "python",
 		"prefix": "from copy",
 		"body": "from copy import deepcopy"
 	},
 
 	"from sortedcontainers import" : {
+		"scope": "python",
 		"prefix": "from sortedcontainers",
 		"body": "from sortedcontainers import SortedList, SortedSet, SortedDict\n"
 	},
 
 	"atcoder.dsu" : {
+		"scope": "python",
 		"prefix": "from atcoder.dsu",
 		"body": "from atcoder.dsu import DSU\n"
 	},
 
 	"atcoder.fenwicktree" : {
+		"scope": "python",
 		"prefix": "from atcoder.fenwicktree",
 		"body": "from atcoder.fenwicktree import FenwickTree\n"
 	},
 
 	"atcoder.floor_sum" : {
+		"scope": "python",
 		"prefix": "from atcoder.math",
 		"body": "from atcoder.math import crt, floor_sum\n"
 	},
 
 	"atcoder.maxflow" : {
+		"scope": "python",
 		"prefix": "from atcoder.maxflow",
 		"body": "from atcoder.maxflow import MFGraph\n"
 	},
 
 	"atcoder.mincostflow" : {
+		"scope": "python",
 		"prefix": "from atcoder.mincostflow",
 		"body": "from atcoder.mincostflow import MCFGraph\n"
 	},
 
 	"atcoder.convolution" : {
+		"scope": "python",
 		"prefix": "from atcoder.convolution",
 		"body": "from atcoder.convolution import convolution\n"
 	},
 
 	"atcoder.scc" : {
+		"scope": "python",
 		"prefix": "from atcoder.scc",
 		"body": "from atcoder.scc import SCCGraph\n"
 	},
 
 	"atcoder.twosat" : {
+		"scope": "python",
 		"prefix": "from atcoder.twosat",
 		"body": "from atcoder.twosat import TwoSAT\n"
 	},
 
 	"atcoder.string" : {
+		"scope": "python",
 		"prefix": "from atcoder.string",
 		"body": "from atcoder.string import suffix_array, lcp_array, z_algorithm\n"
 	},
 
 	"atcoder.segtree" : {
+		"scope": "python",
 		"prefix": "from atcoder.segtree",
 		"body": "from atcoder.segtree import SegTree\n"
 	},
 
 	"atcoder.lazysegtree" : {
+		"scope": "python",
 		"prefix": "from atcoder.lazysegtree",
 		"body": "from atcoder.lazysegtree import LazySegTree\n"
 	}
