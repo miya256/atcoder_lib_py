@@ -1,5 +1,6 @@
 {
   "CoordinateCompressor": {
+    "scope": "python",
     "prefix": "class CoordinateCompressor",
     "body": [
       "from bisect import bisect_left",
@@ -52,6 +53,7 @@
     "description": "Auto snippet for CoordinateCompressor"
   },
   "HuffmanCode": {
+    "scope": "python",
     "prefix": "class HuffmanCode",
     "body": [
       "from collections import Counter",
@@ -126,6 +128,7 @@
     "description": "Auto snippet for HuffmanCode"
   },
   "run_length_encode": {
+    "scope": "python",
     "prefix": "def run_length_encode",
     "body": [
       "def run_length_encode(a: str | list) -> list[tuple[object, int]]:",
@@ -143,6 +146,7 @@
     "description": "Auto snippet for run_length_encode"
   },
   "UnionFind": {
+    "scope": "python",
     "prefix": "class UnionFind",
     "body": [
       "class UnionFind:",
@@ -307,6 +311,7 @@
     "description": "Auto snippet for UnionFind"
   },
   "Deque": {
+    "scope": "python",
     "prefix": "class Deque",
     "body": [
       "from typing import TypeVar, Generic, Iterator",
@@ -427,6 +432,7 @@
     "description": "Auto snippet for Deque"
   },
   "Heap": {
+    "scope": "python",
     "prefix": "class Heap",
     "body": [
       "from typing import TypeVar, Generic, Callable",
@@ -492,6 +498,7 @@
     "description": "Auto snippet for Heap"
   },
   "compare": {
+    "scope": "python",
     "prefix": "def compare",
     "body": [
       "from typing import TypeVar, Generic, Callable",
@@ -507,6 +514,7 @@
     "description": "Auto snippet for compare"
   },
   "make_indexer": {
+    "scope": "python",
     "prefix": "def make_indexer",
     "body": [
       "from typing import Callable",
@@ -554,6 +562,7 @@
     "description": "Auto snippet for make_indexer"
   },
   "ConvexHullTrick": {
+    "scope": "python",
     "prefix": "class ConvexHullTrick",
     "body": [
       "from typing import Literal",
@@ -692,6 +701,7 @@
     "description": "Auto snippet for ConvexHullTrick"
   },
   "Doubling": {
+    "scope": "python",
     "prefix": "class Doubling",
     "body": [
       "class Doubling:",
@@ -731,6 +741,7 @@
     "description": "Auto snippet for Doubling"
   },
   "edit_distance": {
+    "scope": "python",
     "prefix": "def edit_distance",
     "body": [
       "inf = 1 << 61",
@@ -755,6 +766,7 @@
     "description": "Auto snippet for edit_distance"
   },
   "lcs": {
+    "scope": "python",
     "prefix": "def lcs",
     "body": [
       "def lcs(s: str, t: str, is_restored: bool = False) -> int | str:",
@@ -786,6 +798,7 @@
     "description": "Auto snippet for lcs"
   },
   "lis": {
+    "scope": "python",
     "prefix": "def lis",
     "body": [
       "from bisect import bisect_left",
@@ -820,6 +833,7 @@
     "description": "Auto snippet for lis"
   },
   "tsp": {
+    "scope": "python",
     "prefix": "def tsp",
     "body": [
       "from typing import Callable",
@@ -852,6 +866,7 @@
     "description": "Auto snippet for tsp"
   },
   "dist2": {
+    "scope": "python",
     "prefix": "def dist2",
     "body": [
       "def dist2(p: Point, q: Point) -> int:",
@@ -864,6 +879,7 @@
     "description": "Auto snippet for dist2"
   },
   "manhattan": {
+    "scope": "python",
     "prefix": "def manhattan",
     "body": [
       "def manhattan(p: Point, q: Point) -> int:",
@@ -876,6 +892,7 @@
     "description": "Auto snippet for manhattan"
   },
   "Point": {
+    "scope": "python",
     "prefix": "class Point",
     "body": [
       "import math",
@@ -931,6 +948,7 @@
     "description": "Auto snippet for Point"
   },
   "Segment": {
+    "scope": "python",
     "prefix": "class Segment",
     "body": [
       "class Segment:",
@@ -968,6 +986,7 @@
     "description": "Auto snippet for Segment"
   },
   "SCC": {
+    "scope": "python",
     "prefix": "class SCC",
     "body": [
       "class SCC(Graph):",
@@ -1062,6 +1081,7 @@
     "description": "Auto snippet for SCC"
   },
   "TopologicalSorter": {
+    "scope": "python",
     "prefix": "class TopologicalSorter",
     "body": [
       "from heapq import heapify, heappush, heappop",
@@ -1199,6 +1219,7 @@
     "description": "Auto snippet for TopologicalSorter"
   },
   "Graph": {
+    "scope": "python",
     "prefix": "class Graph",
     "body": [
       "class Graph:",
@@ -1288,6 +1309,7 @@
     "description": "Auto snippet for Graph"
   },
   "kruskal": {
+    "scope": "python",
     "prefix": "def kruskal",
     "body": [
       "def kruskal(graph: Graph) -> int:",
@@ -1307,6 +1329,7 @@
     "description": "Auto snippet for kruskal"
   },
   "prim": {
+    "scope": "python",
     "prefix": "def prim",
     "body": [
       "from heapq import heappush, heappop",
@@ -1335,6 +1358,7 @@
     "description": "Auto snippet for prim"
   },
   "bfs": {
+    "scope": "python",
     "prefix": "def bfs",
     "body": [
       "from collections import deque",
@@ -1356,6 +1380,7 @@
     "description": "Auto snippet for bfs"
   },
   "bfs01": {
+    "scope": "python",
     "prefix": "def bfs01",
     "body": [
       "from collections import deque",
@@ -1382,6 +1407,7 @@
     "description": "Auto snippet for bfs01"
   },
   "is_bipartite": {
+    "scope": "python",
     "prefix": "def is_bipartite",
     "body": [
       "def is_bipartite(graph: Graph) -> bool:",
@@ -1410,6 +1436,7 @@
     "description": "Auto snippet for is_bipartite"
   },
   "is_bipartite2": {
+    "scope": "python",
     "prefix": "def is_bipartite2",
     "body": [
       "def is_bipartite2(n: int, edges: list[tuple]) -> bool:",
@@ -1426,6 +1453,7 @@
     "description": "Auto snippet for is_bipartite2"
   },
   "bellman_ford": {
+    "scope": "python",
     "prefix": "def bellman_ford",
     "body": [
       "inf = 1 << 61",
@@ -1454,6 +1482,7 @@
     "description": "Auto snippet for bellman_ford"
   },
   "dijkstra": {
+    "scope": "python",
     "prefix": "def dijkstra",
     "body": [
       "from heapq import heappush, heappop",
@@ -1481,6 +1510,7 @@
     "description": "Auto snippet for dijkstra"
   },
   "WarshallFloyd": {
+    "scope": "python",
     "prefix": "class WarshallFloyd",
     "body": [
       "inf = 1 << 61",
@@ -1533,6 +1563,7 @@
     "description": "Auto snippet for WarshallFloyd"
   },
   "AuxiliaryTree": {
+    "scope": "python",
     "prefix": "class AuxiliaryTree",
     "body": [
       "class AuxiliaryTree(Tree):",
@@ -1597,6 +1628,7 @@
     "description": "Auto snippet for AuxiliaryTree"
   },
   "diameter": {
+    "scope": "python",
     "prefix": "def diameter",
     "body": [
       "def diameter(t: Tree) -> tuple[int, int, int]:",
@@ -1623,6 +1655,7 @@
     "description": "Auto snippet for diameter"
   },
   "euler_tour": {
+    "scope": "python",
     "prefix": "def euler_tour",
     "body": [
       "def euler_tour(t: Tree, root: int):",
@@ -1726,6 +1759,7 @@
     "description": "Auto snippet for euler_tour"
   },
   "LCA": {
+    "scope": "python",
     "prefix": "class LCA",
     "body": [
       "class LCA(Tree):",
@@ -1797,6 +1831,7 @@
     "description": "Auto snippet for LCA"
   },
   "Tree": {
+    "scope": "python",
     "prefix": "class Tree",
     "body": [
       "class Tree:",
@@ -1877,6 +1912,7 @@
     "description": "Auto snippet for Tree"
   },
   "Mobius": {
+    "scope": "python",
     "prefix": "class Mobius",
     "body": [
       "class Mobius:",
@@ -1916,6 +1952,7 @@
     "description": "Auto snippet for Mobius"
   },
   "next_permutation": {
+    "scope": "python",
     "prefix": "def next_permutation",
     "body": [
       "def next_permutation(p: list) -> bool:",
@@ -1934,6 +1971,7 @@
     "description": "Auto snippet for next_permutation"
   },
   "quotient_range": {
+    "scope": "python",
     "prefix": "def quotient_range",
     "body": [
       "def quotient_range(n: int) -> list[tuple[int, int, int]]:",
@@ -1954,6 +1992,7 @@
     "description": "Auto snippet for quotient_range"
   },
   "enumerate_divisors": {
+    "scope": "python",
     "prefix": "def enumerate_divisors",
     "body": [
       "def enumerate_divisors(n: int) -> list[int]:",
@@ -1973,6 +2012,7 @@
     "description": "Auto snippet for enumerate_divisors"
   },
   "enumerate_divisors_from_factor": {
+    "scope": "python",
     "prefix": "def enumerate_divisors_from_factor",
     "body": [
       "def enumerate_divisors_from_factor(prime_factor: dict[int, int]) -> list[int]:",
@@ -1990,6 +2030,7 @@
     "description": "Auto snippet for enumerate_divisors_from_factor"
   },
   "enumerate_primes": {
+    "scope": "python",
     "prefix": "def enumerate_primes",
     "body": [
       "def enumerate_primes(low: int, high: int) -> list[int]:",
@@ -2015,6 +2056,7 @@
     "description": "Auto snippet for enumerate_primes"
   },
   "gcd": {
+    "scope": "python",
     "prefix": "def gcd",
     "body": [
       "def gcd(*nums: int) -> int:",
@@ -2030,6 +2072,7 @@
     "description": "Auto snippet for gcd"
   },
   "lcm": {
+    "scope": "python",
     "prefix": "def lcm",
     "body": [
       "def lcm(*nums: int, limit: int | None = None) -> int:",
@@ -2047,6 +2090,7 @@
     "description": "Auto snippet for lcm"
   },
   "PrimeTable": {
+    "scope": "python",
     "prefix": "class PrimeTable",
     "body": [
       "class PrimeTable:",
@@ -2111,6 +2155,7 @@
     "description": "Auto snippet for PrimeTable"
   },
   "is_prime": {
+    "scope": "python",
     "prefix": "def is_prime",
     "body": [
       "def is_prime(n: int) -> bool:",
@@ -2150,6 +2195,7 @@
     "description": "Auto snippet for is_prime"
   },
   "SegmentedSieve": {
+    "scope": "python",
     "prefix": "class SegmentedSieve",
     "body": [
       "class SegmentedSieve:",
@@ -2222,6 +2268,7 @@
     "description": "Auto snippet for SegmentedSieve"
   },
   "gaussian_eliminate": {
+    "scope": "python",
     "prefix": "def gaussian_eliminate",
     "body": [
       "def gaussian_eliminate(a: Matrix, column_limit: int | None = None) -> int:",
@@ -2254,6 +2301,7 @@
     "description": "Auto snippet for gaussian_eliminate"
   },
   "solve_linear_eq": {
+    "scope": "python",
     "prefix": "def solve_linear_eq",
     "body": [
       "def solve_linear_eq(a: Matrix, b: Matrix) -> list[list[int]] | None:",
@@ -2285,6 +2333,7 @@
     "description": "Auto snippet for solve_linear_eq"
   },
   "solve_integer_linear": {
+    "scope": "python",
     "prefix": "def solve_integer_linear",
     "body": [
       "def solve_integer_linear(a: int, b: int, c: int) -> tuple[int, int, int] | None:",
@@ -2315,6 +2364,7 @@
     "description": "Auto snippet for solve_integer_linear"
   },
   "Matrix": {
+    "scope": "python",
     "prefix": "class Matrix",
     "body": [
       "class Matrix:",
@@ -2578,6 +2628,7 @@
     "description": "Auto snippet for Matrix"
   },
   "Binomial": {
+    "scope": "python",
     "prefix": "class Binomial",
     "body": [
       "class Binomial:",
@@ -2658,6 +2709,7 @@
     "description": "Auto snippet for Binomial"
   },
   "primitive_root": {
+    "scope": "python",
     "prefix": "def primitive_root",
     "body": [
       "import random",
@@ -2691,6 +2743,7 @@
     "description": "Auto snippet for primitive_root"
   },
   "subset_zeta_transform": {
+    "scope": "python",
     "prefix": "def subset_zeta_transform",
     "body": [
       "from typing import Callable",
@@ -2712,6 +2765,7 @@
     "description": "Auto snippet for subset_zeta_transform"
   },
   "subset_mobius_transform": {
+    "scope": "python",
     "prefix": "def subset_mobius_transform",
     "body": [
       "from typing import Callable",
@@ -2733,6 +2787,7 @@
     "description": "Auto snippet for subset_mobius_transform"
   },
   "superset_zeta_transform": {
+    "scope": "python",
     "prefix": "def superset_zeta_transform",
     "body": [
       "from typing import Callable",
@@ -2754,6 +2809,7 @@
     "description": "Auto snippet for superset_zeta_transform"
   },
   "superset_mobius_transform": {
+    "scope": "python",
     "prefix": "def superset_mobius_transform",
     "body": [
       "from typing import Callable",
@@ -2775,6 +2831,7 @@
     "description": "Auto snippet for superset_mobius_transform"
   },
   "ZobristHash": {
+    "scope": "python",
     "prefix": "class ZobristHash",
     "body": [
       "import random",
@@ -2819,6 +2876,7 @@
     "description": "Auto snippet for ZobristHash"
   },
   "bit_reverse_32": {
+    "scope": "python",
     "prefix": "def bit_reverse_32",
     "body": [
       "def bit_reverse_32(x: int) -> int:",
@@ -2833,6 +2891,7 @@
     "description": "Auto snippet for bit_reverse_32"
   },
   "bit_reverse_64": {
+    "scope": "python",
     "prefix": "def bit_reverse_64",
     "body": [
       "def bit_reverse_64(x: int) -> int:",
@@ -2848,6 +2907,7 @@
     "description": "Auto snippet for bit_reverse_64"
   },
   "popcount32": {
+    "scope": "python",
     "prefix": "def popcount32",
     "body": [
       "def popcount32(x: int) -> int:",
@@ -2862,6 +2922,7 @@
     "description": "Auto snippet for popcount32"
   },
   "popcount64": {
+    "scope": "python",
     "prefix": "def popcount64",
     "body": [
       "def popcount64(x: int) -> int:",
@@ -2877,6 +2938,7 @@
     "description": "Auto snippet for popcount64"
   },
   "convert_radix": {
+    "scope": "python",
     "prefix": "def convert_radix",
     "body": [
       "def convert_radix(n: int, radix: int) -> list[int]:",
@@ -2902,6 +2964,7 @@
     "description": "Auto snippet for convert_radix"
   },
   "to_decimal": {
+    "scope": "python",
     "prefix": "def to_decimal",
     "body": [
       "def to_decimal(digits: list[int], radix: int) -> int:",
@@ -2917,6 +2980,7 @@
     "description": "Auto snippet for to_decimal"
   },
   "Ring": {
+    "scope": "python",
     "prefix": "class Ring",
     "body": [
       "class Ring:",
@@ -2990,6 +3054,7 @@
     "description": "Auto snippet for Ring"
   },
   "PersistentStack": {
+    "scope": "python",
     "prefix": "class PersistentStack",
     "body": [
       "class PersistentStack:",
@@ -3049,6 +3114,7 @@
     "description": "Auto snippet for PersistentStack"
   },
   "Accumulation": {
+    "scope": "python",
     "prefix": "class Accumulation",
     "body": [
       "class Accumulation:",
@@ -3183,6 +3249,7 @@
     "description": "Auto snippet for Accumulation"
   },
   "DualFenwickTree": {
+    "scope": "python",
     "prefix": "class DualFenwickTree",
     "body": [
       "from typing import Iterator",
@@ -3262,6 +3329,7 @@
     "description": "Auto snippet for DualFenwickTree"
   },
   "FenwickTree": {
+    "scope": "python",
     "prefix": "class FenwickTree",
     "body": [
       "from typing import Iterator",
@@ -3405,6 +3473,7 @@
     "description": "Auto snippet for FenwickTree"
   },
   "IntervalSet": {
+    "scope": "python",
     "prefix": "class IntervalSet",
     "body": [
       "from sortedcontainers import SortedSet",
@@ -3555,6 +3624,7 @@
     "description": "Auto snippet for IntervalSet"
   },
   "LazySegmentTree": {
+    "scope": "python",
     "prefix": "class LazySegmentTree",
     "body": [
       "from typing import Generic, TypeVar, Callable, Iterator",
@@ -3804,6 +3874,7 @@
     "description": "Auto snippet for LazySegmentTree"
   },
   "DynamicSegmentTree": {
+    "scope": "python",
     "prefix": "class DynamicSegmentTree",
     "body": [
       "from typing import Generic, TypeVar, Callable",
@@ -4002,6 +4073,7 @@
     "description": "Auto snippet for DynamicSegmentTree"
   },
   "PersistentSegmentTree": {
+    "scope": "python",
     "prefix": "class PersistentSegmentTree",
     "body": [
       "from typing import Generic, TypeVar, Callable",
@@ -4212,6 +4284,7 @@
     "description": "Auto snippet for PersistentSegmentTree"
   },
   "SegmentTree": {
+    "scope": "python",
     "prefix": "class SegmentTree",
     "body": [
       "from typing import Generic, TypeVar, Callable, Iterator",
@@ -4373,6 +4446,7 @@
     "description": "Auto snippet for SegmentTree"
   },
   "SparseTable": {
+    "scope": "python",
     "prefix": "class SparseTable",
     "body": [
       "from typing import TypeVar, Generic, Callable",
@@ -4412,6 +4486,7 @@
     "description": "Auto snippet for SparseTable"
   },
   "WaveletMatrix": {
+    "scope": "python",
     "prefix": "class WaveletMatrix",
     "body": [
       "from typing import Literal",
@@ -4618,6 +4693,7 @@
     "description": "Auto snippet for WaveletMatrix"
   },
   "binary_search": {
+    "scope": "python",
     "prefix": "def binary_search",
     "body": [
       "def binary_search(ok: int, ng: int, *args) -> int:",
@@ -4640,6 +4716,7 @@
     "description": "Auto snippet for binary_search"
   },
   "bisect_left": {
+    "scope": "python",
     "prefix": "def bisect_left",
     "body": [
       "from typing import Callable",
@@ -4659,6 +4736,7 @@
     "description": "Auto snippet for bisect_left"
   },
   "bisect_right": {
+    "scope": "python",
     "prefix": "def bisect_right",
     "body": [
       "from typing import Callable",
@@ -4678,6 +4756,7 @@
     "description": "Auto snippet for bisect_right"
   },
   "parallel_binary_search": {
+    "scope": "python",
     "prefix": "def parallel_binary_search",
     "body": [
       "def parallel_binary_search(oks: list[int], ngs: list[int], *args) -> list[int]:",
@@ -4712,6 +4791,7 @@
     "description": "Auto snippet for parallel_binary_search"
   },
   "ternary_search": {
+    "scope": "python",
     "prefix": "def ternary_search",
     "body": [
       "from typing import Callable",
@@ -4735,6 +4815,7 @@
     "description": "Auto snippet for ternary_search"
   },
   "AhoCorasick": {
+    "scope": "python",
     "prefix": "class AhoCorasick",
     "body": [
       "from collections import deque",
@@ -4825,6 +4906,7 @@
     "description": "Auto snippet for AhoCorasick"
   },
   "kmp": {
+    "scope": "python",
     "prefix": "def kmp",
     "body": [
       "def kmp(text: str, pattern: str) -> int:",
@@ -4859,6 +4941,7 @@
     "description": "Auto snippet for kmp"
   },
   "RollingHash": {
+    "scope": "python",
     "prefix": "class RollingHash",
     "body": [
       "import random",
@@ -4965,6 +5048,7 @@
     "description": "Auto snippet for RollingHash"
   },
   "Trie": {
+    "scope": "python",
     "prefix": "class Trie",
     "body": [
       "class Trie:",
@@ -5181,6 +5265,7 @@
     "description": "Auto snippet for Trie"
   },
   "z_algorithm": {
+    "scope": "python",
     "prefix": "def z_algorithm",
     "body": [
       "def z_algorithm(s: str) -> list[int]:",

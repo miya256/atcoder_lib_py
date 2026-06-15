@@ -79,6 +79,7 @@ def add_snippets(snippets: dict, path: Path) -> None:
             continue
 
         snippets[name] = {
+            "scope": "python",
             "prefix": f"{def_type} {name}",
             "body": [line.rstrip("\n") for line in new_code.splitlines()] + ["$0"],
             "description": f"Auto snippet for {name}",
