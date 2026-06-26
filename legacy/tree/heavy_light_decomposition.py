@@ -41,7 +41,7 @@ class HeavyLightDecomposition:
             v,prev,w,d = stack.pop()
             if visited[v]:
                 if self.heavy[v][0] == -1 or self.size[self.heavy[v][0]] < self.size[prev]:
-                    self.heavy[v] = (prev,w)
+                    self.heavy[v] = (prev,w) # vが親でprevが子、それを結ぶ辺が重みw
                 self.size[v] += self.size[prev]
             else:
                 self.parent[v] = prev
