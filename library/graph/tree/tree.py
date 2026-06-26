@@ -19,7 +19,6 @@ class Tree:
     def __init__(self, n: int):
         self.n = n
         self.edges: list[tuple[int, int, int]] = []
-        self.parent = [-1] * n
         self._ptr = [0] * (n + 1)
         self._adj: list[int] = []
         self._weight: list[int] = []
