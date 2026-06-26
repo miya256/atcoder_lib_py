@@ -8,8 +8,8 @@ class WarshallFloyd(Graph):
     全頂点間の距離
     """
 
-    def __init__(self, n: int, m: int) -> None:
-        super().__init__(n, m)
+    def __init__(self, n: int) -> None:
+        super().__init__(n)
         self._dist = [[inf] * n for _ in range(n)]
 
     def add_edge(self, u: int, v: int, w: int = 1) -> int:
