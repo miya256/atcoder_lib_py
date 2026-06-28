@@ -37,7 +37,6 @@ class Tree:
 
     def _build_csr(self) -> None:
         """木を作成"""
-        self._built = True
         self._adj = [0] * len(self.edges)
         self._weight = [0] * len(self.edges)
         for i in range(self.n):
