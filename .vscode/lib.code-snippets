@@ -676,6 +676,9 @@
       "    \"\"\"",
       "    優先度付きキュー（ヒープ）",
       "",
+      "    compare(parent, child) -> bool",
+      "    parent が child より優先されるなら True",
+      "",
       "    Methods:",
       "        add(value): 追加",
       "        pop()     : 削除",
@@ -728,22 +731,6 @@
       "$0"
     ],
     "description": "Auto snippet for Heap"
-  },
-  "compare": {
-    "scope": "python",
-    "prefix": "def compare",
-    "body": [
-      "from typing import TypeVar, Generic, Callable",
-      "",
-      "T = TypeVar(\"T\")",
-      "",
-      "",
-      "def compare(parent, child) -> bool:",
-      "    \"\"\"parent が child より優先されるなら True\"\"\"",
-      "    return parent < child",
-      "$0"
-    ],
-    "description": "Auto snippet for compare"
   },
   "make_indexer": {
     "scope": "python",
@@ -1964,6 +1951,7 @@
       "    def __init__(self, n: int) -> None:",
       "        super().__init__(n)",
       "        self._dist = [[inf] * n for _ in range(n)]",
+      "        self.has_negative_cycle = False",
       "",
       "    def add_edge(self, u: int, v: int, w: int = 1) -> int:",
       "        \"\"\"u -> v へ重み w の 有向辺 を張る\"\"\"",
@@ -1983,9 +1971,14 @@
       "        for k in range(self.n):",
       "            for i in range(self.n):",
       "                for j in range(self.n):",
+      "                    if self._dist[i][k] >= inf or self._dist[k][j] >= inf:",
+      "                        continue",
       "                    self._dist[i][j] = min(",
       "                        self._dist[i][j], self._dist[i][k] + self._dist[k][j]",
       "                    )",
+      "        for i in range(self.n):",
+      "            if self._dist[i][i] < 0:",
+      "                self.has_negative_cycle = True",
       "",
       "    def update(self, u: int, v: int, w: int) -> None:",
       "        \"\"\"",
