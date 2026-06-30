@@ -3,4 +3,4 @@
 from library.math.factor.gcd_lcm import gcd
 
 x, y = map(int,input().split())
-print(gcd(x, y))
+print(gcd(x, y)+1)
