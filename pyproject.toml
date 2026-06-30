@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "ac-library-python",
+    "competitive-verifier>=4.1.2",
     "sortedcontainers>=2.4.0",
 ]
 
@@ -18,11 +19,6 @@ auto_test = [
     "pyperclip>=1.11.0",
     "python-dotenv>=1.2.1",
     "requests>=2.32.5",
-]
-
-library_checker = [
-    "online-judge-verify-helper>=5.6",
-    "setuptools<81",
 ]
 
 dev = [
