@@ -1,4 +1,4 @@
-# verification-helper: PROBLEM https://judge.yosupo.jp/problem/system_of_linear_equations
+# competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/system_of_linear_equations
 
 from library.math.linear_algebra.matrix import Matrix
 from library.math.linear_algebra.gaussian_elimination import solve_linear_eq

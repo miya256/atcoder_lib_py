@@ -1,4 +1,4 @@
-# verification-helper: PROBLEM https://judge.yosupo.jp/problem/tree_diameter
+# competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/tree_diameter
 
 from library.graph.tree.tree import Tree
 from library.graph.tree.diameter import diameter

@@ -6,7 +6,6 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "ac-library-python",
-    "competitive-verifier>=4.1.2",
     "sortedcontainers>=2.4.0",
 ]
 

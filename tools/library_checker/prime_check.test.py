@@ -1,4 +1,4 @@
-# verification-helper: PROBLEM https://judge.yosupo.jp/problem/primality_test
+# competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/primality_test
 
 from library.math.factor.prime_check import is_prime
 

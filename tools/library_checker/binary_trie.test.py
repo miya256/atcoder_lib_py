@@ -1,4 +1,4 @@
-# verification-helper: PROBLEM https://judge.yosupo.jp/problem/set_xor_min
+# competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/set_xor_min
 
 from library.containers.binary_trie import BinaryTrie
 

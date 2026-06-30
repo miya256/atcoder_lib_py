@@ -1,4 +1,4 @@
-# verification-helper: PROBLEM https://judge.yosupo.jp/problem/scc
+# competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/scc
 
 from library.graph.directed.scc_kosaraju import SCC
 

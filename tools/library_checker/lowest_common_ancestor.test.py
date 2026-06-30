@@ -1,4 +1,4 @@
-# verification-helper: PROBLEM https://judge.yosupo.jp/problem/lca
+# competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/lca
 
 from library.graph.tree.lowest_common_ancestor import LCA
 

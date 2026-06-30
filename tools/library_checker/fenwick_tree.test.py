@@ -1,4 +1,4 @@
-# verification-helper: PROBLEM https://judge.yosupo.jp/problem/point_add_range_sum
+# competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/point_add_range_sum
 
 from library.range_query.fenwick_tree.fenwick_tree import FenwickTree
 

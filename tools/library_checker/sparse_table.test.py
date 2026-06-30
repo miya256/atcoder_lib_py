@@ -1,4 +1,4 @@
-# verification-helper: PROBLEM https://judge.yosupo.jp/problem/staticrmq
+# competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/staticrmq
 
 from library.range_query.sparse_table import SparseTable
 

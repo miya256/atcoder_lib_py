@@ -1,4 +1,4 @@
-# verification-helper: PROBLEM https://judge.yosupo.jp/problem/range_affine_range_sum
+# competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/range_affine_range_sum
 
 from library.range_query.lazy_segment_tree.lazy_segment_tree import LazySegmentTree
 

@@ -1,4 +1,4 @@
-# verification-helper: PROBLEM https://judge.yosupo.jp/problem/longest_increasing_subsequence
+# competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/longest_increasing_subsequence
 
 from library.dp.longest_increasing_subsequence import lis
 

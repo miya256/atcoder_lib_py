@@ -1,4 +1,4 @@
-# verification-helper: PROBLEM https://judge.yosupo.jp/problem/two_sat
+# competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/two_sat
 
 from library.graph.directed.twosat import TwoSAT
 

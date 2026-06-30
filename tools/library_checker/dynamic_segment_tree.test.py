@@ -1,4 +1,4 @@
-# verification-helper: PROBLEM https://judge.yosupo.jp/problem/point_set_range_composite_large_array
+# competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/point_set_range_composite_large_array
 
 from library.range_query.segment_tree.dynamic_segment_tree import DynamicSegmentTree
 

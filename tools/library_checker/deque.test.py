@@ -1,4 +1,4 @@
-# verification-helper: PROBLEM https://judge.yosupo.jp/problem/deque
+# competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/deque
 
 from library.containers.deque import Deque
 

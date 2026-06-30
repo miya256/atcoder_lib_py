@@ -1,4 +1,4 @@
-# verification-helper: PROBLEM https://judge.yosupo.jp/problem/jump_on_tree
+# competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/jump_on_tree
 
 from library.graph.tree.heavy_light_decomposition import HLD
 
