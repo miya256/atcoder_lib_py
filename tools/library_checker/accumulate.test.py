@@ -1,4 +1,4 @@
-# verification-helper: PROBLEM https://judge.yosupo.jp/problem/static_range_sum
+# competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/static_range_sum
 
 from library.range_query.accumulate import Accumulation
 

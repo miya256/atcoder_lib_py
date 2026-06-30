@@ -1,4 +1,4 @@
-# verification-helper: PROBLEM https://judge.yosupo.jp/problem/point_set_range_composite
+# competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/point_set_range_composite
 
 from library.range_query.segment_tree.segment_tree import SegmentTree
 

@@ -1,4 +1,4 @@
-# verification-helper: PROBLEM https://judge.yosupo.jp/problem/vertex_add_subtree_sum
+# competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/vertex_add_subtree_sum
 
 from library.range_query.fenwick_tree.fenwick_tree import FenwickTree
 from library.graph.tree.tree import Tree
