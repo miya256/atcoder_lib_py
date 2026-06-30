@@ -3,8 +3,8 @@ from library.graph.graph import Graph
 
 # 非再帰で書くのムズイ。なんかちがう
 class SCC(Graph):
-    def __init__(self, n: int, m: int) -> None:
-        super().__init__(n, m)
+    def __init__(self, n: int) -> None:
+        super().__init__(n)
 
     def scc(self) -> None:
         self.build_csr()

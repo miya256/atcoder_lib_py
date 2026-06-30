@@ -19,7 +19,6 @@ class Tree:
     def __init__(self, n: int):
         self.n = n
         self.edges: list[tuple[int, int, int]] = []
-        self.parent = [-1] * n
         self._ptr = [0] * (n + 1)
         self._adj: list[int] = []
         self._weight: list[int] = []
@@ -38,7 +37,6 @@ class Tree:
 
     def _build_csr(self) -> None:
         """木を作成"""
-        self._built = True
         self._adj = [0] * len(self.edges)
         self._weight = [0] * len(self.edges)
         for i in range(self.n):

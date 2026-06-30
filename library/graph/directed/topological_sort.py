@@ -22,8 +22,8 @@ class TopologicalSorter(Graph):
         is_unique     : トポロジカル順が一意に定まるか
     """
 
-    def __init__(self, n: int, m: int) -> None:
-        super().__init__(n, m)
+    def __init__(self, n: int) -> None:
+        super().__init__(n)
         self._is_dag: bool | None = None
         self._is_unique: bool | None = None
 

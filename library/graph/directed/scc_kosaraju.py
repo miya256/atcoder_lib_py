@@ -10,9 +10,9 @@ class SCC(Graph):
         build_contracted_graph(scc): 縮約グラフをつくる O(n+m)
     """
 
-    def __init__(self, n: int, m: int) -> None:
-        super().__init__(n, m)
-        self._rev_graph = Graph(n, m)
+    def __init__(self, n: int) -> None:
+        super().__init__(n)
+        self._rev_graph = Graph(n)
 
     def add_edge(self, u: int, v: int, w: int = 1) -> int:
         self._rev_graph.add_edge(v, u)

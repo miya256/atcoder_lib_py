@@ -3,7 +3,7 @@
 from library.graph.directed.scc_kosaraju import SCC
 
 n, m = map(int, input().split())
-g = SCC(n, m)
+g = SCC(n)
 for _ in range(m):
     a, b = map(int, input().split())
     g.add_edge(a, b)

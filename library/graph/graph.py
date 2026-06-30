@@ -17,9 +17,8 @@ class Graph:
         neighbors_with_weight(v): 重み付き隣接頂点 __call__ に割り当て
     """
 
-    def __init__(self, n: int, m: int) -> None:
+    def __init__(self, n: int) -> None:
         self.n = n
-        self.m = m
         self.edges: list[tuple[int, int, int]] = []
         self._ptr = [0] * (n + 1)
         self._adj: list[int] = []
