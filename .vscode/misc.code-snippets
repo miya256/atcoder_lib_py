@@ -146,4 +146,18 @@
 			"print(*ans, sep=\"\\n\")",
 		]
 	},
+
+	"icpc-solve" : {
+		"scope": "python",
+		"prefix": "def solve():",
+		"body": [
+			"def solve():",
+			"\tif hoge == 0:",
+			"\t\texit()",
+			"\treturn",
+			"\n",
+			"while 1:",
+			"\tprint(solve())",
+		]
+	}
 }

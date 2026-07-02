@@ -11,6 +11,7 @@ class WarshallFloyd(Graph):
     def __init__(self, n: int) -> None:
         super().__init__(n)
         self._dist = [[inf] * n for _ in range(n)]
+        self.has_negative_cycle = False
 
     def add_edge(self, u: int, v: int, w: int = 1) -> int:
         """u -> v へ重み w の 有向辺 を張る"""
@@ -31,9 +32,14 @@ class WarshallFloyd(Graph):
         for k in range(self.n):
             for i in range(self.n):
                 for j in range(self.n):
+                    if self._dist[i][k] >= inf or self._dist[k][j] >= inf:
+                        continue
                     self._dist[i][j] = min(
                         self._dist[i][j], self._dist[i][k] + self._dist[k][j]
                     )
+        for i in range(self.n):
+            if self._dist[i][i] < 0:
+                self.has_negative_cycle = True
 
     def update(self, u: int, v: int, w: int) -> None:
         """

@@ -27,15 +27,20 @@ dev = [
 
 [tool.pyright]
 include = [
-    "tools",
     "library",
+    "verify",
+    "tools",
+]
+exclude = [
+    "library/_tatyam_set"
 ]
 
 [tool.ruff]
 line-length = 88
 include = [
-    "tools/**/*.py",
     "library/**/*.py",
+    "verify/**/*.py",
+    "tools/**/*.py",
 ]
 
 [tool.ruff.lint]

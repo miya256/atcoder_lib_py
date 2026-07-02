@@ -7,6 +7,9 @@ class Heap(Generic[T]):
     """
     優先度付きキュー（ヒープ）
 
+    compare(parent, child) -> bool
+    parent が child より優先されるなら True
+
     Methods:
         add(value): 追加
         pop()     : 削除
@@ -57,8 +60,3 @@ class Heap(Generic[T]):
                 break
             self._heap[i], self._heap[smallest] = self._heap[smallest], self._heap[i]
             i = smallest
-
-
-def compare(parent, child) -> bool:
-    """parent が child より優先されるなら True"""
-    return parent < child

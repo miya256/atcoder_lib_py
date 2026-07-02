@@ -15,6 +15,8 @@ exclude = {
     "math/mod/mod_pow.py",
     "math/tools/bit_tricks.py",
     "range_query/fenwick_tree/fenwick_tree_generic.py",
+    "_tatyam_set/sorted_set.py",
+    "_tatyam_set/sorted_multi_set.py",
 }
 
 exclude = {Path(path) for path in exclude}
