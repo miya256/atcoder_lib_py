@@ -31,6 +31,9 @@ include = [
     "verify",
     "tools",
 ]
+exclude = [
+    "library/_tatyam_set"
+]
 
 [tool.ruff]
 line-length = 88
