@@ -182,61 +182,60 @@ class LazySegmentTree(Generic[M, O]):
         orig_l = l
         l += self._n if l < 0 else 0
         assert 0 <= l <= self._n, f"index out of range: l={orig_l}->{l}"
+        assert condition(self._e)
 
         if l == self._n:
             return self._n
 
         l += self._size
-        # 上に移動するときに見るところのlazyを伝播
-        for i in range(self._log, 0, -1):
-            self._push(l >> i)
+        value = self._e
 
-        val = self._e
-        while True:
-            while not l & 1:
+        first = True
+        while first or (l & -l) != l:
+            first = False
+            while l % 2 == 0:
                 l >>= 1
-            if not condition(self._op(val, self._tree[l])):
+            if not condition(self._op(value, self._tree[l])):
                 while l < self._size:
-                    self._push(l)  # 右側は伝播できてないのでする
-                    l <<= 1
-                    if condition(self._op(val, self._tree[l])):
-                        val = self._op(val, self._tree[l])
+                    l *= 2
+                    if condition(self._op(value, self._tree[l])):
+                        value = self._op(value, self._tree[l])
                         l += 1
                 return l - self._size
-            val = self._op(val, self._tree[l])
+            value = self._op(value, self._tree[l])
             l += 1
-            if l & -l == l:
-                return self._n
+
+        return self._n
 
     def min_left(self, r: int, condition: Callable[[M], bool]) -> int:
         """condition(prod[j,r))が真になる最小のjを返す"""
         orig_r = r
         r += self._n if r < 0 else 0
         assert 0 <= r <= self._n, f"index out of range: r={orig_r}->{r}"
+        assert condition(self._e)
 
         if r == 0:
             return 0
 
         r += self._size
-        for i in range(self._log, 0, -1):
-            self._push((r - 1) >> i)
+        value = self._e
 
-        val = self._e
-        while True:
-            while not r & 1:
-                r >>= 1
-            if not condition(self._op(val, self._tree[r - 1])):
-                while r < self._size:
-                    self._push(r - 1)
-                    r <<= 1
-                    if condition(self._op(val, self._tree[r - 1])):
-                        r -= 1
-                        val = self._op(val, self._tree[r])
-                return r - self._size
+        first = True
+        while first or (r & -r) != r:
+            first = False
             r -= 1
-            val = self._op(val, self._tree[r])
-            if r & -r == r:
-                return 0
+            while r > 1 and r % 2:
+                r >>= 1
+            if not condition(self._op(self._tree[r], value)):
+                while r < self._size:
+                    r = 2 * r + 1
+                    if condition(self._op(self._tree[r], value)):
+                        value = self._op(self._tree[r], value)
+                        r -= 1
+                return r + 1 - self._size
+            value = self._op(self._tree[r], value)
+
+        return 0
 
     def _update(self, i: int) -> None:
         """tree[i]を更新"""
