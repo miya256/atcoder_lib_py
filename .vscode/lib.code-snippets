@@ -3,6 +3,7 @@
     "scope": "python",
     "prefix": "class CoordinateCompressor",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/compression/coordinate_compression.py\n",
       "from bisect import bisect_left",
       "",
       "",
@@ -56,6 +57,7 @@
     "scope": "python",
     "prefix": "class HuffmanCode",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/compression/huffman_code.py\n",
       "from collections import Counter",
       "from heapq import heapify, heappush, heappop",
       "",
@@ -131,6 +133,7 @@
     "scope": "python",
     "prefix": "def run_length_encode",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/compression/run_length_encoding.py\n",
       "def run_length_encode(a: str | list) -> list[tuple[object, int]]:",
       "    \"\"\"ランレングス圧縮\"\"\"",
       "    rle = []",
@@ -149,6 +152,7 @@
     "scope": "python",
     "prefix": "class UnionFind",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/connectivity/union_find.py\n",
       "class UnionFind:",
       "    \"\"\"",
       "    連結を管理するデータ構造。計算量はアッカーマン関数の逆関数",
@@ -314,6 +318,7 @@
     "scope": "python",
     "prefix": "class BinaryTrie",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/containers/binary_trie.py\n",
       "class BinaryTrie:",
       "    \"\"\"",
       "    Binary Trie",
@@ -546,6 +551,7 @@
     "scope": "python",
     "prefix": "class Deque",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/containers/deque.py\n",
       "from typing import TypeVar, Generic, Iterator",
       "",
       "T = TypeVar(\"T\")",
@@ -667,6 +673,7 @@
     "scope": "python",
     "prefix": "class Heap",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/containers/heap/heap.py\n",
       "from typing import TypeVar, Generic, Callable",
       "",
       "T = TypeVar(\"T\")",
@@ -736,6 +743,7 @@
     "scope": "python",
     "prefix": "def make_indexer",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/containers/indexer.py\n",
       "from typing import Callable",
       "",
       "",
@@ -784,6 +792,7 @@
     "scope": "python",
     "prefix": "class ConvexHullTrick",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/dp/convex_hull_trick.py\n",
       "from typing import Literal",
       "from sortedcontainers import SortedSet",
       "from collections import deque",
@@ -923,6 +932,7 @@
     "scope": "python",
     "prefix": "class Doubling",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/dp/doubling.py\n",
       "class Doubling:",
       "    \"\"\"",
       "    ダブリング",
@@ -963,6 +973,7 @@
     "scope": "python",
     "prefix": "def edit_distance",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/dp/edit_distance.py\n",
       "inf = 1 << 61",
       "",
       "",
@@ -988,6 +999,7 @@
     "scope": "python",
     "prefix": "def lcs",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/dp/longest_common_subsequence.py\n",
       "def lcs(s: str, t: str, is_restored: bool = False) -> int | str:",
       "    \"\"\"s,tの最長共通部分列\"\"\"",
       "    dp = [[0] * (len(t) + 1) for _ in range(len(s) + 1)]",
@@ -1020,6 +1032,7 @@
     "scope": "python",
     "prefix": "def lis",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/dp/longest_increasing_subsequence.py\n",
       "from bisect import bisect_left",
       "",
       "",
@@ -1055,6 +1068,7 @@
     "scope": "python",
     "prefix": "def tsp",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/dp/traveling_salesman_problem.py\n",
       "from typing import Callable",
       "",
       "inf = 1 << 61",
@@ -1088,6 +1102,7 @@
     "scope": "python",
     "prefix": "class TreeDP",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/dp/tree_dp.py\n",
       "from typing import TypeVar, Generic, Callable",
       "",
       "T = TypeVar(\"T\")",
@@ -1241,6 +1256,7 @@
     "scope": "python",
     "prefix": "def dist2",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/geometry/dist.py\n",
       "def dist2(p: Point, q: Point) -> int:",
       "    \"\"\"二乗ユークリッド距離\"\"\"",
       "    dx = p.x - q.x",
@@ -1254,6 +1270,7 @@
     "scope": "python",
     "prefix": "def manhattan",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/geometry/dist.py\n",
       "def manhattan(p: Point, q: Point) -> int:",
       "    \"\"\"マンハッタン距離\"\"\"",
       "    dx = p.x - q.x",
@@ -1267,6 +1284,7 @@
     "scope": "python",
     "prefix": "class Point",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/geometry/point.py\n",
       "import math",
       "",
       "",
@@ -1323,6 +1341,7 @@
     "scope": "python",
     "prefix": "class Segment",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/geometry/segment.py\n",
       "class Segment:",
       "    \"\"\"線分\"\"\"",
       "",
@@ -1361,6 +1380,7 @@
     "scope": "python",
     "prefix": "class SCC",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/directed/scc_kosaraju.py\n",
       "class SCC(Graph):",
       "    \"\"\"",
       "    強連結成分分解",
@@ -1456,6 +1476,7 @@
     "scope": "python",
     "prefix": "class TopologicalSorter",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/directed/topological_sort.py\n",
       "from heapq import heapify, heappush, heappop",
       "",
       "",
@@ -1594,6 +1615,7 @@
     "scope": "python",
     "prefix": "class TwoSAT",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/directed/twosat.py\n",
       "class TwoSAT:",
       "    def __init__(self, n: int):",
       "        self._n = n",
@@ -1650,6 +1672,7 @@
     "scope": "python",
     "prefix": "class Graph",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/graph.py\n",
       "class Graph:",
       "    \"\"\"",
       "    CSR形式",
@@ -1739,6 +1762,7 @@
     "scope": "python",
     "prefix": "def kruskal",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/mst/kruskal.py\n",
       "def kruskal(graph: Graph) -> int:",
       "    \"\"\"最小全域木の重み\"\"\"",
       "    edges = graph.edges",
@@ -1759,6 +1783,7 @@
     "scope": "python",
     "prefix": "def prim",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/mst/prim.py\n",
       "from heapq import heappush, heappop",
       "",
       "",
@@ -1788,6 +1813,7 @@
     "scope": "python",
     "prefix": "def bfs",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/search/bfs.py\n",
       "from collections import deque",
       "",
       "",
@@ -1810,6 +1836,7 @@
     "scope": "python",
     "prefix": "def bfs01",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/search/bfs01.py\n",
       "from collections import deque",
       "",
       "",
@@ -1837,6 +1864,7 @@
     "scope": "python",
     "prefix": "def is_bipartite",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/search/bipartite.py\n",
       "def is_bipartite(graph: Graph) -> bool:",
       "",
       "    def dfs(v: int) -> bool:",
@@ -1866,6 +1894,7 @@
     "scope": "python",
     "prefix": "def is_bipartite2",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/search/bipartite.py\n",
       "def is_bipartite2(n: int, edges: list[tuple]) -> bool:",
       "    uf = UnionFind(n * 2)",
       "    for u, v in edges:",
@@ -1883,6 +1912,7 @@
     "scope": "python",
     "prefix": "def bellman_ford",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/shortest_path/bellman_ford.py\n",
       "inf = 1 << 61",
       "",
       "",
@@ -1912,6 +1942,7 @@
     "scope": "python",
     "prefix": "def dijkstra",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/shortest_path/dijkstra.py\n",
       "from heapq import heappush, heappop",
       "",
       "inf = 1 << 61",
@@ -1940,6 +1971,7 @@
     "scope": "python",
     "prefix": "class WarshallFloyd",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/shortest_path/warshall_floyd.py\n",
       "inf = 1 << 61",
       "",
       "",
@@ -1999,6 +2031,7 @@
     "scope": "python",
     "prefix": "class AuxiliaryTree",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/tree/auxiliary_tree.py\n",
       "class AuxiliaryTree(Tree):",
       "    \"\"\"",
       "    木の座標圧縮 O(KlogN)",
@@ -2064,6 +2097,7 @@
     "scope": "python",
     "prefix": "def diameter",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/tree/diameter.py\n",
       "def diameter(t: Tree) -> tuple[int, int, int]:",
       "    \"\"\"直径、端点1、端点2\"\"\"",
       "",
@@ -2091,6 +2125,7 @@
     "scope": "python",
     "prefix": "def euler_tour",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/tree/euler_tour.py\n",
       "def euler_tour(t: Tree, root: int):",
       "    \"\"\"",
       "    1step: 頂点を出る -> 辺を通る -> 頂点に入る",
@@ -2195,6 +2230,7 @@
     "scope": "python",
     "prefix": "class HLD",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/tree/heavy_light_decomposition.py\n",
       "class HLD(Tree):",
       "    \"\"\"",
       "    重軽分解",
@@ -2405,6 +2441,7 @@
     "scope": "python",
     "prefix": "class LCA",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/tree/lowest_common_ancestor.py\n",
       "class LCA(Tree):",
       "    def __init__(self, n: int) -> None:",
       "        super().__init__(n)",
@@ -2477,6 +2514,7 @@
     "scope": "python",
     "prefix": "class Tree",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/graph/tree/tree.py\n",
       "class Tree:",
       "    \"\"\"",
       "    CSR形式",
@@ -2556,6 +2594,7 @@
     "scope": "python",
     "prefix": "class Mobius",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/counting/mobius_function.py\n",
       "class Mobius:",
       "    \"\"\"",
       "    メビウス関数",
@@ -2596,6 +2635,7 @@
     "scope": "python",
     "prefix": "def next_permutation",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/counting/next_permutation.py\n",
       "def next_permutation(p: list) -> bool:",
       "    \"\"\"pの次の順列 in-place\"\"\"",
       "    for i in range(len(p) - 1, 0, -1):",
@@ -2615,6 +2655,7 @@
     "scope": "python",
     "prefix": "def quotient_range",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/counting/quotient_range.py\n",
       "def quotient_range(n: int) -> list[tuple[int, int, int]]:",
       "    \"\"\"",
       "    floor(n/i)=k となるiの範囲[l,r)の一覧",
@@ -2636,6 +2677,7 @@
     "scope": "python",
     "prefix": "def enumerate_divisors",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/factor/divisor.py\n",
       "def enumerate_divisors(n: int) -> list[int]:",
       "    \"\"\"nの約数を昇順に列挙\"\"\"",
       "    lower_divisors = []",
@@ -2656,6 +2698,7 @@
     "scope": "python",
     "prefix": "def enumerate_divisors_from_factor",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/factor/divisor.py\n",
       "def enumerate_divisors_from_factor(prime_factor: dict[int, int]) -> list[int]:",
       "    \"\"\"素因数から約数を列挙\"\"\"",
       "    divisors = [1]",
@@ -2674,6 +2717,7 @@
     "scope": "python",
     "prefix": "def enumerate_primes",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/factor/eratosthenes_sieve.py\n",
       "def enumerate_primes(low: int, high: int) -> list[int]:",
       "    \"\"\"篩でlow以上high未満の素数を列挙\"\"\"",
       "    is_prime = [True] * (high - low)",
@@ -2700,6 +2744,7 @@
     "scope": "python",
     "prefix": "def gcd",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/factor/gcd_lcm.py\n",
       "def gcd(*nums: int) -> int:",
       "    g = 0",
       "    for x in nums:",
@@ -2716,6 +2761,7 @@
     "scope": "python",
     "prefix": "def lcm",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/factor/gcd_lcm.py\n",
       "def lcm(*nums: int, limit: int | None = None) -> int:",
       "    l = 1",
       "    for x in nums:",
@@ -2734,6 +2780,7 @@
     "scope": "python",
     "prefix": "class PrimeTable",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/factor/lpf_factorization.py\n",
       "class PrimeTable:",
       "    \"\"\"",
       "    素因数分解などを O(nloglogn) で計算",
@@ -2799,6 +2846,7 @@
     "scope": "python",
     "prefix": "def is_prime",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/factor/prime_check.py\n",
       "def is_prime(n: int) -> bool:",
       "    \"\"\"",
       "    ミラーラビン法",
@@ -2839,6 +2887,7 @@
     "scope": "python",
     "prefix": "class SegmentedSieve",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/factor/segmented_sieve.py\n",
       "class SegmentedSieve:",
       "    \"\"\"",
       "    区間篩 遅いかも",
@@ -2912,6 +2961,7 @@
     "scope": "python",
     "prefix": "def gaussian_eliminate",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/linear_algebra/gaussian_elimination.py\n",
       "def gaussian_eliminate(a: Matrix, column_limit: int | None = None) -> int:",
       "    \"\"\"",
       "    掃き出し法",
@@ -2945,6 +2995,7 @@
     "scope": "python",
     "prefix": "def solve_linear_eq",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/linear_algebra/gaussian_elimination.py\n",
       "def solve_linear_eq(a: Matrix, b: Matrix) -> list[list[int]] | None:",
       "    \"\"\"連立方程式の解\"\"\"",
       "    c = a.join_columns(b)",
@@ -2977,6 +3028,7 @@
     "scope": "python",
     "prefix": "def solve_integer_linear",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/linear_algebra/integer_linear_eq.py\n",
       "def solve_integer_linear(a: int, b: int, c: int) -> tuple[int, int, int] | None:",
       "    \"\"\"",
       "    ax+by=c の解",
@@ -3008,6 +3060,7 @@
     "scope": "python",
     "prefix": "class Matrix",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/linear_algebra/matrix.py\n",
       "class Matrix:",
       "    \"\"\"",
       "    n*m行列 mod限定",
@@ -3272,6 +3325,7 @@
     "scope": "python",
     "prefix": "class Binomial",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/mod/binomial.py\n",
       "class Binomial:",
       "    \"\"\"",
       "    二項係数 Mod",
@@ -3353,6 +3407,7 @@
     "scope": "python",
     "prefix": "def primitive_root",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/mod/primitive_root.py\n",
       "import random",
       "",
       "",
@@ -3387,6 +3442,7 @@
     "scope": "python",
     "prefix": "def subset_zeta_transform",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/set/zeta_mobius_transform.py\n",
       "from typing import Callable",
       "",
       "",
@@ -3409,6 +3465,7 @@
     "scope": "python",
     "prefix": "def subset_mobius_transform",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/set/zeta_mobius_transform.py\n",
       "from typing import Callable",
       "",
       "",
@@ -3431,6 +3488,7 @@
     "scope": "python",
     "prefix": "def superset_zeta_transform",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/set/zeta_mobius_transform.py\n",
       "from typing import Callable",
       "",
       "",
@@ -3453,6 +3511,7 @@
     "scope": "python",
     "prefix": "def superset_mobius_transform",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/set/zeta_mobius_transform.py\n",
       "from typing import Callable",
       "",
       "",
@@ -3475,6 +3534,7 @@
     "scope": "python",
     "prefix": "class ZobristHash",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/set/zobrist_hash.py\n",
       "import random",
       "",
       "",
@@ -3520,6 +3580,7 @@
     "scope": "python",
     "prefix": "def bit_reverse_32",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/tools/bit_reverse.py\n",
       "def bit_reverse_32(x: int) -> int:",
       "    x = (x & 65535) << 16 | (x & 4294901760) >> 16",
       "    x = (x & 16711935) << 8 | (x & 4278255360) >> 8",
@@ -3535,6 +3596,7 @@
     "scope": "python",
     "prefix": "def bit_reverse_64",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/tools/bit_reverse.py\n",
       "def bit_reverse_64(x: int) -> int:",
       "    x = (x & 4294967295) << 32 | (x & 18446744069414584320) >> 32",
       "    x = (x & 281470681808895) << 16 | (x & 18446462603027742720) >> 16",
@@ -3551,6 +3613,7 @@
     "scope": "python",
     "prefix": "def popcount32",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/tools/popcount.py\n",
       "def popcount32(x: int) -> int:",
       "    x = (x & 1431655765) + (x >> 1 & 1431655765)",
       "    x = (x & 858993459) + (x >> 2 & 858993459)",
@@ -3566,6 +3629,7 @@
     "scope": "python",
     "prefix": "def popcount64",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/tools/popcount.py\n",
       "def popcount64(x: int) -> int:",
       "    x = (x & 6148914691236517205) + (x >> 1 & 6148914691236517205)",
       "    x = (x & 3689348814741910323) + (x >> 2 & 3689348814741910323)",
@@ -3582,6 +3646,7 @@
     "scope": "python",
     "prefix": "def convert_radix",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/tools/radix_conversion.py\n",
       "def convert_radix(n: int, radix: int) -> list[int]:",
       "    \"\"\"",
       "    nをradix進数にする",
@@ -3608,6 +3673,7 @@
     "scope": "python",
     "prefix": "def to_decimal",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/tools/radix_conversion.py\n",
       "def to_decimal(digits: list[int], radix: int) -> int:",
       "    \"\"\"convert radixしたやつを戻す\"\"\"",
       "    res = 0",
@@ -3624,6 +3690,7 @@
     "scope": "python",
     "prefix": "class Ring",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/math/tools/ring.py\n",
       "class Ring:",
       "    \"\"\"",
       "    円環上の道のりを計算する",
@@ -3698,6 +3765,7 @@
     "scope": "python",
     "prefix": "class PersistentStack",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/persistent/persistent_stack.py\n",
       "class PersistentStack:",
       "    \"\"\"",
       "    永続スタック",
@@ -3758,6 +3826,7 @@
     "scope": "python",
     "prefix": "class Accumulation",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/range_query/accumulate.py\n",
       "class Accumulation:",
       "    \"\"\"",
       "    Attributes:",
@@ -3893,6 +3962,7 @@
     "scope": "python",
     "prefix": "class DualFenwickTree",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/range_query/fenwick_tree/dual_fenwick_tree.py\n",
       "from typing import Iterator",
       "",
       "",
@@ -3973,6 +4043,7 @@
     "scope": "python",
     "prefix": "class FenwickTree",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/range_query/fenwick_tree/fenwick_tree.py\n",
       "from typing import Iterator",
       "",
       "",
@@ -4117,6 +4188,7 @@
     "scope": "python",
     "prefix": "class IntervalSet",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/range_query/interval_set.py\n",
       "from sortedcontainers import SortedSet",
       "",
       "",
@@ -4268,6 +4340,7 @@
     "scope": "python",
     "prefix": "class LazySegmentTree",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/range_query/lazy_segment_tree/lazy_segment_tree.py\n",
       "from typing import Generic, TypeVar, Callable, Iterator",
       "",
       "M = TypeVar(\"MonoidElement\")",
@@ -4516,6 +4589,7 @@
     "scope": "python",
     "prefix": "class DynamicSegmentTree",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/range_query/segment_tree/dynamic_segment_tree.py\n",
       "from typing import Generic, TypeVar, Callable",
       "",
       "M = TypeVar(\"MonoidElement\")",
@@ -4715,6 +4789,7 @@
     "scope": "python",
     "prefix": "class PersistentSegmentTree",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/range_query/segment_tree/persistent_segment_tree.py\n",
       "from typing import Generic, TypeVar, Callable",
       "",
       "M = TypeVar(\"MonoidElement\")",
@@ -4926,6 +5001,7 @@
     "scope": "python",
     "prefix": "class SegmentTree",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/range_query/segment_tree/segment_tree.py\n",
       "from typing import Generic, TypeVar, Callable, Iterator",
       "",
       "M = TypeVar(\"MonoidElement\")",
@@ -5092,6 +5168,7 @@
     "scope": "python",
     "prefix": "class SparseTable",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/range_query/sparse_table.py\n",
       "from typing import TypeVar, Generic, Callable",
       "",
       "T = TypeVar(\"T\")",
@@ -5132,6 +5209,7 @@
     "scope": "python",
     "prefix": "class WaveletMatrix",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/range_query/wavelet_matrix.py\n",
       "from typing import Literal",
       "",
       "",
@@ -5339,6 +5417,7 @@
     "scope": "python",
     "prefix": "def binary_search",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/split_search/binary_search.py\n",
       "def binary_search(ok: int, ng: int, *args) -> int:",
       "    \"\"\"二分探索\"\"\"",
       "",
@@ -5362,6 +5441,7 @@
     "scope": "python",
     "prefix": "def bisect_left",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/split_search/bisect.py\n",
       "from typing import Callable",
       "",
       "",
@@ -5382,6 +5462,7 @@
     "scope": "python",
     "prefix": "def bisect_right",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/split_search/bisect.py\n",
       "from typing import Callable",
       "",
       "",
@@ -5402,6 +5483,7 @@
     "scope": "python",
     "prefix": "def parallel_binary_search",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/split_search/parallel_binary_search.py\n",
       "def parallel_binary_search(oks: list[int], ngs: list[int], *args) -> list[int]:",
       "    \"\"\"",
       "    並列二分探索",
@@ -5437,6 +5519,7 @@
     "scope": "python",
     "prefix": "def ternary_search",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/split_search/ternary_search.py\n",
       "from typing import Callable",
       "",
       "",
@@ -5461,6 +5544,7 @@
     "scope": "python",
     "prefix": "class AhoCorasick",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/string/aho_corasick.py\n",
       "from collections import deque",
       "",
       "",
@@ -5552,6 +5636,7 @@
     "scope": "python",
     "prefix": "def kmp",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/string/kmp.py\n",
       "def kmp(text: str, pattern: str) -> int:",
       "    \"\"\"textからpatternを検索。O(n)\"\"\"",
       "",
@@ -5587,6 +5672,7 @@
     "scope": "python",
     "prefix": "class RollingHash",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/string/rolling_hash.py\n",
       "import random",
       "",
       "",
@@ -5694,6 +5780,7 @@
     "scope": "python",
     "prefix": "class Trie",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/string/trie.py\n",
       "class Trie:",
       "    \"\"\"",
       "    Trie",
@@ -5911,6 +5998,7 @@
     "scope": "python",
     "prefix": "def z_algorithm",
     "body": [
+      "# https://github.com/miya256/atcoder_lib_py/blob/main/library/string/z_algorithm.py\n",
       "def z_algorithm(s: str) -> list[int]:",
       "    \"\"\"sとs[i:]のLCPの長さ\"\"\"",
       "    z = [0] * len(s)",

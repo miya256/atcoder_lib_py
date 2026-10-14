@@ -4,6 +4,8 @@ from pathlib import Path
 import subprocess
 
 ROOT = Path(__file__).resolve().parent.parent
+LIBRARY_URL = "https://github.com/miya256/atcoder_lib_py"
+BRANCH = "main"
 
 exclude = {
     "dp/bounded_knapsack.py",
@@ -83,7 +85,11 @@ def add_snippets(snippets: dict, path: Path) -> None:
         snippets[name] = {
             "scope": "python",
             "prefix": f"{def_type} {name}",
-            "body": [line.rstrip("\n") for line in new_code.splitlines()] + ["$0"],
+            "body": [
+                f"# {LIBRARY_URL}/blob/{BRANCH}/{path.relative_to(ROOT).as_posix()}\n",
+                *[line.rstrip("\n") for line in new_code.splitlines()],
+                "$0",
+            ],
             "description": f"Auto snippet for {name}",
         }
 
